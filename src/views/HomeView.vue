@@ -1,18 +1,37 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+     <div class="row">
+       <div class="col">
+         <img src="@/assets/home-illustration.png" class="card-img-top">
+        <div class="card-body">
+          <h5 class="card-title top-card-title">Book an Appointment</h5>
+          <p class="card-text">Book appointments faster, see your booking history, and change upcoming appointments.</p>
+          <a href="/login" class="btn btn-primary">Login</a>
+          <a href="/signup" class="btn btn-primary">Signup</a>
+          <p>or</p>
+          <a href="#" class="btn btn-primary">Continue as guest</a>
+
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
   name: 'HomeView',
-  components: {
-    HelloWorld
-  }
 }
 </script>
+
+<style>
+.card-img-top {
+  max-width: 500px;
+}
+.top-card-title {
+  margin-top: 8px;
+}
+.btn {
+  margin: 5px 8px;
+}
+</style>
