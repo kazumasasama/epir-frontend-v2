@@ -45,7 +45,7 @@
           aria-valuemin="0"
           aria-valuemax="25"
         >
-          Confirmation
+          Confirm
         </div>
       </div>
     </nav>
@@ -152,12 +152,12 @@ import moment from 'moment';
       this.getUser();
     },
     computed: {
-      filteredBusinessTimes() {
-        this.filteredBusinessTimes = []
-        return this.businessTimes.filter(timeSlots => timeSlots.date === this.formattedPicked)
-      },
       formattedPicked() {
         return moment(this.picked).format('YYYY-MM-DD')
+      },
+      filteredBusinessTimes() {
+        // this.filteredBusinessTimes = []
+        return this.businessTimes.filter(timeSlots => timeSlots.date === this.formattedPicked)
       },
     },
     methods: {
@@ -189,11 +189,18 @@ import moment from 'moment';
           document.querySelector('#progress-3').classList.remove('bg-secondary');
         } else if (this.currentStep === 4) {
           document.querySelector('#progress-4').classList.remove('bg-secondary');
-        } 
+        }
       },
       prevStep() {
         if (this.currentStep > 1) {
           this.currentStep--
+        }
+        if (this.currentStep === 1) {
+          document.querySelector('#progress-2').classList.add('bg-secondary');
+        } else if (this.currentStep === 2) {
+          document.querySelector('#progress-3').classList.add('bg-secondary');
+        } else if (this.currentStep === 3) {
+          document.querySelector('#progress-4').classList.add('bg-secondary');
         }
       },
     }
