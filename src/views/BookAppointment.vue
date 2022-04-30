@@ -49,8 +49,8 @@
         </div>
       </div>
     </nav>
-
     <div class="pick-menus" v-if="currentStep === 1">
+      <p>{{ errors }}</p>
       <h2>Select Menus</h2>
       <div class="row">
         <div class="col-4">
@@ -71,9 +71,30 @@
                 v-model="selectedMenus"  
               >
               {{ menu.title }}
+              <p class="text-end">
+                <small>{{ menu.duration }} min</small>
+              </p>
             </label>
           </div>
         </div>
+
+        <div class="col-4">
+          <div
+            class="list-group"
+            id="list-tab"
+            role="tablist"
+          >
+            <label
+              class="list-group-item"
+            >
+            <p>Total duration</p>
+              <p class="text-end">
+                {{ durationSumInString }}
+              </p>
+            </label>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -137,10 +158,11 @@
           <small>Date:</small>
           <p>{{ USformattedPicked }}</p>
           <small>Time:</small>
-          <p>{{ USformattedTime }}</p>
+          <p>{{ USformattedTime }} - {{ moment(selectedTime).add(totalDuration,'minute').format('hh:mm A') }}</p>
         </div>
         <div class="col-4">
-          <p v-for="menu in selectedMenus" :key="menu.id">Menu: {{ menu.title }}</p>
+          <small>Menu:</small>
+          <p v-for="menu in selectedMenus" :key="menu.id"> {{ menu.title }}</p>
         </div>
         <div class="col-4">
           <small>Name:</small>
@@ -182,6 +204,7 @@
         v-if="currentStep === 4"
         type="button"
         class="btn btn-primary"
+        @click="createAppointment()"
       >
         Book Appointment
       </button>
@@ -192,22 +215,22 @@
 <script setup>
 import Datepicker from 'vue3-datepicker'
 import { ref } from 'vue'
-const picked = ref(new Date())
+const picked = ref(new Date)
 </script>
 
 <script>
 import axios from "axios";
-// import moment from 'moment';
 import * as moment from 'moment-timezone';
   export default {
     data() {
       return {
+        errors: null,
         currentStep: 1,
         menus: [],
         menu: {},
         businessTimes: [],
         selectedMenus: [],
-        selectedDate: "",
+        selectedDate: moment().format('YYYY-MM-DD'),
         selectedTime: null,
         user: {},
         genders: [
@@ -222,14 +245,39 @@ import * as moment from 'moment-timezone';
       this.indexMenus();
       this.indexBusinessTimes();
       this.getUser();
-      console.log(new Date())
     },
     computed: {
       fullName() {
         return `${this.user.first_name} ${this.user.last_name}`
       },
       formattedPicked() {
+        this.selectedDate = moment(this.picked).format('YYYY-MM-DD')
         return moment(this.picked).format('YYYY-MM-DD')
+      },
+      totalDuration() {
+        let durationSum = 0
+        this.selectedMenus.forEach((menu) => {durationSum += menu.duration})
+        return durationSum
+      },
+      endTime() {
+        var endTime = moment(this.selectedTime).add(this.totalDuration,'minute')
+        return endTime
+      },
+      durationSum() {
+        let durationSumHour = 0
+        let durationSumMin = 0
+        this.selectedMenus.forEach((menu) => {durationSumHour += menu.duration})
+        durationSumMin = durationSumHour % 60
+        durationSumHour = (durationSumHour - (durationSumHour % 60)) / 60
+        return `${durationSumHour}:${durationSumMin}:00`
+      },
+      durationSumInString() {
+        let durationSumHour = 0
+        let durationSumMin = 0
+        this.selectedMenus.forEach((menu) => {durationSumHour += menu.duration})
+        durationSumMin = durationSumHour % 60
+        durationSumHour = (durationSumHour - (durationSumHour % 60)) / 60
+        return `${durationSumHour} hour ${durationSumMin} min`
       },
       USformattedPicked() {
         return moment(this.picked).format('MM-DD-YYYY')
@@ -241,6 +289,9 @@ import * as moment from 'moment-timezone';
       filteredBusinessTimes() {
         return this.businessTimes.filter(timeSlots => timeSlots.date === this.formattedPicked)
       },
+      selectedMenuIds() {
+        return this.selectedMenus.map((menu)=> menu.id)
+      }
     },
     methods: {
       indexMenus() {
@@ -284,6 +335,24 @@ import * as moment from 'moment-timezone';
         } else if (this.currentStep === 3) {
           document.querySelector('#progress-4').classList.add('bg-secondary');
         }
+      },
+      createAppointment() {
+        let menuIds = this.selectedMenus.map((menu)=> menu.id)
+        let bookingInfo = {
+          "date": this.selectedDate,
+          "start": this.selectedTime,
+          "end": this.endTime,
+          "user_id": this.user.id,
+          "duration_total": this.totalDuration,
+          "menus": menuIds,
+        }
+        axios.post("/events", bookingInfo)
+        .then(()=> {
+          this.$router.push("/")
+        })
+        .catch((error)=> {
+          this.errors = error.response
+        })
       },
     }
   }
