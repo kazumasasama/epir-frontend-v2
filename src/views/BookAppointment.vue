@@ -52,13 +52,28 @@
 
     <div class="pick-menus" v-if="currentStep === 1">
       <h2>Select Menus</h2>
-      <div class="menu-container">
-        <ul class="list-group">
-          <li class="list-group-item" v-for="menu in menus" :key="menu.id">
-            <input class="form-check-input me-1" type="checkbox" v-model="selectedMenus" :value="menu" aria-label="...">
-            {{ menu.title }}
-          </li>
-        </ul>
+      <div class="row">
+        <div class="col-4">
+          <div
+            class="list-group"
+            id="list-tab"
+            role="tablist"
+          >
+            <label
+              class="list-group-item"
+              v-for="menu in menus"
+              :key="menu.id"
+            >
+              <input
+                class="form-check-input me-1"
+                type="checkbox"
+                :value="menu"
+                v-model="selectedMenus"  
+              >
+              {{ menu.title }}
+            </label>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -67,19 +82,24 @@
       <datepicker v-model="picked" />
       <div class="row">
         <div class="col-4">
-          <div class="list-group" id="list-tab" role="tablist">
-            <a
+          <div
+            class="list-group"
+            id="list-tab"
+            role="tablist"
+          >
+            <label
+              class="list-group-item"
               v-for="timeSlot in filteredBusinessTimes"
               :key="timeSlot.id"
-              class="list-group-item list-group-item-action"
-              id="list-home-list"
-              data-bs-toggle="list"
-              href="#list-home"
-              role="tab"
-              aria-controls="list-home"
             >
+              <input
+                class="form-check-input me-1"
+                type="radio"
+                :value="timeSlot.time"
+                v-model="selectedTime"
+              >
               {{ timeSlot.time.split("-")[2].replace("01T", "").replace(":00.000Z", "") }}
-            </a>
+            </label>
           </div>
         </div>
       </div>
@@ -111,9 +131,28 @@
     </div>
 
     <div class="btn-container">
-      <button type="button" class="btn btn-primary" @click="prevStep()">Go Back</button>
-      <button v-if="currentStep !== 4" type="button" class="btn btn-primary" @click="nextStep()">Next Step</button>
-      <button v-if="currentStep === 4" type="button" class="btn btn-primary" @click="nextStep()">Book Appointment</button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        @click="prevStep()"
+      >
+        Go Back
+      </button>
+      <button
+        v-if="currentStep !== 4"
+        type="button"
+        class="btn btn-primary"
+        @click="nextStep()"
+      >
+        Next Step
+      </button>
+      <button
+        v-if="currentStep === 4"
+        type="button"
+        class="btn btn-primary"
+      >
+        Book Appointment
+      </button>
     </div>
   </div>
 </template>
@@ -136,7 +175,7 @@ import moment from 'moment';
         businessTimes: [],
         selectedMenus: [],
         selectedDate: "",
-        selectedtime: null,
+        selectedTime: null,
         user: {},
         genders: [
           "Male",
