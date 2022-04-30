@@ -134,8 +134,10 @@
       <h2>Confirm your appointment</h2>
       <div class="row">
         <div class="col-4">
-          <p>Date: {{ USformattedPicked }}</p>
-          <p>Time: {{ USformattedTime }}</p>
+          <small>Date:</small>
+          <p>{{ USformattedPicked }}</p>
+          <small>Time:</small>
+          <p>{{ USformattedTime }}</p>
         </div>
         <div class="col-4">
           <p v-for="menu in selectedMenus" :key="menu.id">Menu: {{ menu.title }}</p>
