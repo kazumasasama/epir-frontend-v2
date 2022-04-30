@@ -77,7 +77,7 @@
       </div>
     </div>
 
-    <div class="pick-menus" v-if="currentStep === 2">
+    <div class="pick-date" v-if="currentStep === 2">
       <h2>Pick a date and time</h2>
       <datepicker v-model="picked" />
       <div class="row">
@@ -98,14 +98,14 @@
                 :value="timeSlot.time"
                 v-model="selectedTime"
               >
-              {{ timeSlot.time.split("-")[2].replace("01T", "").replace(":00.000Z", "") }}
+              {{ timeSlot.time.split("-")[2].replace("01T", "").replace(":00.000", "") }} EST
             </label>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="pick-menus" v-if="currentStep === 3">
+    <div class="user-info" v-if="currentStep === 3">
       <h2>User Info</h2>
       <div class="row">
         <div class="col-4">
@@ -126,6 +126,36 @@
           <p>Address: <input type="text" v-model="user.address"></p>
           <p>Note: <textarea v-model="user.note" cols="30" rows="3"></textarea></p>
           <p>Birthday: <input type="text" v-model="user.birthday"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="confirmation" v-if="currentStep === 4">
+      <h2>Confirm your appointment</h2>
+      <div class="row">
+        <div class="col-4">
+          <p>Date: {{ USformattedPicked }}</p>
+          <p>Time: {{ USformattedTime }}</p>
+        </div>
+        <div class="col-4">
+          <p v-for="menu in selectedMenus" :key="menu.id">Menu: {{ menu.title }}</p>
+        </div>
+        <div class="col-4">
+          <small>Name:</small>
+          <p>{{ fullName }}</p>
+          <small>Email:</small>
+          <p>{{ user.email }}</p>
+          <small>Phone:</small>
+          <p>{{ user.phone }}</p>
+          <small>Address:</small>
+          <p>{{ user.address }}</p>
+          <p>{{ user.city }}, {{ user.state }} {{ user.zip }}</p>
+          <small>Gender:</small>
+          <p>{{ user.gender }}</p>
+          <small>Birthday:</small>
+          <p>{{ user.birthday }}</p>
+          <small>Note:</small>
+          <p>{{ user.note }}</p>
         </div>
       </div>
     </div>
@@ -165,7 +195,8 @@ const picked = ref(new Date())
 
 <script>
 import axios from "axios";
-import moment from 'moment';
+// import moment from 'moment';
+import * as moment from 'moment-timezone';
   export default {
     data() {
       return {
@@ -189,13 +220,23 @@ import moment from 'moment';
       this.indexMenus();
       this.indexBusinessTimes();
       this.getUser();
+      console.log(new Date())
     },
     computed: {
+      fullName() {
+        return `${this.user.first_name} ${this.user.last_name}`
+      },
       formattedPicked() {
         return moment(this.picked).format('YYYY-MM-DD')
       },
+      USformattedPicked() {
+        return moment(this.picked).format('MM-DD-YYYY')
+      },
+      USformattedTime() {
+        var newYork = moment.tz(this.selectedTime, 'America/New_York')
+        return newYork.format('hh:mm A')
+      },
       filteredBusinessTimes() {
-        // this.filteredBusinessTimes = []
         return this.businessTimes.filter(timeSlots => timeSlots.date === this.formattedPicked)
       },
     },
@@ -213,7 +254,7 @@ import moment from 'moment';
         })
       },
       getUser() {
-        axios.get(`/users/2`)
+        axios.get(`/users/1`)
         .then((res)=> {
           this.user = res.data
         })
@@ -247,4 +288,7 @@ import moment from 'moment';
 </script>
 
 <style>
+  .col-4 {
+    text-align: left;
+  }
 </style>
