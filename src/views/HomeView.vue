@@ -9,7 +9,7 @@
           <a href="/login" class="btn btn-primary">Login</a>
           <a href="/signup" class="btn btn-primary">Signup</a>
           <p>or</p>
-          <a href="#" class="btn btn-primary">Continue as guest</a>
+          <a href="/appointments" class="btn btn-primary">Continue as guest</a>
 
         </div>
       </div>

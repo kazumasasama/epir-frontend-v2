@@ -225,6 +225,7 @@ import * as moment from 'moment-timezone';
     data() {
       return {
         errors: null,
+        event: {},
         currentStep: 1,
         menus: [],
         menu: {},
@@ -347,8 +348,9 @@ import * as moment from 'moment-timezone';
           "menus": menuIds,
         }
         axios.post("/events", bookingInfo)
-        .then(()=> {
-          this.$router.push("/")
+        .then((res)=> {
+          this.event = res.data
+          this.$router.push("/complete")
         })
         .catch((error)=> {
           this.errors = error.response
