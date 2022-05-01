@@ -6,7 +6,7 @@
         <div class="card-body">
           <h5 class="card-title top-card-title">Book an Appointment</h5>
           <p class="card-text">Book appointments faster, see your booking history, and change upcoming appointments.</p>
-          <a href="/login" class="btn btn-primary">Login</a>
+          <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#login-modal">Login</a>
           <a href="/signup" class="btn btn-primary">Signup</a>
           <p>or</p>
           <a href="/appointments" class="btn btn-primary">Continue as guest</a>

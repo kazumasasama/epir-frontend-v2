@@ -10,7 +10,7 @@
         </ul>
         <ul class="navbar-nav mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" href="/login">Login</a>
+            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#login-modal">Login</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/logout">Logout</a>
@@ -25,8 +25,67 @@
       </div>
     </div>
   </nav>
+
+  <div class="modal" tabindex="-1" id="login-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Login</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <p>Email: <input type="text" v-model="user.email"></p>
+            <p>Password: <input type="password" v-model="user.password"></p>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" @click="login()">Login</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <router-view/>
+
 </template>
+
+<script>
+import axios from 'axios'
+  export default {
+    data() {
+      return {
+        user: {
+          email: "",
+          password: "",
+          passwordConfirm: "",
+        },
+      }
+    },
+    methods: {
+      login() {
+        axios.post('/sessions', this.user)
+        .then((res)=> {
+          axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.jwt;
+          localStorage.setItem("jwt", res.data.jwt);
+          localStorage.setItem("user_id", res.data.user_id);
+          this.closeLoginDialog();
+          this.$router.push('/appointments');
+        })
+        .catch((error)=> {
+          console.log(error.response);
+        })
+      },
+      openLoginDialog() {
+        document.querySelector("#login-dialog").showModal();
+      },
+      closeLoginDialog() {
+        document.querySelector("#login-dialog").modal('hide');
+      }
+    },
+  }
+</script>
 
 <style>
 #app {

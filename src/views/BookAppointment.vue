@@ -243,9 +243,9 @@ import * as moment from 'moment-timezone';
       }
     },
     created() {
+      this.getUser();
       this.indexMenus();
       this.indexBusinessTimes();
-      this.getUser();
     },
     computed: {
       fullName() {
@@ -296,7 +296,7 @@ import * as moment from 'moment-timezone';
     },
     methods: {
       indexMenus() {
-        axios.get("/menus")
+        axios.get("/menus.json")
         .then((res)=> {
           this.menus = res.data
         })
@@ -308,9 +308,13 @@ import * as moment from 'moment-timezone';
         })
       },
       getUser() {
-        axios.get(`/users/1`)
+        var id = localStorage['user_id'];
+        axios.get(`/users/${id}`)
         .then((res)=> {
           this.user = res.data
+        })
+        .chatch((error)=> {
+          error.response
         })
       },
       nextStep() {

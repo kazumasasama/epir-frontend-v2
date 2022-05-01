@@ -24,7 +24,7 @@
           </p>
           <p>Birthday: <input type="date" v-model="user.birthday"></p>
           <div class="btn-container">
-            <button type="button" class="btn btn-primary" to="/login">Cancel</button>
+            <button type="button" class="btn btn-secondary" @click="cancelSignup()">Cancel</button>
             <button @click="createUser()" type="button" class="btn btn-primary">Submit</button>
           </div>
         </form>
@@ -52,6 +52,7 @@ import axios from "axios"
         if (this.user.password === this.user.passwordConfirm) {
           axios.post('/users', this.user)
           .then((res)=> {
+            localStorage.setItem("user_id", res.data.user_id);
             let user = {
               email: res.data.email,
               password: this.user.password
@@ -68,6 +69,10 @@ import axios from "axios"
             console.log(error);
           })
         }
+      },
+      cancelSignup() {
+        this.user = {};
+        this.$router.push('/')
       },
     }
   }
