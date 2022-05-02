@@ -313,7 +313,7 @@ import * as moment from 'moment-timezone';
         .then((res)=> {
           this.user = res.data
         })
-        .chatch((error)=> {
+        .catch((error)=> {
           error.response
         })
       },
