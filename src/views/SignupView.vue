@@ -61,6 +61,7 @@ import axios from "axios"
             .then((res)=> {
               axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.jwt;
               localStorage.setItem("jwt", res.data.jwt);
+              localStorage.setItem("user_id", res.data.user_id);
             })
             this.user = {}
             this.$router.push('/appointments')

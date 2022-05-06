@@ -9,14 +9,8 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         </ul>
         <ul class="navbar-nav mb-2 mb-lg-0">
-          <li class="nav-item" v-if="!loggedIn">
-            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#login-modal">Login</a>
-          </li>
-          <li class="nav-item" @click="logout()" v-if="loggedIn">
+          <li class="nav-item" v-if="loggedIn" @click="logout()">
             <a class="nav-link">Logout</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/signup" v-if="!loggedIn">Signup</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/mypage" v-if="loggedIn">My Page</a>
@@ -26,33 +20,12 @@
     </div>
   </nav>
 
-  <div class="modal" tabindex="-1" id="login-modal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Login</h4>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <p>Email: <input type="text" v-model="user.email"></p>
-            <p>Password: <input type="password" v-model="user.password"></p>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" @click="login()">Login</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <router-view/>
 
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
   export default {
     data() {
       return {
@@ -61,7 +34,6 @@ import axios from 'axios'
           password: "",
           passwordConfirm: "",
         },
-        loggedIn: false,
       }
     },
     created() {
@@ -70,20 +42,15 @@ import axios from 'axios'
         this.$router.push('/appointments');
       }
     },
-    methods: {
-      login() {
-        axios.post('/sessions', this.user)
-        .then((res)=> {
-          axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.jwt;
-          localStorage.setItem("jwt", res.data.jwt);
-          localStorage.setItem("user_id", res.data.user_id);
-          this.$router.push('/appointments');
-          document.querySelector("#login-dialog").modal('hide');
-        })
-        .catch((error)=> {
-          console.log(error.response);
-        })
+    computed: {
+      loggedIn() {
+        if (localStorage.jwt) {
+          return true
+        }
+        return false
       },
+    },
+    methods: {
       logout() {
         localStorage.removeItem("jwt");
         localStorage.removeItem("user_id");
