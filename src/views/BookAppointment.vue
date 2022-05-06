@@ -288,7 +288,32 @@ import * as moment from 'moment-timezone';
         return newYork.format('hh:mm A')
       },
       filteredBusinessTimes() {
-        return this.businessTimes.filter(timeSlots => timeSlots.date === this.formattedPicked)
+        // 指定日の時間の呼び出し
+        var openTimes = this.businessTimes.filter(timeSlots => timeSlots.date === this.formattedPicked).sort((a, b)=> {
+          return a.id - b.id
+        }).filter((time)=> time.available === true)
+
+        // 必要時間が最低スロット時間の場合全てのopenTimesを返す
+        var keepingTime = this.totalDuration / 30
+        if (keepingTime === 1) {
+          return openTimes
+        }
+
+        var i = 0
+        var j = 0
+        var available = []
+        // 必要時間分の空きがあるスロットを取得
+        while (i < openTimes.length - keepingTime + 1) {
+          j = i + 1
+          if (j === openTimes.length && openTimes[j].id - openTimes[i].id === 1) {
+            available.push(openTimes[i])
+          }
+          if (openTimes[j].id - openTimes[i].id === 1) {
+            available.push(openTimes[i])
+          }
+          i++
+        }
+        return available
       },
       selectedMenuIds() {
         return this.selectedMenus.map((menu)=> menu.id)
