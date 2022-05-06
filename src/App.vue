@@ -9,17 +9,17 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         </ul>
         <ul class="navbar-nav mb-2 mb-lg-0">
-          <li class="nav-item">
+          <li class="nav-item" v-if="!loggedIn">
             <a class="nav-link" data-bs-toggle="modal" data-bs-target="#login-modal">Login</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/logout">Logout</a>
+          <li class="nav-item" @click="logout()" v-if="loggedIn">
+            <a class="nav-link">Logout</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/signup">Signup</a>
+            <a class="nav-link" href="/signup" v-if="!loggedIn">Signup</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/mypage">My Page</a>
+            <a class="nav-link" href="/mypage" v-if="loggedIn">My Page</a>
           </li>
         </ul>
       </div>
@@ -61,6 +61,13 @@ import axios from 'axios'
           password: "",
           passwordConfirm: "",
         },
+        loggedIn: false,
+      }
+    },
+    created() {
+      if (localStorage.jwt) {
+        this.loggedIn = true
+        this.$router.push('/appointments');
       }
     },
     methods: {
@@ -70,12 +77,17 @@ import axios from 'axios'
           axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.jwt;
           localStorage.setItem("jwt", res.data.jwt);
           localStorage.setItem("user_id", res.data.user_id);
-          this.closeLoginDialog();
           this.$router.push('/appointments');
+          document.querySelector("#login-dialog").modal('hide');
         })
         .catch((error)=> {
           console.log(error.response);
         })
+      },
+      logout() {
+        localStorage.removeItem("jwt");
+        localStorage.removeItem("user_id");
+        this.$router.push('/');
       },
       openLoginDialog() {
         document.querySelector("#login-dialog").showModal();
