@@ -2,7 +2,7 @@
   <div class="container">
     <h2>Signup</h2>
     <div class="row">
-      <div class="col-6">
+      <div class="col-sm-12">
         <form>
           <strong>Required</strong>
           <p>First_name: <input type="text" v-model="user.first_name"></p>

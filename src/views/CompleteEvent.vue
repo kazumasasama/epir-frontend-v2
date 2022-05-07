@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-12">
+      <div class="col-sm-12">
         <div class="card">
           <small>YAY!</small>
           <h4>Your appointment is booked!</h4>

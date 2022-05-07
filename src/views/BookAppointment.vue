@@ -53,7 +53,7 @@
       <p>{{ errors }}</p>
       <h2>Select Menus</h2>
       <div class="row">
-        <div class="col-4">
+        <div class="col-sm-6">
           <div
             class="list-group"
             id="list-tab"
@@ -74,11 +74,14 @@
               <p class="text-end">
                 <small>{{ menu.duration }} min</small>
               </p>
+              <p class="text-end">
+                <small>${{ menu.price }}~</small>
+              </p>
             </label>
           </div>
         </div>
 
-        <div class="col-4">
+        <div class="col-sm-6">
           <div
             class="list-group"
             id="list-tab"
@@ -102,7 +105,7 @@
       <h2>Pick a date and time</h2>
       <datepicker v-model="picked" />
       <div class="row">
-        <div class="col-4">
+        <div class="col-sm-6">
           <div
             class="list-group"
             id="list-tab"
@@ -129,7 +132,7 @@
     <div class="user-info" v-if="currentStep === 3">
       <h2>User Info</h2>
       <div class="row">
-        <div class="col-4">
+        <div class="col-sm-6">
           <p>id: <input type="text" v-model="user.id"></p>
           <p>First_name: <input type="text" v-model="user.first_name"></p>
           <p>Last_name: <input type="text" v-model="user.last_name"></p>
@@ -152,7 +155,7 @@
           <p>City: <input type="text" v-model="user.city"></p>
           <p>Address: <input type="text" v-model="user.address"></p>
           <p>Note: 
-            <textarea v-model="user.note" cols="30" rows="3"></textarea>
+            <textarea v-model="user.note" col-sm-6s="30" rows="3"></textarea>
           </p>
           <p>Birthday: <input type="text" v-model="user.birthday"></p>
         </div>
@@ -162,17 +165,17 @@
     <div class="confirmation" v-if="currentStep === 4">
       <h2>Confirm your appointment</h2>
       <div class="row">
-        <div class="col-4">
+        <div class="col-sm-6">
           <small>Date:</small>
           <p>{{ USformattedPicked }}</p>
           <small>Time:</small>
           <p>{{ USformattedTime }} - {{ moment(selectedTime).add(totalDuration,'minute').format('hh:mm A') }}</p>
         </div>
-        <div class="col-4">
+        <div class="col-sm-6">
           <small>Menu:</small>
           <p v-for="menu in selectedMenus" :key="menu.id"> {{ menu.title }}</p>
         </div>
-        <div class="col-4">
+        <div class="col-sm-6">
           <small>Name:</small>
           <p>{{ fullName }}</p>
           <small>Email:</small>
@@ -399,7 +402,7 @@ import * as moment from 'moment-timezone';
 </script>
 
 <style>
-  .col-4 {
+  .col-sm-6 {
     text-align: left;
   }
 </style>

@@ -3,19 +3,21 @@
     <div>
       <h4>Login</h4>
     </div>
-    <div>
-      <form>
-        <p>Email: <input type="text" v-model="user.email"></p>
-        <p>Password: <input type="password" v-model="user.password"></p>
-        <button type="button" class="btn btn-secondary">Close</button>
-        <button
-          type="button"
-          class="btn btn-primary"
-          @click="login()"
-        >
-          Login
-        </button>
-      </form>
+    <div class="row">
+      <div class="col-sm-12">
+        <form>
+          <p>Email: <input type="text" v-model="user.email"></p>
+          <p>Password: <input type="password" v-model="user.password"></p>
+          <button type="button" class="btn btn-secondary">Close</button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="login()"
+          >
+            Login
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <div class="container home-container">
      <div class="row">
-       <div class="col">
+       <div class="col-sm-12">
         <h5 class="card-title top-card-title">Book an Appointment</h5>
         <div class="card-body home" id="card-home">
           <img src="@/assets/home-illustration.png" class="card-img-home">
