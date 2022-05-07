@@ -5,17 +5,11 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <form>
+        <form v-on:submit.prevent="login()">
           <p>Email: <input type="text" v-model="user.email"></p>
           <p>Password: <input type="password" v-model="user.password"></p>
-          <button type="button" class="btn btn-secondary">Close</button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            @click="login()"
-          >
-            Login
-          </button>
+          <button type="button" class="btn btn-secondary" @click="toHome()">Back to Home</button>
+          <button type="submit" class="btn btn-primary">Login</button>
         </form>
       </div>
     </div>
@@ -45,6 +39,10 @@ import axios from 'axios'
         .catch((error)=> {
           console.log(error.response);
         })
+      },
+      toHome() {
+        this.user = {};
+        this.$router.push('/');
       },
     }
   }

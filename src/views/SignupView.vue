@@ -3,7 +3,7 @@
     <h2>Signup</h2>
     <div class="row">
       <div class="col-sm-12">
-        <form>
+        <form v-on:submit.prevent="createUser()">
           <strong>Required</strong>
           <p>First_name: <input type="text" v-model="user.first_name"></p>
           <p>Last_name: <input type="text" v-model="user.last_name"></p>
@@ -37,7 +37,7 @@
             >
               Cancel
             </button>
-            <button @click="createUser()" type="button" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
           </div>
         </form>
       </div>
@@ -75,8 +75,8 @@ import axios from "axios"
               localStorage.setItem("jwt", res.data.jwt);
               localStorage.setItem("user_id", res.data.user_id);
             })
-            this.user = {}
-            this.$router.push('/appointments')
+            this.user = {};
+            this.$router.push('/appointments');
           })
           .catch((error)=> {
             console.log(error);
@@ -85,7 +85,7 @@ import axios from "axios"
       },
       cancelSignup() {
         this.user = {};
-        this.$router.push('/')
+        this.$router.push('/');
       },
     }
   }

@@ -261,102 +261,103 @@ import * as moment from 'moment-timezone';
     },
     computed: {
       fullName() {
-        return `${this.user.first_name} ${this.user.last_name}`
+        return `${this.user.first_name} ${this.user.last_name}`;
       },
       formattedPicked() {
-        this.selectedDate = moment(this.picked).format('YYYY-MM-DD')
-        return moment(this.picked).format('YYYY-MM-DD')
+        this.selectedDate = moment(this.picked).format('YYYY-MM-DD');
+        return moment(this.picked).format('YYYY-MM-DD');
       },
       totalDuration() {
-        let durationSum = 0
-        this.selectedMenus.forEach((menu) => {durationSum += menu.duration})
-        return durationSum
+        let durationSum = 0;
+        this.selectedMenus.forEach((menu) => {durationSum += menu.duration});
+        return durationSum;
       },
       endTime() {
-        var endTime = moment(this.selectedTime).add(this.totalDuration,'minute')
-        return endTime
+        var endTime = moment(this.selectedTime).add(this.totalDuration,'minute');
+        return endTime;
       },
       durationSum() {
-        let durationSumHour = 0
-        let durationSumMin = 0
-        this.selectedMenus.forEach((menu) => {durationSumHour += menu.duration})
-        durationSumMin = durationSumHour % 60
-        durationSumHour = (durationSumHour - (durationSumHour % 60)) / 60
-        return `${durationSumHour}:${durationSumMin}:00`
+        let durationSumHour = 0;
+        let durationSumMin = 0;
+        this.selectedMenus.forEach((menu) => {durationSumHour += menu.duration});
+        durationSumMin = durationSumHour % 60;
+        durationSumHour = (durationSumHour - (durationSumHour % 60)) / 60;
+        return `${durationSumHour}:${durationSumMin}:00`;
       },
       durationSumInString() {
-        let durationSumHour = 0
-        let durationSumMin = 0
-        this.selectedMenus.forEach((menu) => {durationSumHour += menu.duration})
-        durationSumMin = durationSumHour % 60
-        durationSumHour = (durationSumHour - (durationSumHour % 60)) / 60
-        return `${durationSumHour} hour ${durationSumMin} min`
+        let durationSumHour = 0;
+        let durationSumMin = 0;
+        this.selectedMenus.forEach((menu) => {durationSumHour += menu.duration});
+        durationSumMin = durationSumHour % 60;
+        durationSumHour = (durationSumHour - (durationSumHour % 60)) / 60;
+        return `${durationSumHour} hour ${durationSumMin} min`;
       },
       USformattedPicked() {
-        return moment(this.picked).format('MM-DD-YYYY')
+        return moment(this.picked).format('MM-DD-YYYY');
       },
       USformattedTime() {
-        var newYork = moment.tz(this.selectedTime, 'America/New_York')
-        return newYork.format('hh:mm A')
+        var newYork = moment.tz(this.selectedTime, 'America/New_York');
+        return newYork.format('hh:mm A');
       },
       filteredBusinessTimes() {
         // 指定日の時間の呼び出し
         var openTimes = this.businessTimes.filter(timeSlots => timeSlots.date === this.formattedPicked).sort((a, b)=> {
           return a.id - b.id
-        }).filter((time)=> time.available === true)
+        }).filter((time)=> time.available === true);
 
         // 必要時間が最低スロット時間の場合全てのopenTimesを返す
-        var keepingTime = this.totalDuration / 30
+        var keepingTime = this.totalDuration / 30;
         if (keepingTime === 1) {
-          return openTimes
+          return openTimes;
         }
 
-        var i = 0
-        var j = 0
-        var available = []
+        var i = 0;
+        var j = 0;
+        var available = [];
+
         // 必要時間分の空きがあるスロットを取得
         while (i < openTimes.length - keepingTime + 1) {
-          j = i + 1
+          j = i + 1;
           if (j === openTimes.length && openTimes[j].id - openTimes[i].id === 1) {
-            available.push(openTimes[i])
+            available.push(openTimes[i]);
           }
           if (openTimes[j].id - openTimes[i].id === 1) {
-            available.push(openTimes[i])
+            available.push(openTimes[i]);
           }
-          i++
+          i++;
         }
-        return available
+        return available;
       },
       selectedMenuIds() {
-        return this.selectedMenus.map((menu)=> menu.id)
+        return this.selectedMenus.map((menu)=> menu.id);
       }
     },
     methods: {
       indexMenus() {
         axios.get("/menus.json")
         .then((res)=> {
-          this.menus = res.data
+          this.menus = res.data;
         })
       },
       indexBusinessTimes() {
         axios.get("/business_times")
         .then((res)=> {
-          this.businessTimes = res.data
+          this.businessTimes = res.data;
         })
       },
       getUser() {
         var id = localStorage['user_id'];
         axios.get(`/users/${id}`)
         .then((res)=> {
-          this.user = res.data
+          this.user = res.data;
         })
         .catch((error)=> {
-          error.response
+          error.response;
         })
       },
       nextStep() {
         if (this.currentStep < 4) {
-          this.currentStep++
+          this.currentStep++;
         }
         if (this.currentStep === 2) {
           document.querySelector('#progress-2').classList.remove('bg-secondary');
@@ -368,7 +369,7 @@ import * as moment from 'moment-timezone';
       },
       prevStep() {
         if (this.currentStep > 1) {
-          this.currentStep--
+          this.currentStep--;
         }
         if (this.currentStep === 1) {
           document.querySelector('#progress-2').classList.add('bg-secondary');
@@ -379,7 +380,7 @@ import * as moment from 'moment-timezone';
         }
       },
       createAppointment() {
-        let menuIds = this.selectedMenus.map((menu)=> menu.id)
+        let menuIds = this.selectedMenus.map((menu)=> menu.id);
         let bookingInfo = {
           "date": this.selectedDate,
           "start": this.selectedTime,
@@ -390,11 +391,11 @@ import * as moment from 'moment-timezone';
         }
         axios.post("/events", bookingInfo)
         .then((res)=> {
-          this.event = res.data
+          this.event = res.data;
           this.$router.push("/complete")
         })
         .catch((error)=> {
-          this.errors = error.response
+          this.errors = error.response;
         })
       },
     }
