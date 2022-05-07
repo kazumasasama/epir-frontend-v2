@@ -87,4 +87,10 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
+.container {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
 </style>

@@ -187,8 +187,9 @@
     <div class="btn-container">
       <button
         type="button"
-        class="btn btn-primary"
+        class="btn btn-secondary"
         @click="prevStep()"
+        v-if="currentStep !== 1"
       >
         Go Back
       </button>
