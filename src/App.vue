@@ -18,6 +18,9 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         </ul>
         <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item" v-if="loggedIn">
+            <a class="nav-link" href="/admin/calendar">Admin Cal</a>
+          </li>
           <li class="nav-item" v-if="loggedIn" @click="logout()">
             <a class="nav-link">Logout</a>
           </li>

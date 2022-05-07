@@ -4,12 +4,18 @@ import BookAppointment from '@/views/BookAppointment.vue'
 import CompleteEvent from '@/views/CompleteEvent.vue'
 import SignupView from '@/views/SignupView.vue'
 import LoginView from '@/views/LoginView.vue'
+import AdminCalendar from '@/views/admin/AdminCalendar.vue'
 
 const routes = [
   {
     path: '/',
     name: 'home',
     component: HomeView
+  },
+  {
+    path: '/admin/calendar',
+    name: 'adminCalendar',
+    component: AdminCalendar
   },
   {
     path: '/signup',
