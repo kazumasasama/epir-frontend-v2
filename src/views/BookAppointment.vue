@@ -103,8 +103,18 @@
 
     <div class="pick-date" v-if="currentStep === 2">
       <h2>Pick a date and time</h2>
-      <datepicker v-model="picked" />
       <div class="row">
+        <div class="col-sm-6">
+          <div class="datepicker-container">
+            <img
+              src="@/assets/icons/calendar.svg"
+              width="25"
+              height="25"
+              class="datepicker-item"
+            >
+            <datepicker v-model="picked" class="datepicker-item" />
+          </div>
+        </div>
         <div class="col-sm-6">
           <div
             class="list-group"
@@ -132,12 +142,11 @@
     <div class="user-info" v-if="currentStep === 3">
       <h2>User Info</h2>
       <div class="row">
-        <div class="col-sm-6">
-          <p>id: <input type="text" v-model="user.id"></p>
+        <div class="col-sm-12">
           <p>First_name: <input type="text" v-model="user.first_name"></p>
           <p>Last_name: <input type="text" v-model="user.last_name"></p>
-          <p>Email: <input type="text" v-model="user.email"></p>
-          <p>Phone: <input type="text" v-model="user.phone"></p>
+          <p>Email: <input type="email" v-model="user.email"></p>
+          <p>Phone: <input type="tel" v-model="user.phone"></p>
           <p>
             Gender: 
             <select v-model="user.gender">
@@ -157,7 +166,7 @@
           <p>Note: 
             <textarea v-model="user.note" col-sm-6s="30" rows="3"></textarea>
           </p>
-          <p>Birthday: <input type="text" v-model="user.birthday"></p>
+          <p>Birthday: <input type="date" v-model="user.birthday"></p>
         </div>
       </div>
     </div>
@@ -165,17 +174,17 @@
     <div class="confirmation" v-if="currentStep === 4">
       <h2>Confirm your appointment</h2>
       <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-4">
           <small>Date:</small>
           <p>{{ USformattedPicked }}</p>
           <small>Time:</small>
           <p>{{ USformattedTime }} - {{ moment(selectedTime).add(totalDuration,'minute').format('hh:mm A') }}</p>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
           <small>Menu:</small>
           <p v-for="menu in selectedMenus" :key="menu.id"> {{ menu.title }}</p>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
           <small>Name:</small>
           <p>{{ fullName }}</p>
           <small>Email:</small>
@@ -405,5 +414,17 @@ import * as moment from 'moment-timezone';
 <style>
   .col-sm-6 {
     text-align: left;
+  }
+  .col-sm-4 {
+    text-align: left;
+  }
+  .datepicker-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .datepicker-item {
+    box-sizing: border-box;
+    margin-left: 10px;
   }
 </style>
