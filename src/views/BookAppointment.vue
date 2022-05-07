@@ -138,14 +138,22 @@
           <p>
             Gender: 
             <select v-model="user.gender">
-              <option v-for="gender in genders" :key="gender" :value="gender">{{ gender }}</option>
+              <option
+                v-for="gender in genders"
+                :key="gender"
+                :value="gender"
+              >
+                {{ gender }}
+              </option>
             </select>
           </p>
           <p>Zip: <input type="text" v-model="user.zip"></p>
           <p>State: <input type="text" v-model="user.state"></p>
           <p>City: <input type="text" v-model="user.city"></p>
           <p>Address: <input type="text" v-model="user.address"></p>
-          <p>Note: <textarea v-model="user.note" cols="30" rows="3"></textarea></p>
+          <p>Note: 
+            <textarea v-model="user.note" cols="30" rows="3"></textarea>
+          </p>
           <p>Birthday: <input type="text" v-model="user.birthday"></p>
         </div>
       </div>

@@ -2,7 +2,7 @@
   <div class="container home-container">
      <div class="row">
        <div class="col">
-         <h5 class="card-title top-card-title">Book an Appointment</h5>
+        <h5 class="card-title top-card-title">Book an Appointment</h5>
         <div class="card-body home" id="card-home">
           <img src="@/assets/home-illustration.png" class="card-img-home">
           <p class="card-text" id="text-home">Book appointments faster, see your booking history, and change upcoming appointments.</p>

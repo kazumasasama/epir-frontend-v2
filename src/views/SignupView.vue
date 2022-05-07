@@ -19,12 +19,24 @@
           <p>
             Gender: 
             <select v-model="user.gender">
-              <option v-for="gender in genders" :key="gender" :value="gender">{{ gender }}</option>
+              <option
+                v-for="gender in genders"
+                :key="gender"
+                :value="gender"
+              >
+                {{ gender }}
+              </option>
             </select>
           </p>
           <p>Birthday: <input type="date" v-model="user.birthday"></p>
           <div class="btn-container">
-            <button type="button" class="btn btn-secondary" @click="cancelSignup()">Cancel</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="cancelSignup()"
+            >
+              Cancel
+            </button>
             <button @click="createUser()" type="button" class="btn btn-primary">Submit</button>
           </div>
         </form>
