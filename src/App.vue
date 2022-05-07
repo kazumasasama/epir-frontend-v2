@@ -48,7 +48,7 @@
     created() {
       if (localStorage.jwt) {
         this.loggedIn = true
-        this.$router.push('/appointments');
+        // this.$router.push('/appointments');
       }
     },
     computed: {

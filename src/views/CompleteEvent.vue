@@ -1,25 +1,27 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-sm-12">
-        <div class="card">
-          <small>YAY!</small>
-          <h4>Your appointment is booked!</h4>
-          <div>
-            <ul>
-              <p></p>
-              <h4>Salon epiR</h4>
-              <li>8-3-10 Kinuta</li>
-              <li>Setagaya, Tokyo 1570073</li>
-              <p></p>
-              <li>Phone: 080-3715-9012</li>
-            </ul>
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <small>YAY!</small>
+            <h4>Your appointment is booked!</h4>
+          </div>
+          <div class="col-sm-6">
             <p></p>
             <small>Please give us a call if you need to reschedule your appointment.</small>
             <p></p>
             <small>Otherwise... We'll see you soon!</small>
+            <ul class="store-info-complete">
+              <h4>Salon epiR</h4>
+              <li>8-3-10 Kinuta</li>
+              <li>Setagaya, Tokyo 1570073</li>
+              <li>Phone: 080-3715-9012</li>
+            </ul>
           </div>
-          
+          <div class="col-sm-6">
+            <div id="map" style='width: 100%; height: 400px;'></div>
+          </div>
         </div>
       </div>
     </div>
@@ -27,10 +29,28 @@
 </template>
 
 <script>
+import mapboxgl from 'mapbox-gl';
   export default {
     data() {
       return {
       }
+    },
+    mounted() {
+      this.initMap();
+    },
+    methods: {
+      initMap() {
+        mapboxgl.accessToken = process.env.VUE_APP_MAPBOX;
+        const map = new mapboxgl.Map({
+          container: 'map', // container ID
+          style: 'mapbox://styles/mapbox/light-v10', // style URL
+          center: [139.60774175922208, 35.63984499572222], // starting position [lng, lat]
+          zoom: 13 // starting zoom
+        });
+        new mapboxgl.Marker()
+        .setLngLat([139.60774175922208, 35.63984499572222])
+        .addTo(map);
+      },
     }
   }
 </script>
@@ -38,5 +58,14 @@
 <style>
   ul {
     list-style: none;
+  }
+  .map-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .store-info-complete {
+    margin-top: 50px;
+    padding-left: 0px;
   }
 </style>
