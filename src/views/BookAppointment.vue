@@ -163,10 +163,10 @@
           <p>State: <input type="text" v-model="user.state"></p>
           <p>City: <input type="text" v-model="user.city"></p>
           <p>Address: <input type="text" v-model="user.address"></p>
+          <small>Let us know if you have special request.</small>
           <p>Note: 
             <textarea v-model="user.note" col-sm-6s="30" rows="3"></textarea>
           </p>
-          <p>Birthday: <input type="date" v-model="user.birthday"></p>
         </div>
       </div>
     </div>
@@ -196,8 +196,6 @@
           <p>{{ user.city }}, {{ user.state }} {{ user.zip }}</p>
           <small>Gender:</small>
           <p>{{ user.gender }}</p>
-          <small>Birthday:</small>
-          <p>{{ user.birthday }}</p>
           <small>Note:</small>
           <p>{{ user.note }}</p>
         </div>
@@ -220,6 +218,14 @@
         @click="nextStep()"
       >
         Next Step
+      </button>
+      <button
+        v-if="currentStep === 4"
+        type="button"
+        class="btn btn-danger"
+        @click="cancelAppointment()"
+      >
+        Cancel
       </button>
       <button
         v-if="currentStep === 4"
@@ -349,14 +355,14 @@ import * as moment from 'moment-timezone';
         })
       },
       indexBusinessTimes() {
-        axios.get("/business_times")
+        axios.get("/business_times.json")
         .then((res)=> {
           this.businessTimes = res.data;
         })
       },
       getUser() {
         var id = localStorage['user_id'];
-        axios.get(`/users/${id}`)
+        axios.get(`/users/${id}.json`)
         .then((res)=> {
           this.user = res.data;
         })
@@ -407,9 +413,35 @@ import * as moment from 'moment-timezone';
           this.errors = error.response;
         })
       },
+      cancelAppointment() {
+        this.currentStep = 1;
+        this.selectedMenus = [];
+        this.selectedTime = null;
+        this.$router.puch('/');
+      }
     }
   }
 </script>
+
+    errors: null,
+        event: {},
+        currentStep: 1,
+        menus: [],
+        menu: {},
+        businessTimes: [],
+        selectedMenus: [],
+        selectedDate: moment().format('YYYY-MM-DD'),
+        selectedTime: null,
+        user: {},
+        genders: [
+          "Male",
+          "Female",
+          "N/A",
+          "Rather not to say"
+        ],
+
+
+
 
 <style>
   .col-sm-6 {

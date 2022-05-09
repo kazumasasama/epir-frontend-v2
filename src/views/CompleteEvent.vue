@@ -3,11 +3,9 @@
     <div class="row">
       <div class="container">
         <div class="row">
-          <div class="col-12">
+          <div class="col-sm-6">
             <small>YAY!</small>
             <h4>Your appointment is booked!</h4>
-          </div>
-          <div class="col-sm-6">
             <p></p>
             <small>Please give us a call if you need to reschedule your appointment.</small>
             <p></p>
@@ -15,7 +13,7 @@
             <ul class="store-info-complete">
               <h4>Salon epiR</h4>
               <li>8-3-10 Kinuta</li>
-              <li>Setagaya, Tokyo 1570073</li>
+              <li>Setagaya, Tokyo 157-0073</li>
               <li>Phone: 080-3715-9012</li>
             </ul>
           </div>
@@ -43,9 +41,9 @@ import mapboxgl from 'mapbox-gl';
         mapboxgl.accessToken = process.env.VUE_APP_MAPBOX;
         const map = new mapboxgl.Map({
           container: 'map', // container ID
-          style: 'mapbox://styles/mapbox/light-v10', // style URL
-          center: [139.60774175922208, 35.63984499572222], // starting position [lng, lat]
-          zoom: 13 // starting zoom
+          style: 'mapbox://styles/mapbox/streets-v11', // style URL
+          center: [139.60830166136682, 35.64141293315793], // starting position [lng, lat]
+          zoom: 15 // starting zoom
         });
         new mapboxgl.Marker()
         .setLngLat([139.60774175922208, 35.63984499572222])
