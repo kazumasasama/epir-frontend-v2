@@ -269,7 +269,7 @@ import * as moment from 'moment-timezone';
         ],
       }
     },
-    created() {
+    mounted() {
       this.getUser();
       this.indexMenus();
       this.indexBusinessTimes();
@@ -319,24 +319,17 @@ import * as moment from 'moment-timezone';
         var openTimes = this.businessTimes.filter(timeSlots => timeSlots.date === this.formattedPicked).sort((a, b)=> {
           return a.id - b.id
         }).filter((time)=> time.available === true);
-
         // 必要時間が最低スロット時間の場合全てのopenTimesを返す
         var keepingTime = this.totalDuration / 30;
         if (keepingTime === 1) {
           return openTimes;
         }
-
-        var i = 0;
-        var j = 0;
-        var available = [];
-
         // 必要時間分の空きがあるスロットを取得
-        while (i < openTimes.length - keepingTime + 1) {
-          j = i + 1;
-          if (j === openTimes.length && openTimes[j].id - openTimes[i].id === 1) {
-            available.push(openTimes[i]);
-          }
-          if (openTimes[j].id - openTimes[i].id === 1) {
+        var i = 0;
+        var available = [];
+        var x = keepingTime;
+        while (i < openTimes.length - x) {
+          if (openTimes[i].id === openTimes[i + x - 1].id - (x - 1)) {
             available.push(openTimes[i]);
           }
           i++;
@@ -361,7 +354,7 @@ import * as moment from 'moment-timezone';
         })
       },
       getUser() {
-        var id = localStorage['user_id'];
+        var id = localStorage.user_id;
         axios.get(`/users/${id}.json`)
         .then((res)=> {
           this.user = res.data;
