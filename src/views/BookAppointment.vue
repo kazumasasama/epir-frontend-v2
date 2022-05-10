@@ -50,8 +50,9 @@
       </div>
     </nav>
     <div class="pick-menus" v-if="currentStep === 1">
-      <p>{{ errors }}</p>
-      <h2>Select Menus</h2>
+      <div class="text-start">
+        <h2>Select Menus</h2>
+      </div>
       <div class="row">
         <div class="col-sm-6">
           <div
@@ -102,7 +103,9 @@
     </div>
 
     <div class="pick-date" v-if="currentStep === 2">
-      <h2>Pick a date and time</h2>
+      <div class="text-start">
+        <h2>Pick a date and time</h2>
+      </div>
       <div class="row">
         <div class="col-sm-6">
           <div class="datepicker-container">
@@ -140,9 +143,11 @@
     </div>
 
     <div class="user-info" v-if="currentStep === 3">
-      <h2>User Info</h2>
+      <div class="text-start">
+        <h2>User Info</h2>
+      </div>
       <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-4">
           <p>First_name: <input type="text" v-model="user.first_name"></p>
           <p>Last_name: <input type="text" v-model="user.last_name"></p>
           <p>Email: <input type="email" v-model="user.email"></p>
@@ -159,20 +164,24 @@
               </option>
             </select>
           </p>
+        </div>
+        <div class="col-sm-4">
           <p>Zip: <input type="text" v-model="user.zip"></p>
           <p>State: <input type="text" v-model="user.state"></p>
           <p>City: <input type="text" v-model="user.city"></p>
           <p>Address: <input type="text" v-model="user.address"></p>
-          <small>Let us know if you have special request.</small>
-          <p>Note: 
-            <textarea v-model="user.note" col-sm-6s="30" rows="3"></textarea>
-          </p>
         </div>
+        <div class="col-sm-4">
+          <p>Let us know if you have special request.</p>
+          <textarea v-model="user.note" col-sm-6s="30" rows="3" class="user-note"></textarea>
+        </div>        
       </div>
     </div>
 
     <div class="confirmation" v-if="currentStep === 4">
-      <h2>Confirm your appointment</h2>
+      <div class="text-start">
+        <h2>Confirm your appointment</h2>
+      </div>
       <div class="row">
         <div class="col-sm-4">
           <small>Date:</small>
@@ -235,6 +244,7 @@
       >
         Book Appointment
       </button>
+      <p>{{ errors }}</p>
     </div>
   </div>
 </template>
@@ -410,33 +420,21 @@ import * as moment from 'moment-timezone';
         this.currentStep = 1;
         this.selectedMenus = [];
         this.selectedTime = null;
-        this.$router.puch('/');
+        document.querySelector('#progress-2').classList.add('bg-secondary')
+        document.querySelector('#progress-3').classList.add('bg-secondary')
+        document.querySelector('#progress-4').classList.add('bg-secondary')
       },
     }
   }
 </script>
 
-    errors: null,
-        event: {},
-        currentStep: 1,
-        menus: [],
-        menu: {},
-        businessTimes: [],
-        selectedMenus: [],
-        selectedDate: moment().format('YYYY-MM-DD'),
-        selectedTime: null,
-        user: {},
-        genders: [
-          "Male",
-          "Female",
-          "N/A",
-          "Rather not to say"
-        ],
-
-
-
-
 <style>
+    input {
+      width: 100%;
+    }
+    textarea {
+      width: 100%;
+    }
   .col-sm-6 {
     text-align: left;
   }
@@ -451,5 +449,8 @@ import * as moment from 'moment-timezone';
   .datepicker-item {
     box-sizing: border-box;
     margin-left: 10px;
+  }
+  .datepicker-container {
+    margin-bottom: 10px;
   }
 </style>
