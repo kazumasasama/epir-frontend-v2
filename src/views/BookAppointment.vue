@@ -328,7 +328,7 @@ import * as moment from 'moment-timezone';
         var i = 0;
         var available = [];
         var x = keepingTime;
-        while (i < openTimes.length - x) {
+        while (i < openTimes.length - x + 1) {
           if (openTimes[i].id === openTimes[i + x - 1].id - (x - 1)) {
             available.push(openTimes[i]);
           }
