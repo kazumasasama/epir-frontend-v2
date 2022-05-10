@@ -21,46 +21,6 @@
           />
         </div>
       </div>
-      <!-- <div class="col-sm-4">
-        <h4>New Event</h4>
-        <form method="dialog">
-          <vue-cal
-            class="vuecal--date-picker"
-            xsmall
-            hide-view-selector
-            :time="false"
-            :transitions="false"
-            active-view="month"
-            :disable-views="['week']"
-            style="width: 210px;height: 230px"
-            :on-event-click="onEventDateClick"
-            @cell-focus="selectedDate = $event"
-          >
-          </vue-cal>
-          <h5>User</h5>
-          <p>
-            Name 
-            <input
-              type="search"
-              name="userSearch"
-              placeholder="search by name"
-              onkeyup="filterUser()"
-            >
-          </p>
-          <p>
-            <input
-              class="form-check-input me-1"
-              type="checkbox"
-            >
-            {{ }}
-          </p>
-          <p>{{ selectedDateString }}</p>
-          <div class="btn-container">
-            <button v-on:click="updatePhoto(currentPhoto)">Create</button>
-            <button>Close</button>
-          </div>
-        </form>
-      </div> -->
     </div>
 
     <dialog id="event-details">
@@ -81,41 +41,11 @@
         </p>
         <div class="btn-container">
           <button>Update</button>
-          <button>Delete</button>
+          <button @click="destroyEvent()">Delete</button>
           <button>Close</button>
         </div>
       </form>
     </dialog>
-
-    <!-- <dialog id="new-event-dialog">
-      <form method="dialog">
-        <h4>New Event</h4>
-        <p>Name: {{ newEvent.first_name }}</p>
-        <vue-cal
-          class="vuecal--date-picker"
-          xsmall
-          hide-view-selector
-          :time="false"
-          :transitions="false"
-          active-view="month"
-          :disable-views="['week']"
-          style="width: 210px;height: 230px"
-          :on-event-click="onEventDateClick"
-          @cell-focus="selectedDate = $event"
-        >
-        </vue-cal>
-        <p>{{ selectedDateString }}</p>
-        <p v-for="menu in selectedEvent.content" :key="menu">
-          Menu:
-          <input type="text" :value="menu"/>
-        </p>
-        <div class="btn-container">
-          <button v-on:click="updatePhoto(currentPhoto)">Create</button>
-          <button>Close</button>
-        </div>
-      </form>
-    </dialog> -->
-
   </div>
 </template>
 
@@ -183,9 +113,17 @@ import * as moment from 'moment-timezone';
       openNewEventDialog() {
         document.querySelector("#new-event-dialog").showModal();
       },
-      filterUser() {
-        console.log("aaa")
-      },
+      destroyEvent() {
+        let id = this.selectedEvent.id
+        axios
+        .delete(`/events/${id}`)
+        .then(()=> {
+          this.selectedEvent = {};
+          let event = this.events.find(event => event.id === id)
+          let i = this.events.indexOf(event)
+          this.events.splice(i, 1);
+        })
+      }
     },
   }
 </script>

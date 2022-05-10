@@ -223,7 +223,7 @@
         v-if="currentStep === 4"
         type="button"
         class="btn btn-danger"
-        @click="cancelAppointment()"
+        @click="clearAppointment()"
       >
         Cancel
       </button>
@@ -406,12 +406,12 @@ import * as moment from 'moment-timezone';
           this.errors = error.response;
         })
       },
-      cancelAppointment() {
+      clearAppointment() {
         this.currentStep = 1;
         this.selectedMenus = [];
         this.selectedTime = null;
         this.$router.puch('/');
-      }
+      },
     }
   }
 </script>
