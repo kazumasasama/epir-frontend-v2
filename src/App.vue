@@ -18,15 +18,18 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         </ul>
         <ul class="navbar-nav mb-2 mb-lg-0">
-          <li class="nav-item" v-if="loggedIn">
-            <a class="nav-link" href="/admin/calendar">Admin Cal</a>
-          </li>
-          <li class="nav-item" v-if="loggedIn" @click="logout()">
-            <a class="nav-link">Logout</a>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin">Admin</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/mypage" v-if="loggedIn">My Page</a>
+            <a class="nav-link" href="/admin/calendar">Admin Cal</a>
           </li>
+          <li class="nav-item" @click="logout()">
+            <a class="nav-link">Logout</a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="/mypage">My Page</a>
+          </li> -->
         </ul>
       </div>
     </div>
@@ -47,20 +50,6 @@
           passwordConfirm: "",
         },
       }
-    },
-    created() {
-      if (localStorage.jwt) {
-        this.loggedIn = true
-        // this.$router.push('/appointments');
-      }
-    },
-    computed: {
-      loggedIn() {
-        if (localStorage.jwt) {
-          return true
-        }
-        return false
-      },
     },
     methods: {
       logout() {

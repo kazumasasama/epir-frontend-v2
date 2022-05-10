@@ -344,7 +344,7 @@ import * as moment from 'moment-timezone';
       indexMenus() {
         axios.get("/menus.json")
         .then((res)=> {
-          this.menus = res.data;
+          this.menus = res.data.active;
         })
       },
       indexBusinessTimes() {
