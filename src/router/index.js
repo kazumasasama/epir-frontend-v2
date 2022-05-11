@@ -4,9 +4,11 @@ import BookAppointment from '@/views/BookAppointment.vue'
 import CompleteEvent from '@/views/CompleteEvent.vue'
 import SignupView from '@/views/SignupView.vue'
 import LoginView from '@/views/LoginView.vue'
+
 import AdminCalendar from '@/views/admin/AdminCalendar.vue'
 import AdminView from '@/views/admin/AdminView.vue'
 import AdminMenus from '@/views/admin/AdminMenus.vue'
+import UsersIndex from '@/views/admin/UsersIndex.vue'
 
 const routes = [
   {
@@ -28,6 +30,11 @@ const routes = [
     path: '/admin/menus',
     name: 'adminMenus',
     component: AdminMenus
+  },
+  {
+    path: '/admin/users',
+    name: 'adminUsers',
+    component: UsersIndex
   },
   {
     path: '/signup',

@@ -66,7 +66,7 @@
               :key="menu.id"
             >
               <input
-                class="form-check-input me-1"
+                class="form-check-input me-1 booking-input"
                 type="checkbox"
                 :value="menu"
                 v-model="selectedMenus"  
@@ -130,7 +130,7 @@
               :key="timeSlot.id"
             >
               <input
-                class="form-check-input me-1"
+                class="form-check-input me-1 booking-input"
                 type="radio"
                 :value="timeSlot.time"
                 v-model="selectedTime"
@@ -148,7 +148,7 @@
       </div>
       <div class="row">
         <div class="col-sm-4">
-          <p>First_name: <input type="text" v-model="user.first_name"></p>
+          <p>First_name: <input type="text" v-model="user.first_name" class="booking-input"></p>
           <p>Last_name: <input type="text" v-model="user.last_name"></p>
           <p>Email: <input type="email" v-model="user.email"></p>
           <p>Phone: <input type="tel" v-model="user.phone"></p>
@@ -429,12 +429,12 @@ import * as moment from 'moment-timezone';
 </script>
 
 <style>
-    input {
-      width: 100%;
-    }
-    textarea {
-      width: 100%;
-    }
+  booking-input {
+    width: 100%;
+  }
+  booking-textarea {
+    width: 100%;
+  }
   .col-sm-6 {
     text-align: left;
   }
