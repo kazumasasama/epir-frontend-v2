@@ -429,10 +429,10 @@ import * as moment from 'moment-timezone';
 </script>
 
 <style>
-  booking-input {
+  input {
     width: 100%;
   }
-  booking-textarea {
+  textarea {
     width: 100%;
   }
   .col-sm-6 {
