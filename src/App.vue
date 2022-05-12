@@ -88,6 +88,17 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
+
+input {
+  width: 100%;
+}
+textarea {
+  width: 100%;
+}
+ul {
+    list-style: none;
+  }
+
 .container {
   padding-top: 12px;
   padding-bottom: 12px;

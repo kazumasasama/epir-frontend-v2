@@ -184,16 +184,6 @@
       </div>
       <div class="row">
         <div class="col-sm-4">
-          <small>Date:</small>
-          <p>{{ USformattedPicked }}</p>
-          <small>Time:</small>
-          <p>{{ USformattedTime }} - {{ moment(selectedTime).add(totalDuration,'minute').format('hh:mm A') }}</p>
-        </div>
-        <div class="col-sm-4">
-          <small>Menu:</small>
-          <p v-for="menu in selectedMenus" :key="menu.id"> {{ menu.title }}</p>
-        </div>
-        <div class="col-sm-4">
           <small>Name:</small>
           <p>{{ fullName }}</p>
           <small>Email:</small>
@@ -207,6 +197,27 @@
           <p>{{ user.gender }}</p>
           <small>Note:</small>
           <p>{{ user.note }}</p>
+        </div>
+        <div class="col-sm-4">
+          <small>Date:</small>
+          <p>{{ USformattedPicked }}</p>
+          <small>Time:</small>
+          <p>{{ USformattedTime }} - {{ moment(selectedTime).add(totalDuration,'minute').format('hh:mm A') }}</p>
+          <small>Menu:</small>
+          <p v-for="menu in selectedMenus" :key="menu.id"> {{ menu.title }}</p>
+        </div>
+        <div class="col-sm-4">
+          <section>
+            <div class="product">
+              <div class="description">
+                <h4>Payment</h4>
+                <h6>$20.00</h6>
+              </div>
+            </div>
+            <form action="http://localhost:4242/create-checkout-session" method="POST">
+              <button type="submit" id="checkout-button">Checkout</button>
+            </form>
+          </section>
         </div>
       </div>
     </div>
@@ -263,7 +274,7 @@ import * as moment from 'moment-timezone';
       return {
         errors: null,
         event: {},
-        currentStep: 1,
+        currentStep: 4,
         menus: [],
         menu: {},
         businessTimes: [],
@@ -428,13 +439,7 @@ import * as moment from 'moment-timezone';
   }
 </script>
 
-<style>
-  input {
-    width: 100%;
-  }
-  textarea {
-    width: 100%;
-  }
+<style scoped>
   .col-sm-6 {
     text-align: left;
   }
@@ -452,5 +457,8 @@ import * as moment from 'moment-timezone';
   }
   .datepicker-container {
     margin-bottom: 10px;
+  }
+  small {
+    font-weight: bold;
   }
 </style>

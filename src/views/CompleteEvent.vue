@@ -7,9 +7,8 @@
             <small>YAY!</small>
             <h4>Your appointment is booked!</h4>
             <p></p>
-            <small>Please give us a call if you need to reschedule your appointment.</small>
+            <small>We appreciate your business! If you have any questions or need to reschedule, please give us a call.</small>
             <p></p>
-            <small>Otherwise... We'll see you soon!</small>
             <ul class="store-info-complete">
               <h4>Salon epiR</h4>
               <li>8-3-10 Kinuta</li>
@@ -53,9 +52,12 @@ import mapboxgl from 'mapbox-gl';
   }
 </script>
 
-<style>
-  ul {
-    list-style: none;
+<style scoped>
+  .col-sm-6 {
+    text-align: left;
+  }
+  .col-sm-4 {
+    text-align: left;
   }
   .map-container {
     display: flex;
