@@ -1,11 +1,17 @@
 <template>
+  <nav class="navbar navbar-light" style="background-color: #f5f6fe;">
+    <div class="col-12 users-btn-container">
+      <button class="btn btn-outline-success btn-sm">New user</button>
+      <div class="control-navbar-item">
+        <small>Sort by</small>
+        <button class="btn btn-outline-primary btn-sm" @click="sortById()">User ID</button>
+        <button class="btn btn-outline-primary btn-sm" @click="sortByFirstName()">First name</button>
+        <button class="btn btn-outline-primary btn-sm" @click="sortByLastName()">Last name</button>
+      </div>
+    </div>
+  </nav>
   <div class="container">
     <div class="row">
-      <div class="col-12 users-btn-container">
-        <button class="btn btn-outline-success btn-sm">New user</button>
-          <small>Sort by</small>
-          <button class="btn btn-outline-primary btn-sm">First name</button>
-      </div>
       <div class="col-sm-6">
         <div class="list-group" id="list-tab" v-for="user in users" :key="user.id">
           <a
@@ -23,6 +29,7 @@
           </a>
         </div>
       </div>
+
       <div class="col-sm-6">
         <div class="tab-content card" id="nav-tabContent">
           <div
@@ -76,32 +83,81 @@
     data() {
       return {
         users: [],
-        sortedUsers: [],
         user: {},
+        sort: "id",
       }
     },
     created() {
       this.indexUsers();
     },
+    computed: {
+    },
     methods: {
       indexUsers() {
         axios.get('/users.json')
         .then((res)=> {
-          this.sortedUsers = res.data.sort((a, b)=> {
-            let nameA = a.first_name.toUpperCase();
-            let nameB = b.first_name.toUpperCase();
-            if (nameA < nameB) {
+          let users = res.data.sort((a, b)=> {
+            let idA = a.id;
+            let idB = b.id;
+            if (idA < idB) {
               return -1;
-            } else if (nameA > nameB) {
+            }
+            if (idA > idB) {
               return 1;
             }
-            return 0;
           });
-          this.users = res.data
+          this.users = users;
         })
       },
       showUser(user) {
         this.user = user;
+      },
+      sortById() {
+        let users = this.users.sort((a, b)=> {
+            let idA = a.id;
+            let idB = b.id;
+            if (idA < idB) {
+              return -1;
+            }
+            if (idA > idB) {
+              return 1;
+            }
+          });
+          this.users = users;
+      },
+      sortByFirstName() {
+        let sorted = [];
+        let unsorted = this.users
+        sorted = unsorted.sort((a, b)=> {
+          let nameA = a.first_name.toUpperCase();
+          let nameB = b.first_name.toUpperCase();
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+          // names must be equal
+          return 0;
+        });
+        this.sortedByFirstName = sorted;
+      },
+      sortByLastName() {
+        let sorted = [];
+        let unsorted = this.users
+        sorted = unsorted.sort((a, b)=> {
+          let nameA = a.last_name.toUpperCase();
+          let nameB = b.last_name.toUpperCase();
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+          // names must be equal
+          return 0;
+        });
+        this.sortedByFirstName = sorted;
       },
     },
   }
@@ -116,5 +172,9 @@
   }
   .users-btn-container {
     text-align: left;
+    overflow: hidden;
+  }
+  .control-navbar-item {
+    float: right;
   }
 </style>

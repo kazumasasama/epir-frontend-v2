@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3e5fd;">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">
         <img src="@/assets/epiRLogo70x40.png" alt="epiR logo">
