@@ -27,7 +27,6 @@
   <div class="container">
     <form action="" v-if="!showHistory">
       <div class="row">
-
         <div class="col-12">
           <h4>User Detail</h4>
         </div>
@@ -39,14 +38,14 @@
           <input type="text" v-model="user.last_name" class="form-control">
           <small>Gender</small>
           <select v-model="user.gender" class="form-select">
-              <option
-                v-for="gender in genders"
-                :key="gender"
-                :value="gender"
-              >
-                {{ gender }}
-              </option>
-            </select>
+            <option
+              v-for="gender in genders"
+              :key="gender"
+              :value="gender"
+            >
+              {{ gender }}
+            </option>
+          </select>
           <small>Email</small>
           <input type="text" v-model="user.email" class="form-control">
           <small>Phone</small>
@@ -55,19 +54,17 @@
           <input class="form-control" type="text" v-model="user.birthday">
           <small>Status</small>
           <input class="form-control" type="text" v-model="user.status">
-          <small>Admin</small>
-          <input class="form-control" type="text" v-model="user.admin">
         </div>
 
         <div class="col-sm-6">
-          <small>Zip</small>
-          <input class="form-control" type="text" v-model="user.zip">
+          <small>Address</small>
+          <input class="form-control" type="text" v-model="user.address">
           <small>State</small>
           <input class="form-control" type="text" v-model="user.state">
           <small>City</small>
           <input class="form-control" type="text" v-model="user.city">
-          <small>Address</small>
-          <input class="form-control" type="text" v-model="user.address">
+          <small>Zip</small>
+          <input class="form-control" type="text" v-model="user.zip">
           <small>Note</small>
           <textarea rows="3" class="form-control" v-model="user.note"></textarea>
         </div>
@@ -75,8 +72,26 @@
       </div>
     </form>
 
-    <div v-if="showHistory">
-      <p>in history</p>
+    <div class="row" v-if="showHistory">
+      <div class="col-12">
+        <h4>History</h4>
+        <p>Total visit</p>
+      </div>
+      <hr>
+      <div
+        class="col-sm-2 history-event-container card"
+        v-for="event in events"
+        :key="event.id"
+      >
+        <div class="card-body">
+          <h6>{{ event.date }}</h6>
+          <small>{{ `${event.start} - ${event.end}` }}</small>
+          <p></p>
+          <ul>
+            <li v-for="menu in event.menus" :key="menu.id">{{ menu.title }}</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>  
 </template>
@@ -86,18 +101,36 @@ import axios from 'axios'
   export default {
     data() {
       return {
-        user: {},
+        user: {
+          events: [],
+        },
         genders: [
           "Male",
           "Female",
           "N/A",
           "Rather not to say"
         ],
-        showHistory: false,
+        showHistory: true,
       }
     },
     created() {
       this.showUser();
+    },
+    computed: {
+      events() {
+        let events = this.user.events;
+        let sortedEvents = events.sort((a, b)=> {
+          let idA = a.date_and_start;
+          let idB = b.date_and_start;
+          if (idA < idB) {
+            return -1;
+          }
+          if (idA > idB) {
+            return 1;
+          }
+        });
+        return sortedEvents;
+      },
     },
     methods: {
       showUser() {
@@ -124,5 +157,8 @@ import axios from 'axios'
   }
   .control-navbar-item {
     float: right;
+  }
+  .history-event-container {
+    text-align: left;
   }
 </style>
