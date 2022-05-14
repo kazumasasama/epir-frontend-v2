@@ -9,6 +9,7 @@ import AdminCalendar from '@/views/admin/AdminCalendar.vue'
 import AdminView from '@/views/admin/AdminView.vue'
 import AdminMenus from '@/views/admin/AdminMenus.vue'
 import UsersIndex from '@/views/admin/UsersIndex.vue'
+import UserShow from '@/views/admin/UserShow.vue'
 
 const routes = [
   {
@@ -35,6 +36,11 @@ const routes = [
     path: '/admin/users',
     name: 'adminUsers',
     component: UsersIndex
+  },
+  {
+    path: '/admin/users/:id',
+    name: 'adminShowUsers',
+    component: UserShow
   },
   {
     path: '/signup',

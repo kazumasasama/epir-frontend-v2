@@ -1,4 +1,11 @@
 <template>
+
+  <!-- <nav class="navbar navbar-light" style="background-color: #f5f6fe;">
+    <div class="col-12 users-btn-container">
+      <button class="btn btn-outline-success btn-sm">New appointment</button>
+    </div>
+  </nav> -->
+
   <div class="container">
     <div class="row">
       <div class="col-12">
@@ -23,29 +30,29 @@
       </div>
     </div>
 
-    <dialog id="event-details">
-      <form method="dialog">
-        <h4>Event Detail</h4>
-        <p>Name: {{ selectedEvent.title }}</p>
-        <p>
-          Start:
-          <input type="text" v-model="selectedEvent.start" />
-        </p>
-        <p>
-          End:
-          <input type="text" v-model="selectedEvent.end" />
-        </p>
-        <p v-for="menu in selectedEvent.content_object" :key="menu">
-          Menu:
-          <input type="text" :placeholder="menu.title" v-model="newMenus" />
-        </p>
-        <div class="btn-container">
-          <button>Update</button>
-          <button @click="destroyEvent()">Delete</button>
-          <button>Close</button>
+    <div class="modal fade" id="event-details">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Event Detail</h5>
+          </div>
+          <div class="modal-body">
+            <form>
+              <p data-bs-toggle="modal">
+                Name: 
+                <a id="linkToUserDetail" data-bs-target="#event-details" data-bs-dismiss="modal" href="#" @click="redirectToUser(selectedEvent.user.id)">{{ selectedEvent.user.full_name }}</a>
+              </p>
+            </form>
+          </div>
+          <div class="modal-footer btn-container">
+            <button>Update</button>
+            <button @click="destroyEvent()">Delete</button>
+            <button>Close</button>
+          </div>
         </div>
-      </form>
-    </dialog>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -54,12 +61,17 @@ import VueCal from 'vue-cal'
 import 'vue-cal/dist/vuecal.css'
 import axios from 'axios'
 import * as moment from 'moment-timezone';
+import * as bootstrap from 'bootstrap'
   export default {
-    components: { VueCal },
+    components: { 
+      VueCal,
+      },
     data() {
       return {
         events: [],
-        selectedEvent: {},
+        selectedEvent: {
+          user: {},
+        },
         selectedDate: moment().format('YYYY-MM-DD'),
         disableDays: [],
         newEvent: {},
@@ -85,7 +97,7 @@ import * as moment from 'moment-timezone';
       indexEvents() {
         axios.get('/events.json')
         .then((res)=> {
-          this.events = res.data.map((e)=> e.event);
+          this.events = res.data;
         })
       },
       indexUsers() {
@@ -95,7 +107,7 @@ import * as moment from 'moment-timezone';
         })
       },
       indexMenus() {
-        axios.get('/menus')
+        axios.get('/menus.json')
         .then((res)=> {
           this.menus = res.data;
         })
@@ -104,14 +116,18 @@ import * as moment from 'moment-timezone';
         this.selectedEvent = event;
         // Prevent navigating to narrower view (default vue-cal behavior).
         e.stopPropagation();
-        document.querySelector("#event-details").showModal();
+        var myModal = new bootstrap.Modal(document.getElementById('event-details'));
+        myModal.show();
       },
-      onEventDateClick (event, e) {
-        this.selectedDate = event;
-        e.stopPropagation();
-      },
+      // onEventDateClick (event, e) {
+      //   this.selectedDate = event;
+      //   e.stopPropagation();
+      // },
       openNewEventDialog() {
         document.querySelector("#new-event-dialog").showModal();
+      },
+      redirectToUser(id) {
+        this.$router.push(`/admin/users/${id}`);
       },
       destroyEvent() {
         let id = this.selectedEvent.id

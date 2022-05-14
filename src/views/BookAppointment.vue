@@ -203,15 +203,18 @@
           <p>{{ USformattedPicked }}</p>
           <small>Time:</small>
           <p>{{ USformattedTime }} - {{ moment(selectedTime).add(totalDuration,'minute').format('hh:mm A') }}</p>
-          <small>Menu:</small>
-          <p v-for="menu in selectedMenus" :key="menu.id"> {{ menu.title }}</p>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-4 card">
           <section>
             <div class="product">
               <div class="description">
                 <h4>Payment</h4>
-                <h6>$20.00</h6>
+                <small>Menu:</small>
+                <p v-for="menu in selectedMenus" :key="menu.id"> {{ menu.title }} ... ${{ menu.price }}</p>
+                <hr>
+                <h6>Sub total${{ subTotal }}</h6>
+                <h6>Tax ${{ serviceTax }}</h6>
+                <h5>Total ${{ subTotal + serviceTax }}</h5>
               </div>
             </div>
             <form action="http://localhost:4242/create-checkout-session" method="POST">
@@ -222,7 +225,7 @@
       </div>
     </div>
 
-    <div class="btn-container">
+    <div class="btn-container booking-">
       <button
         type="button"
         class="btn btn-secondary"
@@ -255,6 +258,14 @@
       >
         Book Appointment
       </button>
+      <button
+        v-if="currentStep === 4"
+        type="button"
+        class="btn btn-primary"
+        @click="checkout()"
+      >
+        checkout
+      </button>
       <p>{{ errors }}</p>
     </div>
   </div>
@@ -274,7 +285,7 @@ import * as moment from 'moment-timezone';
       return {
         errors: null,
         event: {},
-        currentStep: 4,
+        currentStep: 1,
         menus: [],
         menu: {},
         businessTimes: [],
@@ -288,6 +299,8 @@ import * as moment from 'moment-timezone';
           "N/A",
           "Rather not to say"
         ],
+        // NYC service tax rate
+        taxRate: 0.045,
       }
     },
     mounted() {
@@ -359,7 +372,14 @@ import * as moment from 'moment-timezone';
       },
       selectedMenuIds() {
         return this.selectedMenus.map((menu)=> menu.id);
-      }
+      },
+      subTotal() {
+        return this.selectedMenus.map((menu)=> parseFloat(menu.price)).reduce((sum, price)=> { return sum + price}, 0);
+      },
+      serviceTax() {
+        let tax = this.subTotal * this.taxRate;
+        return Math.floor(tax * Math.pow(10, 2)) / Math.pow(10, 2)
+      },
     },
     methods: {
       indexMenus() {
@@ -434,6 +454,17 @@ import * as moment from 'moment-timezone';
         document.querySelector('#progress-2').classList.add('bg-secondary')
         document.querySelector('#progress-3').classList.add('bg-secondary')
         document.querySelector('#progress-4').classList.add('bg-secondary')
+      },
+      checkout() {
+        let total = this.subTotal + this.serviceTax;
+        let checkoutDetail = {
+          line_items: [{
+            price: total,
+            quantity: 1,
+          }]
+        };
+        axios
+        .post('/create-checkout-session', checkoutDetail)
       },
     }
   }
