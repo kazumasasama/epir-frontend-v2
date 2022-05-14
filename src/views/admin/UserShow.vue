@@ -75,7 +75,9 @@
     <div class="row" v-if="showHistory">
       <div class="col-12">
         <h4>History</h4>
-        <p>Total visit</p>
+        <small>Total visit: {{ events.length }} | </small>
+        <small>Total spent: ${{ totalSpent }} | </small>
+        <small>Last visit: {{ lastVisit }}</small>
       </div>
       <hr>
       <div
@@ -84,11 +86,10 @@
         :key="event.id"
       >
         <div class="card-body">
-          <h6>{{ event.date }}</h6>
-          <small>{{ `${event.start} - ${event.end}` }}</small>
-          <p></p>
-          <ul>
-            <li v-for="menu in event.menus" :key="menu.id">{{ menu.title }}</li>
+          <h6 class="card-title">{{ event.date }}</h6>
+          <!-- <small>{{ `${event.start} - ${event.end}` }}</small> -->
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" v-for="menu in event.menus" :key="menu.id">{{ menu.title }}</li>
           </ul>
         </div>
       </div>
@@ -128,8 +129,27 @@ import axios from 'axios'
           if (idA > idB) {
             return 1;
           }
+          return 0
         });
         return sortedEvents;
+      },
+      totalSpent() {
+        return this.events.map((event)=> event.total_spent).reduce((sum, price)=> sum + price, 0)
+      },
+      lastVisit() {
+        let events = this.user.events;
+        let sortedEvents = events.sort((a, b)=> {
+          let idA = a.date_and_start;
+          let idB = b.date_and_start;
+          if (idA < idB) {
+            return -1;
+          }
+          if (idA > idB) {
+            return 1;
+          }
+          return 0
+        });
+        return sortedEvents[sortedEvents.length -1].date;
       },
     },
     methods: {
