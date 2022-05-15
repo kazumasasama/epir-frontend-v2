@@ -18,17 +18,16 @@
       </button>
       <div class="control-navbar-item">
         <button class="btn btn-sm btn-outline-secondary" @click="$router.back()">Go back</button>
-        <button class="btn btn-sm btn-outline-primary">Update</button>
-        <button class="btn btn-sm btn-outline-danger">Delete</button>
       </div>
     </div>
   </nav>
 
   <div class="container">
-    <form action="" v-if="!showHistory">
+    <form v-if="!showHistory">
       <div class="row">
         <div class="col-12">
           <h4>User Detail</h4>
+          <span class="notification">{{ message }}</span>
         </div>
 
         <div class="col-sm-6">
@@ -67,6 +66,10 @@
           <input class="form-control" type="text" v-model="user.zip">
           <small>Note</small>
           <textarea rows="3" class="form-control" v-model="user.note"></textarea>
+          <div class="control-navbar-item">
+            <button class="btn btn-sm btn-outline-primary" @click.prevent="updateUser()">Update</button>
+            <button class="btn btn-sm btn-outline-danger">Delete</button>
+          </div>
         </div>
 
       </div>
@@ -86,10 +89,16 @@
         :key="event.id"
       >
         <div class="card-body">
+          <small class="card-subtitle">{{ event.status }}</small>
           <h6 class="card-title">{{ event.date }}</h6>
-          <!-- <small>{{ `${event.start} - ${event.end}` }}</small> -->
           <ul class="list-group list-group-flush">
-            <li class="list-group-item" v-for="menu in event.menus" :key="menu.id">{{ menu.title }}</li>
+            <li
+              class="list-group-item"
+              v-for="menu in event.menus"
+              :key="menu.id"
+            >
+              {{ menu.title }}
+            </li>
           </ul>
         </div>
       </div>
@@ -111,7 +120,8 @@ import axios from 'axios'
           "N/A",
           "Rather not to say"
         ],
-        showHistory: true,
+        showHistory: false,
+        message: null,
       }
     },
     created() {
@@ -159,7 +169,31 @@ import axios from 'axios'
         .then((res)=> {
           this.user = res.data;
         })
-      }
+      },
+      updateUser() {
+        let id = this.user.id;
+        let user = {}
+        user = {
+          first_name: this.user.first_name,
+          last_name: this.user.last_name,
+          gender: this.user.gender,
+          email: this.user.email,
+          phone: this.user.phone,
+          birthday: this.user.birthday,
+          address: this.user.address,
+          state: this.user.state,
+          city: this.user.city,
+          zip: this.user.zip,
+          status: this.user.status,
+          note: this.user.note
+        }
+        axios.patch(`/users/${id}.json`, user)
+        .then((res)=> {
+          this.user = res.data
+        })
+        this.message = "User updated";
+        setTimeout(()=> {this.message = null}, 3000);
+      },
     },
   }
 </script>
@@ -180,5 +214,8 @@ import axios from 'axios'
   }
   .history-event-container {
     text-align: left;
+  }
+  .notification {
+    color: red;
   }
 </style>
