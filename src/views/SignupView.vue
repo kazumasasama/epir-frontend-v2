@@ -1,24 +1,36 @@
 <template>
   <div class="container">
     <h2>Signup</h2>
-    <div class="row">
-      <div class="col-sm-12">
-        <form v-on:submit.prevent="createUser()">
-          <strong>Required</strong>
-          <p>First_name: <input type="text" v-model="user.first_name"></p>
-          <p>Last_name: <input type="text" v-model="user.last_name"></p>
-          <p>Email: <input type="email" v-model="user.email"></p>
-          <p>Password: <input type="password" v-model="user.password"></p>
-          <p>Confirm: <input type="password" v-model="user.passwordConfirm"></p>
-          <strong>Optional</strong>
-          <p>Phone: <input type="text" v-model="user.phone"></p>
-          <p>Zip: <input type="text" v-model="user.zip"></p>
-          <p>State: <input type="text" v-model="user.state"></p>
-          <p>City: <input type="text" v-model="user.city"></p>
-          <p>Address: <input type="text" v-model="user.address"></p>
-          <p>
-            Gender: 
-            <select v-model="user.gender">
+      <div class="col-12">
+        <form v-on:submit.prevent="createUser()" class="col-12">
+        <div class="row">
+          <div class="col-sm-6">
+            <p><strong>Required</strong></p>
+            <small>First_name</small>
+            <input type="text" v-model="user.first_name" class="form-control">
+            <small>Last_name</small>
+            <input type="text" v-model="user.last_name" class="form-control">
+            <small>Email</small>
+            <input type="email" v-model="user.email" class="form-control">
+            <small>Password</small>
+            <input type="password" v-model="user.password" class="form-control">
+            <small>Confirm password</small>
+            <input type="password" v-model="user.passwordConfirm" class="form-control">
+          </div>
+          <div class="col-sm-6">
+            <p><strong>Optional</strong></p>
+            <small>Phone</small>
+            <input type="text" v-model="user.phone" class="form-control">
+            <small>Zip</small>
+            <input type="text" v-model="user.zip" class="form-control">
+            <small>State</small>
+            <input type="text" v-model="user.state" class="form-control">
+            <small>City</small>
+            <input type="text" v-model="user.city" class="form-control">
+            <small>Address</small>
+            <input type="text" v-model="user.address" class="form-control">
+            <small>Gender</small>
+            <select v-model="user.gender" class="form-select">
               <option
                 v-for="gender in genders"
                 :key="gender"
@@ -27,9 +39,10 @@
                 {{ gender }}
               </option>
             </select>
-          </p>
-          <p>Birthday: <input type="date" v-model="user.birthday"></p>
-          <div class="btn-container">
+            <small>Birthday</small>
+            <input type="date" v-model="user.birthday" class="form-control">
+          </div>
+          <div class="btn-container col-sm-6">
             <button
               type="button"
               class="btn btn-secondary"
@@ -39,9 +52,9 @@
             </button>
             <button type="submit" class="btn btn-primary">Submit</button>
           </div>
+          </div>
         </form>
       </div>
-    </div>
   </div>
 </template>
 
@@ -91,6 +104,8 @@ import axios from "axios"
   }
 </script>
 
-<style>
-  
+<style scoped>
+  .col-sm-6 {
+    text-align: left;
+  }
 </style>

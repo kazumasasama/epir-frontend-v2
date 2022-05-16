@@ -4,13 +4,17 @@
       <h4>Login</h4>
     </div>
     <div class="row">
-      <div class="col-sm-12">
+      <div class="col-sm-12 login-form-container">
         <div class="login-form-container">
           <form v-on:submit.prevent="login()">
-            <p>Email: <input type="text" v-model="user.email"></p>
-            <p>Password: <input type="password" v-model="user.password"></p>
-            <button type="button" class="btn btn-secondary" @click="toHome()">Back to Home</button>
-            <button type="submit" class="btn btn-primary">Login</button>
+            <small>Email:</small>
+            <input type="text" v-model="user.email" class="form-control">
+            <small>Password:</small>
+            <input type="password" v-model="user.password" class="form-control">
+            <div class="btn-container">
+              <button type="button" class="btn btn-secondary" @click="toHome()">Back to Home</button>
+              <button type="submit" class="btn btn-primary">Login</button>
+            </div>
           </form>
         </div>
       </div>
@@ -50,11 +54,19 @@ import axios from 'axios'
   }
 </script>
 
-<style>
+<style scoped>
+  .row {
+    text-align: left;
+  }
   .login-form-container {
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  
+  .container {
+    max-width: 300px;
+  }
+  .btn-container {
+    margin-top: 20px;
+  }
 </style>

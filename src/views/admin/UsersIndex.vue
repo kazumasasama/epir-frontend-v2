@@ -37,7 +37,7 @@
             id="list-home"
             aria-labelledby="list-home-list"
           >
-            <h6>User detail</h6>
+            <h5>User Detail</h5>
             <form action="">
               <p><small>first_name</small> <input type="text" v-model="user.first_name"></p>
               <p><small>last_name</small><input type="text" v-model="user.last_name"></p>
