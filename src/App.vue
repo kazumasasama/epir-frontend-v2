@@ -18,11 +18,21 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         </ul>
         <ul class="navbar-nav mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" href="/admin">Admin</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/admin/calendar">Admin Cal</a>
+          <li class="nav-item dropdown" v-if="showNavMenu">
+            <a
+              class="nav-link dropdown-toggle"
+              id="navbar-link-admin"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Admin
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+              <li><a class="dropdown-item" href="/admin/calendar">Admin Cal</a></li>
+              <li><a class="dropdown-item" href="/admin/menus">Admin Menu</a></li>
+              <li><a class="dropdown-item" href="/admin/users">Users Index</a></li>
+            </ul>
           </li>
           <li class="nav-item" @click="logout()">
             <a class="nav-link">Logout</a>
@@ -40,7 +50,6 @@
 </template>
 
 <script>
-// import axios from 'axios'
   export default {
     data() {
       return {
@@ -49,6 +58,15 @@
           password: "",
           passwordConfirm: "",
         },
+        showNavMenu: false,
+      }
+    },
+    watch: {
+      $route(to, from) {
+        from
+        if (to.path === '/admin/menus' || to.path === '/admin/calendar' || to.path === '/admin/users') {
+          this.showNavMenu = true;
+        }
       }
     },
     methods: {
@@ -57,12 +75,6 @@
         localStorage.removeItem("user_id");
         this.$router.push('/');
       },
-      openLoginDialog() {
-        document.querySelector("#login-dialog").showModal();
-      },
-      closeLoginDialog() {
-        document.querySelector("#login-dialog").modal('hide');
-      }
     },
   }
 </script>

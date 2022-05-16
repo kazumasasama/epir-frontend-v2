@@ -6,7 +6,6 @@ import SignupView from '@/views/SignupView.vue'
 import LoginView from '@/views/LoginView.vue'
 
 import AdminCalendar from '@/views/admin/AdminCalendar.vue'
-import AdminView from '@/views/admin/AdminView.vue'
 import AdminMenus from '@/views/admin/AdminMenus.vue'
 import UsersIndex from '@/views/admin/UsersIndex.vue'
 import UserShow from '@/views/admin/UserShow.vue'
@@ -16,11 +15,6 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView
-  },
-  {
-    path: '/admin',
-    name: 'admin',
-    component: AdminView
   },
   {
     path: '/admin/calendar',

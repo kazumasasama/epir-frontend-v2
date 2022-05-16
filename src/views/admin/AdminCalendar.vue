@@ -34,21 +34,36 @@
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Event Detail</h5>
+            <h6 class="modal-title">{{ eventStartEndDateTime }}</h6>
           </div>
-          <div class="modal-body">
+          <div class="modal-body event-detail-modal-body">
             <form>
-              <p data-bs-toggle="modal">
-                Name: 
-                <a id="linkToUserDetail" data-bs-target="#event-details" data-bs-dismiss="modal" href="#" @click="redirectToUser(selectedEvent.user.id)">{{ selectedEvent.user.full_name }}</a>
-              </p>
+              <div class="row">
+                <div class="col-sm-6">
+                  <small class="event-details-tag">Name</small>
+                  <p data-bs-toggle="modal" class="event-detail-item">
+                    <a id="linkToUserDetail" data-bs-dismiss="modal" href="#" @click="redirectToUser(selectedEvent.user.id)">{{ selectedEvent.user.full_name }}</a>
+                  </p>
+                  <small class="event-details-tag">Note</small>
+                  <p class="event-detail-item">{{ selectedEvent.user.note }}</p>
+                </div>
+                <div class="col-sm-6">
+                  <small class="event-details-tag">Menus</small>
+                  <div>
+                    <ul class="event-detail-item">
+                      <li v-for="menu in selectedEvent.menus" :key="menu.id">{{ menu.title }}</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </form>
           </div>
           <div class="modal-footer btn-container">
-            <button>Update</button>
-            <button @click="destroyEvent()">Delete</button>
-            <button>Close</button>
+            <!-- <button class="btn btn-primary">Update</button> -->
+            <button class="btn btn-danger" @click="destroyEvent()">Delete</button>
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           </div>
+            <small>To reschedule, delete the appointment then make a new appointment.</small>
         </div>
       </div>
     </div>
@@ -78,6 +93,7 @@ import * as bootstrap from 'bootstrap'
         users: [],
         menus: [],
         new_menus: [],
+        eventDetailsModal: null,
       }
     },
     created() {
@@ -85,12 +101,20 @@ import * as bootstrap from 'bootstrap'
       this.indexUsers();
       this.indexMenus();
     },
+    mounted() {
+      this.eventDetailsModal = new bootstrap.Modal(document.getElementById('event-details'));
+    },
     computed: {
       maxDate() {
         return moment().add(90, 'days').format('YYYY-MM-DD');
       },
       selectedDateString() {
         return moment(this.selectedDate).format('YYYY-MM-DD')
+      },
+      eventStartEndDateTime() {
+        let start = moment(this.selectedEvent.start).format('MM-DD-YYYY / HH:mm')
+        let end = moment(this.selectedEvent.end).format('HH:mm')
+        return `${start} - ${end}`
       }
     },
     methods: {
@@ -116,15 +140,8 @@ import * as bootstrap from 'bootstrap'
         this.selectedEvent = event;
         // Prevent navigating to narrower view (default vue-cal behavior).
         e.stopPropagation();
-        var myModal = new bootstrap.Modal(document.getElementById('event-details'));
-        myModal.show();
-      },
-      // onEventDateClick (event, e) {
-      //   this.selectedDate = event;
-      //   e.stopPropagation();
-      // },
-      openNewEventDialog() {
-        document.querySelector("#new-event-dialog").showModal();
+        let modal = new bootstrap.Modal(document.getElementById('event-details'));
+        modal.show();
       },
       redirectToUser(id) {
         this.$router.push(`/admin/users/${id}`);
@@ -135,8 +152,8 @@ import * as bootstrap from 'bootstrap'
         .delete(`/events/${id}`)
         .then(()=> {
           this.selectedEvent = {};
-          let event = this.events.find(event => event.id === id)
-          let i = this.events.indexOf(event)
+          let event = this.events.find(event => event.id === id);
+          let i = this.events.indexOf(event);
           this.events.splice(i, 1);
         })
       }
@@ -150,6 +167,15 @@ import * as bootstrap from 'bootstrap'
   }
   .modal {
     position: fixed;
+  }
+  .event-detail-modal-body {
+    text-align: left;
+  }
+  .event-details-tag {
+    font-weight: bold;
+  }
+  .event-detail-item {
+    padding-left: 8px;
   }
   .vuecal__event {
     text-align: left;
