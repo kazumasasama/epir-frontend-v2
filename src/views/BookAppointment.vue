@@ -1,7 +1,7 @@
 <template>
   <div class="container">
 
-    <nav aria-label="breadcrumb">
+    <nav aria-label="breadcrumb" class="pg-bar">
       <div class="progress" style="height: 25px;">
         <div
           id="progress-1"
@@ -51,11 +51,11 @@
     </nav>
 
     <div class="pick-menus" v-if="currentStep === 1">
-      <div class="text-start">
-        <h2>Select Menus</h2>
-      </div>
       <form v-on:submit.prevent="nextStep()">
         <div class="row">
+          <div class="text-start">
+            <h3>Select Menus</h3>
+          </div>
           <div class="col-sm-6">
             <div
               class="list-group"
@@ -114,7 +114,7 @@
 
     <div class="pick-date" v-if="currentStep === 2">
       <div class="text-start">
-        <h2>Pick a date and time</h2>
+        <h3>Pick a date and time</h3>
       </div>
       <form v-on:submit.prevent="nextStep()">
         <div class="row">
@@ -174,7 +174,7 @@
 
     <div class="user-info" v-if="currentStep === 3">
       <div class="text-start">
-        <h2>User Info</h2>
+        <h3>User Info</h3>
       </div>
       <form v-on:submit.prevent="nextStep()">
         <div class="row">
@@ -235,11 +235,11 @@
     </div>
 
     <div class="confirmation" v-if="currentStep === 4">
-      <div class="text-start">
-        <h2>Confirm your appointment</h2>
-      </div>
       <form v-on:submit.prevent="createAppointment()">
         <div class="row">
+          <div class="text-start">
+            <h3>Confirm your appointment</h3>
+          </div>
           <div class="col-sm-4">
             <small class="confirm-item-tag">Name:</small>
             <p>{{ fullName }}</p>
@@ -261,11 +261,11 @@
             <small class="confirm-item-tag">Time:</small>
             <p>{{ USformattedTime }} - {{ moment(selectedTime).add(totalDuration,'minute').format('hh:mm A') }}</p>
           </div>
-          <div class="col-sm-4 card">
+          <div class="col-sm-4">
             <section>
-              <div class="product">
+              <div class="product card">
                 <div class="description card-body">
-                  <h4 class="card-title text-center">Payment</h4>
+                  <h5 class="card-title text-center">Payment</h5>
                   <ul class="payment-item">
                     <small class="confirm-item-tag">Menu:</small>
                     <div v-for="menu in selectedMenus" :key="menu.id" class="d-flex justify-content-between">
@@ -554,9 +554,11 @@ import * as moment from 'moment-timezone';
 <style scoped>
   .col-sm-6 {
     text-align: left;
+    padding: 15px;
   }
   .col-sm-4 {
     text-align: left;
+    padding: 15px;
   }
   .datepicker-container {
     display: flex;
@@ -581,5 +583,9 @@ import * as moment from 'moment-timezone';
   }
   .payment-item {
     padding-left: 8px;
+  }
+  .pg-bar {
+    padding-left: 0px;
+    padding-right: 0px;
   }
 </style>
