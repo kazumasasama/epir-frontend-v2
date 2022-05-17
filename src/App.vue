@@ -44,6 +44,9 @@
       </div>
     </div>
   </nav>
+  <div class="alert alert-info" role="alert" v-if="message">
+    {{ message }}
+  </div>
 
   <router-view/>
 
@@ -59,6 +62,7 @@
           passwordConfirm: "",
         },
         showNavMenu: false,
+        message: null,
       }
     },
     watch: {
@@ -73,7 +77,13 @@
       logout() {
         localStorage.removeItem("jwt");
         localStorage.removeItem("user_id");
-        this.$router.push('/');
+        this.message = "Successfully logged out. Redirecting to the top page.";
+        if (this.$route.path === '/') {
+          setTimeout(()=> {this.message = null}, 3000);
+        } else {
+          setTimeout(()=> {this.$router.push('/')}, 3000);
+          setTimeout(()=> {this.message = null}, 3000);
+        }
       },
     },
   }
