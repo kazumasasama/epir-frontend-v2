@@ -121,7 +121,7 @@ import * as bootstrap from 'bootstrap'
       indexEvents() {
         axios.get('/events.json')
         .then((res)=> {
-          this.events = res.data;
+          this.events = res.data.filter((event)=> event.status === "booked")
         })
       },
       indexUsers() {
@@ -140,8 +140,7 @@ import * as bootstrap from 'bootstrap'
         this.selectedEvent = event;
         // Prevent navigating to narrower view (default vue-cal behavior).
         e.stopPropagation();
-        let modal = new bootstrap.Modal(document.getElementById('event-details'));
-        modal.show();
+        this.eventDetailsModal.show();
       },
       redirectToUser(id) {
         this.$router.push(`/admin/users/${id}`);
@@ -155,6 +154,7 @@ import * as bootstrap from 'bootstrap'
           let event = this.events.find(event => event.id === id);
           let i = this.events.indexOf(event);
           this.events.splice(i, 1);
+          this.eventDetailsModal.hide();
         })
       }
     },

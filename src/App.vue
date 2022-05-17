@@ -34,7 +34,7 @@
               <li><a class="dropdown-item" href="/admin/users">Users Index</a></li>
             </ul>
           </li>
-          <li class="nav-item" @click="logout()">
+          <li class="nav-item" @click="logout()" v-if="showNavMenu">
             <a class="nav-link">Logout</a>
           </li>
           <!-- <li class="nav-item">

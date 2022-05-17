@@ -342,7 +342,6 @@
               v-if="currentStep === 4"
               type="submit"
               class="btn btn-primary"
-              @click="createAppointment()"
               :disabled="BtnDisabled"
             >
               Book Appointment

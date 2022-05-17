@@ -8,8 +8,8 @@
           <p class="card-text" id="text-home">Book appointments faster, see your booking history, and change upcoming appointments.</p>
           <a class="btn btn-primary" href="/login">Login</a>
           <a href="/signup" class="btn btn-primary">Signup</a>
-          <p>or</p>
-          <a href="/appointments" class="btn btn-primary">Continue as guest</a>
+          <!-- <p>or</p>
+          <a href="/appointments" class="btn btn-primary">Continue as guest</a> -->
         </div>
       </div>
     </div>
