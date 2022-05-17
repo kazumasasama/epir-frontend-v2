@@ -297,9 +297,29 @@
                     <small>Price may varies according to conditions of body. Please call us for detailed price.</small>
                   </p>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" v-model="confirmCheckbox" id="flexCheckDefault">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      v-model="confirmCheckbox"
+                      id="flexCheckDefault"
+                    >
                     <label class="form-check-label" for="flexCheckDefault">
-                      <small>Agree to the <a href="/termsandcondition">Terms and Conditions</a> and <a href="/termsandcondition">Privacy Policy</a></small>
+                      <small>Agree to the 
+                        <a
+                          href="/termsandconditions"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Terms and Conditions
+                        </a> and 
+                        <a 
+                          href="/privacyandpolicy"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Privacy Policy
+                        </a>
+                      </small>
                     </label>
                   </div>
                 </div>

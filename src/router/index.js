@@ -10,6 +10,9 @@ import AdminMenus from '@/views/admin/AdminMenus.vue'
 import UsersIndex from '@/views/admin/UsersIndex.vue'
 import UserShow from '@/views/admin/UserShow.vue'
 
+import TermsAndConditions from '@/views/TermsAndConditions.vue'
+import PrivacyAndPolicy from '@/views/PrivacyAndPolicy.vue'
+
 const routes = [
   {
     path: '/',
@@ -55,6 +58,21 @@ const routes = [
     path: '/complete',
     name: 'complete',
     component: CompleteEvent
+  },
+  {
+    path: '/complete',
+    name: 'complete',
+    component: CompleteEvent
+  },
+  {
+    path: '/termsandconditions',
+    name: 'termsandconditions',
+    component: TermsAndConditions
+  },
+  {
+    path: '/privacyandpolicy',
+    name: 'privacyandpolicy',
+    component: PrivacyAndPolicy
   },
   // {
   //   path: '/about',
