@@ -17,7 +17,7 @@
         History
       </button>
       <div class="control-navbar-item">
-        <button class="btn btn-sm btn-outline-secondary" @click="$router.back()">Go back</button>
+        <button class="btn btn-sm btn-outline-secondary" @click="$router.push('/admin/users')">User Index</button>
       </div>
     </div>
   </nav>
@@ -59,7 +59,15 @@
           <small>Address</small>
           <input class="form-control" type="text" v-model="user.address">
           <small>State</small>
-          <input class="form-control" type="text" v-model="user.state">
+          <select v-model="user.state" class="form-select" autocomplete="address-level1">
+            <option
+              v-for="state in states"
+              :key="state"
+              :value="state"
+            >
+              {{ state }}
+            </option>
+          </select>
           <small>City</small>
           <input class="form-control" type="text" v-model="user.city">
           <small>Zip</small>
@@ -120,6 +128,18 @@ import axios from 'axios'
           "N/A",
           "Rather not to say"
         ],
+        states: [
+          "AL", "AK", "AZ", "AR", "CA",
+          "CO", "CT", "DE", "FL", "GA",
+          "HI", "ID", "IL", "IN", "IA",
+          "KS", "KY", "LA", "ME", "MD",
+          "MA", "MI", "MN", "MS", "MO",
+          "MT", "NE", "NV", "NH", "NJ",
+          "NM", "NY", "NC", "ND", "OH",
+          "OK", "OR", "PA", "RI", "SC",
+          "SD", "TN", "TX", "UT", "VT",
+          "VA", "WA", "WV", "WI", "WY"
+        ],
         showHistory: false,
         message: null,
       }
@@ -144,9 +164,17 @@ import axios from 'axios'
         return sortedEvents;
       },
       totalSpent() {
-        return this.events.map((event)=> event.total_spent).reduce((sum, price)=> sum + price, 0)
+        if (this.events.length === 0) {
+          return 0
+        }
+        let booked = this.events.filter((event)=> event.status === "booked")
+        console.log(booked);
+        return booked.map((event)=> event.total_spent).reduce((sum, price)=> sum + price, 0)
       },
       lastVisit() {
+        if (this.events.length === 0) {
+          return "N/A"
+        }
         let events = this.user.events;
         let sortedEvents = events.sort((a, b)=> {
           let idA = a.date_and_start;

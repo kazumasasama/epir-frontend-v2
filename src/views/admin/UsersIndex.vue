@@ -68,12 +68,12 @@
                   <small>Status</small>
                   <input type="text" v-model="newUser.status" class="form-control">
                 </div>
-              </div>
-              <div class="modal-footer btn-container">
-                <!-- <button class="btn btn-primary">Update</button> -->
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button class="btn btn-primary" type="submit">Submit</button>
-                <small>Password will be generated automatically and the user will be notified immediately by email</small>
+                <div class="modal-footer btn-container col-sm-12">
+                  <!-- <button class="btn btn-primary">Update</button> -->
+                  <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button class="btn btn-primary" type="submit">Submit</button>
+                  <small>Password will be generated automatically and the user will be notified immediately by email</small>
+                </div>
               </div>
             </form>
           </div>
