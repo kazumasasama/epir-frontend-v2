@@ -51,7 +51,7 @@
     </nav>
 
     <div class="pick-menus" v-if="currentStep === 1">
-      <form v-on:submit.prevent="nextStep()">
+      <form>
         <div class="row">
           <div class="text-start">
             <h3>Select Menus</h3>
@@ -116,7 +116,7 @@
       <div class="text-start">
         <h3>Pick a date and time</h3>
       </div>
-      <form v-on:submit.prevent="nextStep()">
+      <form>
         <div class="row">
           <div class="col-sm-6">
             <div class="datepicker-container">
@@ -176,7 +176,7 @@
       <div class="text-start">
         <h3>User Info</h3>
       </div>
-      <form v-on:submit.prevent="nextStep()">
+      <form>
         <div class="row">
           <div class="col-sm-4">
             <small>First_name</small>
@@ -331,7 +331,6 @@
           </div>
           <div class="btn-container">
             <button
-              v-if="currentStep === 4"
               type="button"
               class="btn btn-danger"
               @click="clearAppointment()"
@@ -339,10 +338,9 @@
               Cancel
             </button>
             <button
-              v-if="currentStep === 4"
               type="submit"
               class="btn btn-primary"
-              :disabled="BtnDisabled"
+              :disabled="!confirmCheckbox"
             >
               Book Appointment
             </button>
@@ -402,13 +400,6 @@ import * as moment from 'moment-timezone';
       this.indexBusinessTimes();
     },
     computed: {
-      BtnDisabled() {
-        if (this.confirmCheckbox === true) {
-          return false;
-        } else {
-          return true;
-        }
-      },
       fullName() {
         return `${this.user.first_name} ${this.user.last_name}`;
       },

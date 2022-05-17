@@ -21,62 +21,61 @@
           </div>
           <div class="modal-body event-detail-modal-body">
             <form v-on:submit.prevent="createUser()">
-            <div class="row">
-              <div class="col-sm-6">
-                <p><strong>Required</strong></p>
-                <small>First name</small>
-                <input type="text" v-model="newUser.first_name" class="form-control" autocomplete="given-name">
-                <small>Last name</small>
-                <input type="text" v-model="newUser.last_name" class="form-control" autocomplete="family-name">
-                <small>Email</small>
-                <input type="text" v-model="newUser.email" class="form-control" autocomplete="email">
-                <small>Phone</small>
-                <input type="text" v-model="newUser.phone" class="form-control" autocomplete="tel-national">
-                <small>Gender</small>
-                <select v-model="newUser.gender" class="form-select" autocomplete="sex">
-                  <option
-                    v-for="gender in genders"
-                    :key="gender"
-                    :value="gender"
-                  >
-                    {{ gender }}
-                  </option>
-                </select>
+              <div class="row">
+                <div class="col-sm-6">
+                  <p><strong>Required</strong></p>
+                  <small>First name</small>
+                  <input type="text" v-model="newUser.first_name" class="form-control" autocomplete="given-name">
+                  <small>Last name</small>
+                  <input type="text" v-model="newUser.last_name" class="form-control" autocomplete="family-name">
+                  <small>Email</small>
+                  <input type="text" v-model="newUser.email" class="form-control" autocomplete="email">
+                  <small>Phone</small>
+                  <input type="text" v-model="newUser.phone" class="form-control" autocomplete="tel-national">
+                  <small>Gender</small>
+                  <select v-model="newUser.gender" class="form-select" autocomplete="sex">
+                    <option
+                      v-for="gender in genders"
+                      :key="gender"
+                      :value="gender"
+                    >
+                      {{ gender }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-sm-6">
+                  <p><strong>Optional</strong></p>
+                  <small>State</small>
+                  <select v-model="newUser.state" class="form-select" autocomplete="address-level1">
+                    <option
+                      v-for="state in states"
+                      :key="state"
+                      :value="state"
+                    >
+                      {{ state }}
+                    </option>
+                  </select>
+                  <small>City</small>
+                  <input type="text" v-model="newUser.city" class="form-control" autocomplete="address-level2">
+                  <small>Address</small>
+                  <input autocomplete="street-address" type="text" v-model="newUser.address" class="form-control">
+                  <small>Zip</small>
+                  <input type="text" v-model="newUser.zip" class="form-control" autocomplete="postal-code">
+                  <small>Note (customer can see)</small>
+                  <textarea v-model="newUser.note" col-sm-6s="30" rows="3" class="user-note form-control"></textarea>
+                  <small>Birthday</small>
+                  <input type="date" v-model="newUser.birthday" class="form-control" autocomplete="bday">
+                  <small>Status</small>
+                  <input type="text" v-model="newUser.status" class="form-control">
+                </div>
               </div>
-              <div class="col-sm-6">
-                <p><strong>Optional</strong></p>
-                <small>State</small>
-                <select v-model="newUser.state" class="form-select" autocomplete="address-level1">
-                  <option
-                    v-for="state in states"
-                    :key="state"
-                    :value="state"
-                  >
-                    {{ state }}
-                  </option>
-                </select>
-                <small>City</small>
-                <input type="text" v-model="newUser.city" class="form-control" autocomplete="address-level2">
-                <small>Address</small>
-                <input autocomplete="street-address" type="text" v-model="newUser.address" class="form-control">
-                <small>Zip</small>
-                <input type="text" v-model="newUser.zip" class="form-control" autocomplete="postal-code">
-                <small>Note (customer can see)</small>
-                <textarea v-model="newUser.note" col-sm-6s="30" rows="3" class="user-note form-control"></textarea>
-                <small>Birthday</small>
-                <input type="date" v-model="newUser.birthday" class="form-control" autocomplete="bday">
-                <small>Status</small>
-                <input type="text" v-model="newUser.status" class="form-control">
+              <div class="modal-footer btn-container">
+                <!-- <button class="btn btn-primary">Update</button> -->
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-primary" type="submit">Submit</button>
+                <small>Password will be generated automatically and the user will be notified immediately by email</small>
               </div>
-            </div>
-
             </form>
-          </div>
-          <div class="modal-footer btn-container">
-            <!-- <button class="btn btn-primary">Update</button> -->
-            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button class="btn btn-primary" type="submit" @click="createUser()">Submit</button>
-            <small>Password will be generated automatically and the user will be notified immediately by email</small>
           </div>
         </div>
       </div>
