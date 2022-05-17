@@ -442,7 +442,7 @@ import * as moment from 'moment-timezone';
       filteredBusinessTimes() {
         // 指定日の時間の呼び出し
         var openTimes = this.businessTimes.filter(timeSlots => timeSlots.date === this.formattedPicked).sort((a, b)=> {
-          return a.id - b.id
+          return a.id - b.id;
         }).filter((time)=> time.available === true);
         // 必要時間が最低スロット時間の場合全てのopenTimesを返す
         var keepingTime = this.totalDuration / 30;
@@ -469,7 +469,7 @@ import * as moment from 'moment-timezone';
       },
       serviceTax() {
         let tax = this.subTotal * this.taxRate;
-        return Math.floor(tax * Math.pow(10, 2)) / Math.pow(10, 2)
+        return Math.floor(tax * Math.pow(10, 2)) / Math.pow(10, 2);
       },
     },
     methods: {
@@ -532,7 +532,7 @@ import * as moment from 'moment-timezone';
         axios.post("/events", bookingInfo)
         .then((res)=> {
           this.event = res.data;
-          this.$router.push("/complete")
+          this.$router.push("/complete");
         })
         .catch((error)=> {
           this.errors = error.response;
@@ -542,9 +542,9 @@ import * as moment from 'moment-timezone';
         this.currentStep = 1;
         this.selectedMenus = [];
         this.selectedTime = null;
-        document.querySelector('#progress-2').classList.add('bg-secondary')
-        document.querySelector('#progress-3').classList.add('bg-secondary')
-        document.querySelector('#progress-4').classList.add('bg-secondary')
+        document.querySelector('#progress-2').classList.add('bg-secondary');
+        document.querySelector('#progress-3').classList.add('bg-secondary');
+        document.querySelector('#progress-4').classList.add('bg-secondary');
       },
       checkout() {
         let total = this.subTotal + this.serviceTax;
