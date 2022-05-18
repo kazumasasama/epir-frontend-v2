@@ -361,13 +361,16 @@
   </div>
 </template>
 
-<script setup>
+<!-- <script setup>
 import Datepicker from 'vue3-datepicker'
 import { ref } from 'vue'
 const picked = ref(new Date)
-</script>
+</script> -->
 
 <script>
+import Datepicker from 'vue3-datepicker'
+import { ref } from 'vue'
+
 import axios from "axios";
 import * as moment from 'moment-timezone';
   export default {
@@ -392,6 +395,8 @@ import * as moment from 'moment-timezone';
         // NYC service tax rate
         taxRate: 0.045,
         confirmCheckbox: false,
+        picked: ref(new Date),
+        datepicker: Datepicker,
       }
     },
     mounted() {
@@ -404,10 +409,10 @@ import * as moment from 'moment-timezone';
       fullName() {
         return `${this.user.first_name} ${this.user.last_name}`;
       },
-      formattedPicked() {
-        this.selectedDate = moment(this.picked).format('YYYY-MM-DD');
-        return moment(this.picked).format('YYYY-MM-DD');
-      },
+      // formattedPicked() {
+      //   this.selectedDate = moment(this.picked).format('YYYY-MM-DD');
+      //   return moment(this.picked).format('YYYY-MM-DD');
+      // },
       // totalDuration() {
       //   let durationSum = 0;
       //   this.selectedMenus.forEach((menu) => {durationSum += menu.duration});
@@ -433,9 +438,9 @@ import * as moment from 'moment-timezone';
       //   durationSumHour = (durationSumHour - (durationSumHour % 60)) / 60;
       //   return `${durationSumHour} hour ${durationSumMin} min`;
       // },
-      USformattedPicked() {
-        return moment(this.picked).format('MM-DD-YYYY');
-      },
+      // USformattedPicked() {
+      //   return moment(this.picked).format('MM-DD-YYYY');
+      // },
       USformattedTime() {
         var newYork = moment.tz(this.selectedTime, 'America/New_York');
         return newYork.format('hh:mm A');
