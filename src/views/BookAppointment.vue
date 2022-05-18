@@ -421,6 +421,10 @@ import * as moment from 'moment-timezone';
         var endTime = moment(this.selectedTime).add(this.totalDuration,'minute').format('hh:mm A');
         return endTime;
       },
+      endTimeParams() {
+        var endTime = moment(this.selectedTime).add(this.totalDuration,'minute');
+        return endTime;
+      },
       durationSum() {
         let durationSumHour = 0;
         let durationSumMin = 0;
@@ -525,14 +529,13 @@ import * as moment from 'moment-timezone';
         }
       },
       createAppointment() {
-        let menuIds = this.selectedMenus.map((menu)=> menu.id);
         let bookingInfo = {
           "date": this.selectedDate,
           "start": this.selectedTime,
-          "end": this.endTime,
+          "end": this.endTimeParams,
           "user_id": this.user.id,
           "duration_total": this.totalDuration,
-          "menus": menuIds,
+          "menus": this.selectedMenus.map((menu)=> menu.id),
         }
         axios.post("/events.json", bookingInfo)
         .then((res)=> {
