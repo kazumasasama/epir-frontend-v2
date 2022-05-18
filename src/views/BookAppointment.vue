@@ -146,7 +146,7 @@
                   :value="timeSlot.time"
                   v-model="selectedTime"
                 >
-                {{ timeSlot.time.split("-")[2].replace("01T", "").replace(":00.000", "") }} EST
+                {{ timeSlot.time }} EST
               </label>
             </div>
           </div>
@@ -259,7 +259,7 @@
             <small class="confirm-item-tag">Date:</small>
             <p>{{ USformattedPicked }}</p>
             <small class="confirm-item-tag">Time:</small>
-            <p>{{ USformattedTime }} - {{ moment(selectedTime).add(totalDuration,'minute').format('hh:mm A') }}</p>
+            <!-- <p>{{ USformattedTime }} - {{ moment(selectedTime).add(totalDuration,'minute').format('hh:mm A') }}</p> -->
           </div>
           <div class="col-sm-4">
             <section>
@@ -403,7 +403,6 @@ import * as moment from 'moment-timezone';
       this.getUser();
       this.indexMenus();
       this.indexBusinessTimes();
-      this.selectedMenus = [];
     },
     computed: {
       fullName() {
@@ -465,7 +464,7 @@ import * as moment from 'moment-timezone';
           }
           i++;
         }
-        return available;
+        return available.split("-")[2].replace("01T", "").replace("31T", "").replace(":00.000", "");
       },
       selectedMenuIds() {
         return this.selectedMenus.map((menu)=> menu.id);
