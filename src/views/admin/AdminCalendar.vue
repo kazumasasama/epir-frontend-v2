@@ -42,7 +42,10 @@
                 <div class="col-sm-6">
                   <small class="event-details-tag">Name</small>
                   <p data-bs-toggle="modal" class="event-detail-item">
-                    <a id="linkToUserDetail" data-bs-dismiss="modal" href="#" @click="redirectToUser(selectedEvent.user.id)">{{ selectedEvent.user.full_name }}</a>
+                    <a id="linkToUserDetail" data-bs-dismiss="modal" href="#" @click="redirectToUser(selectedEvent.user.id)"
+                  >
+                    {{ selectedEvent.user.full_name }}
+                  </a>
                   </p>
                   <small class="event-details-tag">Note</small>
                   <p class="event-detail-item">{{ selectedEvent.user.note }}</p>
@@ -150,7 +153,6 @@ import * as bootstrap from 'bootstrap'
         axios
         .delete(`/events/${id}`)
         .then(()=> {
-          this.selectedEvent = {};
           let event = this.events.find(event => event.id === id);
           let i = this.events.indexOf(event);
           this.events.splice(i, 1);
