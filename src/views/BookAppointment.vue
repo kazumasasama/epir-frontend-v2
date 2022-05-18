@@ -398,6 +398,7 @@ import * as moment from 'moment-timezone';
       this.getUser();
       this.indexMenus();
       this.indexBusinessTimes();
+      this.selectedMenus = [];
     },
     computed: {
       fullName() {
