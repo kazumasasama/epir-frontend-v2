@@ -146,7 +146,7 @@
                   :value="timeSlot.time"
                   v-model="selectedTime"
                 >
-                {{ timeSlot.time }} EST
+                {{ timeSlot.time.replace("2000-01-01T", "").replace("12-31T", "").replace("1999-12-31T", "").replace(":00.000-05:00", "") }} EST
               </label>
             </div>
           </div>
@@ -464,7 +464,7 @@ import * as moment from 'moment-timezone';
           }
           i++;
         }
-        return available.split("-")[2].replace("2000-01-01T", "").replace("1999-12-31T", "").replace(":00.000-05:00", "");
+        return available
       },
       selectedMenuIds() {
         return this.selectedMenus.map((menu)=> menu.id);
