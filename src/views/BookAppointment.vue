@@ -259,7 +259,7 @@
             <small class="confirm-item-tag">Date:</small>
             <p>{{ USformattedPicked }}</p>
             <small class="confirm-item-tag">Time:</small>
-            <p>{{ USformattedTime }} - {{ moment(selectedTime).add(totalDuration,'minute').format('hh:mm A') }}</p>
+            <p>{{ USformattedTime }} - {{ endTime }}</p>
           </div>
           <div class="col-sm-4">
             <section>
@@ -418,7 +418,7 @@ import * as moment from 'moment-timezone';
         return durationSum;
       },
       endTime() {
-        var endTime = moment(this.selectedTime).add(this.totalDuration,'minute');
+        var endTime = moment(this.selectedTime).add(this.totalDuration,'minute').format('hh:mm A');
         return endTime;
       },
       durationSum() {
