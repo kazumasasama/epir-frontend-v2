@@ -534,7 +534,7 @@ import * as moment from 'moment-timezone';
           "duration_total": this.totalDuration,
           "menus": menuIds,
         }
-        axios.post("/events", bookingInfo)
+        axios.post("/events.json", bookingInfo)
         .then((res)=> {
           this.event = res.data;
           this.$router.push("/complete");
