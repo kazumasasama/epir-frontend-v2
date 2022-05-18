@@ -92,7 +92,7 @@
               >
               <p>Total duration</p>
                 <p class="text-end">
-                  <!-- {{ durationSumInString }} -->
+                  {{ durationSumInString }}
                 </p>
               </label>
             </div>
@@ -259,7 +259,7 @@
             <small class="confirm-item-tag">Date:</small>
             <p>{{ USformattedPicked }}</p>
             <small class="confirm-item-tag">Time:</small>
-            <!-- <p>{{ USformattedTime }} - {{ moment(selectedTime).add(totalDuration,'minute').format('hh:mm A') }}</p> -->
+            <p>{{ USformattedTime }} - {{ moment(selectedTime).add(totalDuration,'minute').format('hh:mm A') }}</p>
           </div>
           <div class="col-sm-4">
             <section>
@@ -278,7 +278,7 @@
                   <hr>
                   <div class="payment-item d-flex justify-content-between">
                     <h6 class="text-end">Sub total</h6>
-                    <!-- <span>${{ subTotal }}</span> -->
+                    <span>${{ subTotal }}</span>
                   </div>
                   <div class="payment-item d-flex justify-content-between">
                     <h6 class="text-end">Tax</h6>
@@ -287,7 +287,7 @@
                     <hr>
                   <div class="payment-item d-flex justify-content-between">
                     <h6 class="text-end">Total</h6>
-                    <!-- <h5>${{ subTotal + serviceTax }}</h5> -->
+                    <h5>${{ subTotal + serviceTax }}</h5>
                   </div>
                   <hr>
                   <p>
@@ -368,12 +368,13 @@ const picked = ref(new Date)
 </script> -->
 
 <script>
-import Datepicker from 'vue3-datepicker'
+import Datepicker from 'vue3-datepicker';
 import { ref } from 'vue'
 
 import axios from "axios";
 import * as moment from 'moment-timezone';
   export default {
+    components: { Datepicker },
     data() {
       return {
         errors: null,
@@ -396,7 +397,6 @@ import * as moment from 'moment-timezone';
         taxRate: 0.045,
         confirmCheckbox: false,
         picked: ref(new Date),
-        datepicker: Datepicker,
       }
     },
     mounted() {
@@ -409,38 +409,38 @@ import * as moment from 'moment-timezone';
       fullName() {
         return `${this.user.first_name} ${this.user.last_name}`;
       },
-      // formattedPicked() {
-      //   this.selectedDate = moment(this.picked).format('YYYY-MM-DD');
-      //   return moment(this.picked).format('YYYY-MM-DD');
-      // },
-      // totalDuration() {
-      //   let durationSum = 0;
-      //   this.selectedMenus.forEach((menu) => {durationSum += menu.duration});
-      //   return durationSum;
-      // },
-      // endTime() {
-      //   var endTime = moment(this.selectedTime).add(this.totalDuration,'minute');
-      //   return endTime;
-      // },
-      // durationSum() {
-      //   let durationSumHour = 0;
-      //   let durationSumMin = 0;
-      //   this.selectedMenus.forEach((menu) => {durationSumHour += menu.duration});
-      //   durationSumMin = durationSumHour % 60;
-      //   durationSumHour = (durationSumHour - (durationSumHour % 60)) / 60;
-      //   return `${durationSumHour}:${durationSumMin}:00`;
-      // },
-      // durationSumInString() {
-      //   let durationSumHour = 0;
-      //   let durationSumMin = 0;
-      //   this.selectedMenus.forEach((menu) => {durationSumHour += menu.duration});
-      //   durationSumMin = durationSumHour % 60;
-      //   durationSumHour = (durationSumHour - (durationSumHour % 60)) / 60;
-      //   return `${durationSumHour} hour ${durationSumMin} min`;
-      // },
-      // USformattedPicked() {
-      //   return moment(this.picked).format('MM-DD-YYYY');
-      // },
+      formattedPicked() {
+        // this.selectedDate = moment(this.picked).format('YYYY-MM-DD');
+        return moment(this.picked).format('YYYY-MM-DD');
+      },
+      totalDuration() {
+        let durationSum = 0;
+        this.selectedMenus.forEach((menu) => {durationSum += menu.duration});
+        return durationSum;
+      },
+      endTime() {
+        var endTime = moment(this.selectedTime).add(this.totalDuration,'minute');
+        return endTime;
+      },
+      durationSum() {
+        let durationSumHour = 0;
+        let durationSumMin = 0;
+        this.selectedMenus.forEach((menu) => {durationSumHour += menu.duration});
+        durationSumMin = durationSumHour % 60;
+        durationSumHour = (durationSumHour - (durationSumHour % 60)) / 60;
+        return `${durationSumHour}:${durationSumMin}:00`;
+      },
+      durationSumInString() {
+        let durationSumHour = 0;
+        let durationSumMin = 0;
+        this.selectedMenus.forEach((menu) => {durationSumHour += menu.duration});
+        durationSumMin = durationSumHour % 60;
+        durationSumHour = (durationSumHour - (durationSumHour % 60)) / 60;
+        return `${durationSumHour} hour ${durationSumMin} min`;
+      },
+      USformattedPicked() {
+        return moment(this.picked).format('MM-DD-YYYY');
+      },
       USformattedTime() {
         var newYork = moment.tz(this.selectedTime, 'America/New_York');
         return newYork.format('hh:mm A');
@@ -467,16 +467,16 @@ import * as moment from 'moment-timezone';
         }
         return available;
       },
-      // selectedMenuIds() {
-      //   return this.selectedMenus.map((menu)=> menu.id);
-      // },
-      // subTotal() {
-      //   return this.selectedMenus.map((menu)=> parseFloat(menu.price)).reduce((sum, price)=> { return sum + price}, 0);
-      // },
-      // serviceTax() {
-      //   let tax = this.subTotal * this.taxRate;
-      //   return Math.floor(tax * Math.pow(10, 2)) / Math.pow(10, 2);
-      // },
+      selectedMenuIds() {
+        return this.selectedMenus.map((menu)=> menu.id);
+      },
+      subTotal() {
+        return this.selectedMenus.map((menu)=> parseFloat(menu.price)).reduce((sum, price)=> { return sum + price}, 0);
+      },
+      serviceTax() {
+        let tax = this.subTotal * this.taxRate;
+        return Math.floor(tax * Math.pow(10, 2)) / Math.pow(10, 2);
+      },
     },
     methods: {
       indexMenus() {
