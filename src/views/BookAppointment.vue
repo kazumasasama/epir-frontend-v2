@@ -259,7 +259,7 @@
             <small class="confirm-item-tag">Date:</small>
             <p>{{ USformattedPicked }}</p>
             <small class="confirm-item-tag">Time:</small>
-            <!-- <p>{{ USformattedTime }} - {{ moment(selectedTime).add(totalDuration,'minute').format('hh:mm A') }}</p> -->
+            <p>{{ USformattedTime }} - {{ moment(selectedTime).add(totalDuration,'minute').format('hh:mm A') }}</p>
           </div>
           <div class="col-sm-4">
             <section>
