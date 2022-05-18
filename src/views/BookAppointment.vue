@@ -422,7 +422,7 @@ import * as moment from 'moment-timezone';
         return endTime;
       },
       endTimeParams() {
-        var endTime = moment(this.selectedTime).add(this.totalDuration,'minute');
+        var endTime = moment(this.selectedTime).add(this.totalDuration,'minute').format('YYYY-MM-DD HH:mm');
         return endTime;
       },
       durationSum() {
