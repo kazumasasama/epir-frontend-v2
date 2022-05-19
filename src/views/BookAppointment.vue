@@ -404,14 +404,12 @@ import * as moment from 'moment-timezone';
       this.indexMenus();
       this.indexBusinessTimes();
     },
-    watch: {
-      selectedDate() {
-        this.selectedDate = this.selectedDate = moment(this.picked).format('YYYY-MM-DD');
-      }
-    },
     computed: {
       fullName() {
         return `${this.user.first_name} ${this.user.last_name}`;
+      },
+      bookingDate() {
+        return moment(this.picked).format('YYYY-MM-DD');
       },
       formattedPicked() {
         return moment(this.picked).format('YYYY-MM-DD');
@@ -534,7 +532,7 @@ import * as moment from 'moment-timezone';
       },
       createAppointment() {
         let bookingInfo = {
-          "date": this.selectedDate,
+          "date": this.bookingDate,
           "start": this.selectedTime,
           "end": this.endTimeParams,
           "user_id": this.user.id,
