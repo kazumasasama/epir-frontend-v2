@@ -18,6 +18,10 @@
           </form>
         </div>
       </div>
+      <div class="col-sm-12 login-hint">
+        <p class="login-hint-item"><small>Email: test@test.com</small></p>
+        <p class="login-hint-item"><small>Password: password</small></p>
+      </div>
     </div>
   </div>
 </template>
@@ -68,5 +72,12 @@ import axios from 'axios'
   }
   .btn-container {
     margin-top: 20px;
+  }
+  .login-hint {
+    margin-top: 20px;
+    text-align: center;
+  }
+  .login-hint-item {
+    margin-bottom: 8px;
   }
 </style>
