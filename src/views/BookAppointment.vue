@@ -344,6 +344,13 @@
           <div class="btn-container">
             <button
               type="button"
+              class="btn btn-secondary"
+              @click="prevStep()"
+            >
+              Go Back
+            </button>
+            <button
+              type="button"
               class="btn btn-danger"
               @click="clearAppointment()"
             >
