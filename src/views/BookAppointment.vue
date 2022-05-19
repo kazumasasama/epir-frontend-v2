@@ -202,7 +202,19 @@
             <small>Zip</small>
             <input type="text" v-model="user.zip" class="form-control">
             <small>State</small>
-            <input type="text" v-model="user.state" class="form-control">
+            <select
+              v-model="user.state"
+              class="form-select"
+              autocomplete="address-level1"
+            >
+              <option
+                v-for="state in states"
+                :key="state"
+                :value="state"
+              >
+                {{ state }}
+              </option>
+            </select>
             <small>City</small>
             <input type="text" v-model="user.city" class="form-control">
             <small>Address</small>
@@ -304,7 +316,7 @@
                       id="flexCheckDefault"
                     >
                     <label class="form-check-label" for="flexCheckDefault">
-                      <small>Agree to the 
+                      <small class="terms-and-conditions">Agree to the 
                         <a
                           href="/termsandconditions"
                           target="_blank"
@@ -392,6 +404,18 @@ import * as moment from 'moment-timezone';
           "Female",
           "N/A",
           "Rather not to say"
+        ],
+        states: [
+          "AL", "AK", "AZ", "AR", "CA",
+          "CO", "CT", "DE", "FL", "GA",
+          "HI", "ID", "IL", "IN", "IA",
+          "KS", "KY", "LA", "ME", "MD",
+          "MA", "MI", "MN", "MS", "MO",
+          "MT", "NE", "NV", "NH", "NJ",
+          "NM", "NY", "NC", "ND", "OH",
+          "OK", "OR", "PA", "RI", "SC",
+          "SD", "TN", "TX", "UT", "VT",
+          "VA", "WA", "WV", "WI", "WY"
         ],
         // NYC service tax rate
         taxRate: 0.045,
@@ -607,5 +631,8 @@ import * as moment from 'moment-timezone';
   .pg-bar {
     padding-left: 0px;
     padding-right: 0px;
+  }
+  .terms-and-conditions {
+    font-weight: bold;
   }
 </style>
