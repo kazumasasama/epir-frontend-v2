@@ -25,6 +25,7 @@
             :max-date="maxDate"
             events-count-on-year-view
             hide-week-number
+            locale="ja"
           />
         </div>
       </div>
@@ -76,6 +77,7 @@
 
 <script>
 import VueCal from 'vue-cal'
+import 'vue-cal/dist/i18n/ja.js'
 import 'vue-cal/dist/vuecal.css'
 import axios from 'axios'
 import * as moment from 'moment-timezone';
