@@ -7,17 +7,17 @@
         v-if="showHistory"
         @click="showHistory = false"
       >
-        User Detail
+        ユーザー詳細
       </button>
       <button
         class="btn btn-sm btn-outline-success"
         v-if="!showHistory"
         @click="showHistory = true"
       >
-        History
+        予約履歴
       </button>
       <div class="control-navbar-item">
-        <button class="btn btn-sm btn-outline-secondary" @click="$router.push('/admin/users')">User Index</button>
+        <button class="btn btn-sm btn-outline-secondary" @click="$router.push('/admin/users')">全ユーザー</button>
       </div>
     </div>
   </nav>
@@ -26,16 +26,16 @@
     <form v-if="!showHistory">
       <div class="row">
         <div class="col-12">
-          <h4>User Detail</h4>
+          <h4>ユーザー詳細</h4>
           <span class="notification">{{ message }}</span>
         </div>
 
         <div class="col-sm-6">
-          <small>First name</small>
+          <small>姓</small>
           <input type="text" v-model="user.first_name" class="form-control">
-          <small>Last name</small>
+          <small>名</small>
           <input type="text" v-model="user.last_name" class="form-control">
-          <small>Gender</small>
+          <small>性別</small>
           <select v-model="user.gender" class="form-select">
             <option
               v-for="gender in genders"
@@ -45,20 +45,20 @@
               {{ gender }}
             </option>
           </select>
-          <small>Email</small>
+          <small>メールアドレス</small>
           <input type="text" v-model="user.email" class="form-control">
-          <small>Phone</small>
+          <small>電話番号</small>
           <input type="text" v-model="user.phone" class="form-control">
-          <small>Birthday</small>
+          <small>生年月日</small>
           <input class="form-control" type="text" v-model="user.birthday">
-          <small>Status</small>
+          <small>ステータス</small>
           <input class="form-control" type="text" v-model="user.status">
         </div>
 
         <div class="col-sm-6">
-          <small>Address</small>
-          <input class="form-control" type="text" v-model="user.address">
-          <small>State</small>
+          <small>郵便番号</small>
+          <input class="form-control" type="text" v-model="user.zip">
+          <small>都道府県</small>
           <select v-model="user.state" class="form-select" autocomplete="address-level1">
             <option
               v-for="state in states"
@@ -68,15 +68,15 @@
               {{ state }}
             </option>
           </select>
-          <small>City</small>
+          <small>市区町村</small>
           <input class="form-control" type="text" v-model="user.city">
-          <small>Zip</small>
-          <input class="form-control" type="text" v-model="user.zip">
-          <small>Note</small>
+          <small>以降の住所</small>
+          <input class="form-control" type="text" v-model="user.address">
+          <small>ご要望など</small>
           <textarea rows="3" class="form-control" v-model="user.note"></textarea>
           <div class="control-navbar-item">
-            <button class="btn btn-sm btn-outline-primary" @click.prevent="updateUser()">Update</button>
-            <button class="btn btn-sm btn-outline-danger">Delete</button>
+            <button class="btn btn-sm btn-outline-primary" @click.prevent="updateUser()">更新</button>
+            <button class="btn btn-sm btn-outline-danger">退会</button>
           </div>
         </div>
 
@@ -85,10 +85,10 @@
 
     <div class="row" v-if="showHistory">
       <div class="col-12">
-        <h4>History</h4>
-        <small>Total visit: {{ events.length }} | </small>
-        <small>Total spent: ${{ totalSpent }} | </small>
-        <small>Last visit: {{ lastVisit }}</small>
+        <h4>予約履歴</h4>
+        <small>予約回数: {{ events.length }} | </small>
+        <small>総売上: ${{ totalSpent }} | </small>
+        <small>最終予約日: {{ lastVisit }}</small>
       </div>
       <hr>
       <div
