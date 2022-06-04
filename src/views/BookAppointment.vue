@@ -12,7 +12,7 @@
           aria-valuemin="0"
           aria-valuemax="25"
         >
-          Menu
+          メニュー
         </div>
         <div
           id="progress-2"
@@ -23,7 +23,7 @@
           aria-valuemin="0"
           aria-valuemax="25"
         >
-          Date
+          日時
         </div>
         <div
           id="progress-3"
@@ -34,7 +34,7 @@
           aria-valuemin="0"
           aria-valuemax="25"
         >
-          Customer Info
+          お客様情報
         </div>
         <div
           id="progress-4"
@@ -45,7 +45,7 @@
           aria-valuemin="0"
           aria-valuemax="25"
         >
-          Confirm
+          確認
         </div>
       </div>
     </nav>
@@ -54,7 +54,7 @@
       <form>
         <div class="row">
           <div class="text-start">
-            <h3>Select Menus</h3>
+            <h5>メニュー選択</h5>
           </div>
           <div class="col-sm-6">
             <div
@@ -104,7 +104,7 @@
                 class="btn btn-primary"
                 @click="nextStep()"
               >
-                Next Step
+                次のステップ >>
               </button>
             </div>
           </div>
@@ -114,7 +114,7 @@
 
     <div class="pick-date" v-if="currentStep === 2">
       <div class="text-start">
-        <h3>Pick a date and time</h3>
+        <h5>日時選択</h5>
       </div>
       <form>
         <div class="row">
@@ -126,7 +126,7 @@
                 height="25"
                 class="datepicker-item datepicker-icon"
               >
-              <datepicker v-model="picked" class="datepicker-item" />
+              <Datepicker v-model="picked" class="datepicker-item" inline  autoApply />
             </div>
           </div>
           <div class="col-sm-6">
@@ -146,7 +146,7 @@
                   :value="timeSlot.time"
                   v-model="selectedTime"
                 >
-                {{ timeSlot.time.replace("2000-01-01T", "").replace("12-31T", "").replace("1999-", "").replace(":00.000-05:00", "") }} EST
+                {{ timeSlot.time.slice(11, -13) }}
               </label>
             </div>
           </div>
@@ -157,14 +157,14 @@
                 class="btn btn-secondary"
                 @click="prevStep()"
               >
-                Go Back
+                戻る
               </button>
               <button
                 type="submit"
                 class="btn btn-primary"
                 @click="nextStep()"
               >
-                Next Step
+                次のステップ >>
               </button>
             </div>
           </div>
@@ -174,20 +174,20 @@
 
     <div class="user-info" v-if="currentStep === 3">
       <div class="text-start">
-        <h3>User Info</h3>
+        <h5>お客様情報</h5>
       </div>
       <form>
         <div class="row">
           <div class="col-sm-4">
-            <small>First_name</small>
-            <input type="text" v-model="user.first_name" class="booking-input form-control">
-            <small>Last_name</small>
+            <small>姓</small>
             <input type="text" v-model="user.last_name" class="form-control">
-            <small>Email</small>
+            <small>名</small>
+            <input type="text" v-model="user.first_name" class="booking-input form-control">
+            <small>メールアドレス</small>
             <input type="email" v-model="user.email" class="form-control">
-            <small>Phone</small>
+            <small>電話番号</small>
             <input type="tel" v-model="user.phone" class="form-control">
-            <small>Gender</small>
+            <small>性別</small>
             <select v-model="user.gender" class="form-select">
               <option
                 v-for="gender in genders"
@@ -199,9 +199,9 @@
             </select>
           </div>
           <div class="col-sm-4">
-            <small>Zip</small>
+            <small>郵便番号</small>
             <input type="text" v-model="user.zip" class="form-control">
-            <small>State</small>
+            <small>都道府県</small>
             <select
               v-model="user.state"
               class="form-select"
@@ -215,13 +215,13 @@
                 {{ state }}
               </option>
             </select>
-            <small>City</small>
+            <small>市区町村</small>
             <input type="text" v-model="user.city" class="form-control">
-            <small>Address</small>
+            <small>以下の住所</small>
             <input type="text" v-model="user.address" class="form-control">
           </div>
           <div class="col-sm-4">
-            <small>Let us know if you have special request.</small>
+            <small>ご要望など</small>
             <textarea v-model="user.note" col-sm-6s="30" rows="3" class="user-note form-control"></textarea>
           </div>
           <div class="col-12">
@@ -231,14 +231,14 @@
                 class="btn btn-secondary"
                 @click="prevStep()"
               >
-                Go Back
+                戻る
               </button>
               <button
                 type="submit"
                 class="btn btn-primary"
                 @click="nextStep()"
               >
-                Next Step
+                次のステップ >>
               </button>
             </div>
           </div>
@@ -250,36 +250,36 @@
       <form v-on:submit.prevent="createAppointment()">
         <div class="row">
           <div class="text-start">
-            <h3>Confirm your appointment</h3>
+            <h5>予約内容の確認</h5>
           </div>
           <div class="col-sm-4">
-            <small class="confirm-item-tag">Name:</small>
+            <small class="confirm-item-tag">お名前:</small>
             <p>{{ fullName }}</p>
-            <small class="confirm-item-tag">Email:</small>
+            <small class="confirm-item-tag">メールアドレス:</small>
             <p>{{ user.email }}</p>
-            <small class="confirm-item-tag">Phone:</small>
+            <small class="confirm-item-tag">電話番号:</small>
             <p>{{ user.phone }}</p>
-            <small class="confirm-item-tag">Address:</small>
+            <small class="confirm-item-tag">住所:</small>
             <p>{{ user.address }}</p>
             <p>{{ user.city }}, {{ user.state }} {{ user.zip }}</p>
-            <small class="confirm-item-tag">Gender:</small>
+            <small class="confirm-item-tag">性別:</small>
             <p>{{ user.gender }}</p>
-            <small class="confirm-item-tag">Note:</small>
+            <small class="confirm-item-tag">ご要望など:</small>
             <p>{{ user.note }}</p>
           </div>
           <div class="col-sm-4">
-            <small class="confirm-item-tag">Date:</small>
+            <small class="confirm-item-tag">予約日:</small>
             <p>{{ USformattedPicked }}</p>
-            <small class="confirm-item-tag">Time:</small>
+            <small class="confirm-item-tag">時間:</small>
             <p>{{ USformattedTime }} - {{ endTime }}</p>
           </div>
           <div class="col-sm-4">
             <section>
               <div class="product card">
                 <div class="description card-body">
-                  <h5 class="card-title text-center">Payment</h5>
+                  <h5 class="card-title text-center">料金</h5>
                   <ul class="payment-item">
-                    <small class="confirm-item-tag">Menu:</small>
+                    <small class="confirm-item-tag">メニュー:</small>
                     <div v-for="menu in selectedMenus" :key="menu.id" class="d-flex justify-content-between">
                       <li>
                         {{ menu.title }}
@@ -289,24 +289,24 @@
                   </ul>
                   <hr>
                   <div class="payment-item d-flex justify-content-between">
-                    <h6 class="text-end">Sub total</h6>
-                    <span>${{ subTotal }}</span>
+                    <h6 class="text-end">小計</h6>
+                    <span>¥{{ subTotal }}</span>
                   </div>
                   <div class="payment-item d-flex justify-content-between">
-                    <h6 class="text-end">Tax</h6>
-                    <span>${{ serviceTax }}</span>
+                    <h6 class="text-end">消費税</h6>
+                    <span>¥{{ serviceTax }}</span>
                   </div>
                     <hr>
                   <div class="payment-item d-flex justify-content-between">
-                    <h6 class="text-end">Total</h6>
-                    <h5>${{ subTotal + serviceTax }}</h5>
+                    <h6 class="text-end">合計</h6>
+                    <h5>¥{{ subTotal + serviceTax }}</h5>
                   </div>
                   <hr>
                   <p>
-                    <small>Pay at the store. We accept Credit Card and Cash.</small>
+                    <small>クーポンをお持ちの方は店頭にてご使用いただけます。ご予約当日に担当者にお伝えください。</small>
                   </p>
                   <p>
-                    <small>Price may varies according to conditions of body. Please call us for detailed price.</small>
+                    <small>金額は目安となっております。お身体の状態により変更になることがございます。</small>
                   </p>
                   <div class="form-check">
                     <input
@@ -316,21 +316,23 @@
                       id="flexCheckDefault"
                     >
                     <label class="form-check-label" for="flexCheckDefault">
-                      <small class="terms-and-conditions">Agree to the 
+                      <small class="terms-and-conditions">
+                        当サイトの 
                         <a
                           href="/termsandconditions"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          Terms and Conditions
-                        </a> and 
+                          利用規約
+                        </a> と 
                         <a 
                           href="/privacyandpolicy"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          Privacy Policy
+                          サイトポリシー
                         </a>
+                        に同意する
                       </small>
                     </label>
                   </div>
@@ -347,21 +349,21 @@
               class="btn btn-secondary"
               @click="prevStep()"
             >
-              Go Back
+              戻る
             </button>
             <button
               type="button"
               class="btn btn-danger"
               @click="clearAppointment()"
             >
-              Cancel
+              初めからやり直す
             </button>
             <button
               type="submit"
               class="btn btn-primary"
               :disabled="!confirmCheckbox"
             >
-              Book Appointment
+              予約する
             </button>
             <!-- <button
               v-if="currentStep === 4"
@@ -389,7 +391,6 @@ const picked = ref(new Date)
 <script>
 import Datepicker from 'vue3-datepicker';
 import { ref } from 'vue'
-
 import axios from "axios";
 import * as moment from 'moment-timezone';
   export default {
@@ -407,22 +408,22 @@ import * as moment from 'moment-timezone';
         selectedTime: null,
         user: {},
         genders: [
-          "Male",
-          "Female",
-          "N/A",
-          "Rather not to say"
+          "男性",
+          "女性",
+          "該当なし",
+          "回答しない"
         ],
         states: [
-          "AL", "AK", "AZ", "AR", "CA",
-          "CO", "CT", "DE", "FL", "GA",
-          "HI", "ID", "IL", "IN", "IA",
-          "KS", "KY", "LA", "ME", "MD",
-          "MA", "MI", "MN", "MS", "MO",
-          "MT", "NE", "NV", "NH", "NJ",
-          "NM", "NY", "NC", "ND", "OH",
-          "OK", "OR", "PA", "RI", "SC",
-          "SD", "TN", "TX", "UT", "VT",
-          "VA", "WA", "WV", "WI", "WY"
+          "北海道", "青森県", "岩手県", "宮城県", "秋田県",
+          "山形県", "福島県", "茨城県", "栃木県", "群馬県",
+          "埼玉県", "千葉県", "東京都", "神奈川県", "新潟県",
+          "富山県", "石川県", "福井県", "山梨県", "長野県",
+          "岐阜県", "静岡県", "愛知県", "三重県", "滋賀県",
+          "京都府", "大阪府", "兵庫県", "奈良県", "和歌山県",
+          "鳥取県", "島根県", "岡山県", "広島県", "山口県",
+          "徳島県", "香川県", "愛媛県", "高知県", "福岡県",
+          "佐賀県", "長崎県", "熊本県", "大分県", "宮崎県",
+          "鹿児島県", "沖縄県"
         ],
         // NYC service tax rate
         taxRate: 0.045,
@@ -478,8 +479,8 @@ import * as moment from 'moment-timezone';
         return moment(this.picked).format('MM-DD-YYYY');
       },
       USformattedTime() {
-        var newYork = moment.tz(this.selectedTime, 'America/New_York');
-        return newYork.format('hh:mm A');
+        var tokyo = moment.tz(this.selectedTime, 'Asia/Tokyo');
+        return tokyo.format('hh:mm A');
       },
       filteredBusinessTimes() {
         // 指定日の時間の呼び出し
@@ -615,6 +616,7 @@ import * as moment from 'moment-timezone';
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 10px;
   }
   .datepicker-item {
     box-sizing: border-box;
@@ -623,8 +625,25 @@ import * as moment from 'moment-timezone';
   .datepicker-icon {
     margin-right: 10px;
   }
-  .datepicker-container {
-    margin-bottom: 10px;
+  .dp__theme_light {
+    --dp-background-color: #ffffff;
+    --dp-text-color: #212121;
+    --dp-hover-color: #f3f3f3;
+    --dp-hover-text-color: #212121;
+    --dp-hover-icon-color: #959595;
+    --dp-primary-color: #1976d2;
+    --dp-primary-text-color: #f8f5f5;
+    --dp-secondary-color: #c0c4cc;
+    --dp-border-color: #ddd;
+    --dp-menu-border-color: #ddd;
+    --dp-border-color-hover: #aaaeb7;
+    --dp-disabled-color: #f6f6f6;
+    --dp-scroll-bar-background: #f3f3f3;
+    --dp-scroll-bar-color: #959595;
+    --dp-success-color: #76d275;
+    --dp-success-color-disabled: #a3d9b1;
+    --dp-icon-color: #959595;
+    --dp-danger-color: #ff6f60;
   }
   .confirm-item-tag {
     font-weight: bold;
