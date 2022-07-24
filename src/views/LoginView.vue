@@ -19,7 +19,13 @@
         </div>
       </div>
       <div class="col-sm-12 login-hint">
+        <p class="login-hint-title">Login as Admin</p>
         <p class="login-hint-item"><small>Email: test@test.com</small></p>
+        <p class="login-hint-item"><small>Password: password</small></p>
+      </div>
+      <div class="col-sm-12 login-hint">
+        <p class="login-hint-title">Login as User</p>
+        <p class="login-hint-item"><small>Email: user@user.com</small></p>
         <p class="login-hint-item"><small>Password: password</small></p>
       </div>
     </div>
@@ -44,7 +50,11 @@ import axios from 'axios'
           axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.jwt;
           localStorage.setItem("jwt", res.data.jwt);
           localStorage.setItem("user_id", res.data.user_id);
-          this.$router.push('/appointments');
+          if (res.data.admin == true) {
+            this.$router.push('/admin/calendar');
+          } else {
+            this.$router.push('/appointments');
+          }
         })
         .catch((error)=> {
           console.log(error.response);
@@ -79,5 +89,8 @@ import axios from 'axios'
   }
   .login-hint-item {
     margin-bottom: 8px;
+  }
+  .login-hint-title {
+    font-weight: bold;
   }
 </style>

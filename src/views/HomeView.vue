@@ -11,6 +11,16 @@
           <!-- <p>or</p>
           <a href="/appointments" class="btn btn-primary">Continue as guest</a> -->
         </div>
+        <div class="col-sm-12 login-hint">
+          <p class="login-hint-title">Login as Admin</p>
+          <p class="login-hint-item"><small>Email: test@test.com</small></p>
+          <p class="login-hint-item"><small>Password: password</small></p>
+        </div>
+        <div class="col-sm-12 login-hint">
+          <p class="login-hint-title">Login as User</p>
+          <p class="login-hint-item"><small>Email: user@user.com</small></p>
+          <p class="login-hint-item"><small>Password: password</small></p>
+        </div>
       </div>
     </div>
   </div>
@@ -40,5 +50,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.login-hint {
+  margin-top: 20px;
+  text-align: center;
+}
+.login-hint-title {
+  font-weight: bold;
 }
 </style>
