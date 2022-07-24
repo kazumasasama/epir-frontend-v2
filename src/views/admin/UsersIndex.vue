@@ -1,12 +1,12 @@
 <template>
   <nav class="navbar navbar-light" style="background-color: #f5f6fe;">
     <div class="col-12 users-btn-container">
-      <button class="btn btn-outline-success btn-sm" @click="openNewUserDialog()">New user</button>
+      <button class="btn btn-outline-success btn-sm" @click="openNewUserDialog()">新規ユーザー</button>
       <div class="control-navbar-item">
-        <small>Sort by</small>
-        <button class="btn btn-outline-primary btn-sm" @click="sortById()">User ID</button>
-        <button class="btn btn-outline-primary btn-sm" @click="sortByFirstName()">First name</button>
-        <button class="btn btn-outline-primary btn-sm" @click="sortByLastName()">Last name</button>
+        <small>並び替え</small>
+        <button class="btn btn-outline-primary btn-sm" @click="sortById()">ユーザーID</button>
+        <button class="btn btn-outline-primary btn-sm" @click="sortByFirstName()">姓</button>
+        <button class="btn btn-outline-primary btn-sm" @click="sortByLastName()">名</button>
       </div>
     </div>
   </nav>
@@ -17,22 +17,22 @@
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">New User</h5>
+            <h5 class="modal-title">新規ユーザー</h5>
           </div>
           <div class="modal-body event-detail-modal-body">
             <form v-on:submit.prevent="createUser()">
               <div class="row">
                 <div class="col-sm-6">
-                  <p><strong>Required</strong></p>
-                  <small>First name</small>
+                  <p><strong>必須項目</strong></p>
+                  <small>姓</small>
                   <input type="text" v-model="newUser.first_name" class="form-control" autocomplete="given-name">
-                  <small>Last name</small>
+                  <small>名</small>
                   <input type="text" v-model="newUser.last_name" class="form-control" autocomplete="family-name">
-                  <small>Email</small>
+                  <small>メールアドレス</small>
                   <input type="text" v-model="newUser.email" class="form-control" autocomplete="email">
-                  <small>Phone</small>
+                  <small>電話番号</small>
                   <input type="text" v-model="newUser.phone" class="form-control" autocomplete="tel-national">
-                  <small>Gender</small>
+                  <small>性別</small>
                   <select v-model="newUser.gender" class="form-select" autocomplete="sex">
                     <option
                       v-for="gender in genders"
@@ -44,8 +44,8 @@
                   </select>
                 </div>
                 <div class="col-sm-6">
-                  <p><strong>Optional</strong></p>
-                  <small>State</small>
+                  <p><strong>任意項目</strong></p>
+                  <small>都道府県</small>
                   <select v-model="newUser.state" class="form-select" autocomplete="address-level1">
                     <option
                       v-for="state in states"
@@ -55,24 +55,25 @@
                       {{ state }}
                     </option>
                   </select>
-                  <small>City</small>
+                  <small>市区町村</small>
                   <input type="text" v-model="newUser.city" class="form-control" autocomplete="address-level2">
-                  <small>Address</small>
+                  <small>以降の住所</small>
                   <input autocomplete="street-address" type="text" v-model="newUser.address" class="form-control">
-                  <small>Zip</small>
+                  <small>郵便番号</small>
                   <input type="text" v-model="newUser.zip" class="form-control" autocomplete="postal-code">
-                  <small>Note (customer can see)</small>
+                  <small>ご要望など</small><br>
+                  <small class="smaller-text">(お客様画面に表示されます)</small>
                   <textarea v-model="newUser.note" col-sm-6s="30" rows="3" class="user-note form-control"></textarea>
-                  <small>Birthday</small>
+                  <small>生年月日</small>
                   <input type="date" v-model="newUser.birthday" class="form-control" autocomplete="bday">
-                  <small>Status</small>
+                  <small>ステータス</small>
                   <input type="text" v-model="newUser.status" class="form-control">
                 </div>
                 <div class="modal-footer btn-container col-sm-12">
                   <!-- <button class="btn btn-primary">Update</button> -->
-                  <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button class="btn btn-primary" type="submit">Submit</button>
-                  <small>Password will be generated automatically and the user will be notified immediately by email</small>
+                  <button class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+                  <button class="btn btn-primary" type="submit">登録</button>
+                  <small>パスワードが自動生成されメルアドレスにお知らせが送付されます</small>
                 </div>
               </div>
             </form>
@@ -82,7 +83,7 @@
     </div>
 
     <div class="row">
-      <small>Click to see more detail</small>
+      <small>クリックして詳細表示</small>
       <div class="col-md-4" v-for="user in users" :key="user.id">
         <div class="list-group" id="list-tab" @click="this.$router.push(`/admin/users/${user.id}`)">
           <a
@@ -265,5 +266,11 @@
   }
   .control-navbar-item {
     float: right;
+  }
+  .smaller-text {
+    font-size: x-small;
+  }
+  .modal-footer {
+    margin-top: 10px;
   }
 </style>
