@@ -18,12 +18,12 @@
           </form>
         </div>
       </div>
-      <div class="col-sm-12 login-hint">
+      <div class="col-sm-6 login-hint">
         <p class="login-hint-title">Login as Admin</p>
         <p class="login-hint-item"><small>Email: test@test.com</small></p>
         <p class="login-hint-item"><small>Password: password</small></p>
       </div>
-      <div class="col-sm-12 login-hint">
+      <div class="col-sm-6 login-hint">
         <p class="login-hint-title">Login as User</p>
         <p class="login-hint-item"><small>Email: user@user.com</small></p>
         <p class="login-hint-item"><small>Password: password</small></p>
@@ -74,7 +74,7 @@ import axios from 'axios'
     align-items: center;
   }
   .container {
-    max-width: 300px;
+    max-width: 400px;
   }
   .btn-container {
     margin-top: 20px;

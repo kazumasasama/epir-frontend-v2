@@ -44,7 +44,7 @@
                   </select>
                 </div>
                 <div class="col-sm-6">
-                  <p><strong>Additional Info</strong></p>
+                  <p><strong>Optional</strong></p>
                   <small>State</small>
                   <select v-model="newUser.state" class="form-select" autocomplete="address-level1">
                     <option
