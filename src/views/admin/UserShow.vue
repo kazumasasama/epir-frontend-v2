@@ -125,8 +125,9 @@ import axios from 'axios'
         genders: [
           "Male",
           "Female",
-          "N/A",
-          "Rather not to say"
+          "Non Binary",
+          "Rather not to say",
+          "N/A"
         ],
         states: [
           "AL", "AK", "AZ", "AR", "CA",
