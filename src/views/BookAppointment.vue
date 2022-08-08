@@ -478,8 +478,8 @@ import * as moment from 'moment-timezone';
         return moment(this.picked).format('MM-DD-YYYY');
       },
       USformattedTime() {
-        var tokyo = moment.tz(this.selectedTime, 'Asia/Tokyo');
-        return tokyo.format('hh:mm A');
+        var time = moment(this.selectedTime);
+        return time.format('hh:mm A');
       },
       filteredBusinessTimes() {
         // 指定日の時間の呼び出し
