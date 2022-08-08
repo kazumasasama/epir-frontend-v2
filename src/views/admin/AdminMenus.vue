@@ -7,13 +7,13 @@
             @click="menuContent = 'active'"
             class="btn btn-outline-primary btn-sm"
           >
-            有効メニュー
+            Active
           </button>
           <button
             @click="menuContent = 'inactive'"
-            class="btn btn-outline-primary btn-sm"
+            class="btn btn-outline-danger btn-sm"
           >
-            無効メニュー
+            Inactive
           </button>
         </div>
       </div>
@@ -80,38 +80,38 @@
             <form>
               <div class="row">
                 <div class="col-12">
-                  <small>メニュー名</small>
+                  <small>Title</small>
                   <input type="text" v-model="updatingMenu.title" class="form-control">
-                  <small>価格</small>
+                  <small>Price</small>
                   <input type="number" v-model="updatingMenu.price" class="form-control">
-                  <small>施術時間</small>
+                  <small>Duration</small>
                   <input type="number" v-model="updatingMenu.duration" class="form-control">
-                  <small>説明</small>
+                  <small>Description</small>
                   <textarea type="text" v-model="updatingMenu.description" class="form-control"></textarea>
                   <div class="btn-container col-12">
                     <div class="col">
-                      <button @click="createMenu()" class="btn-sm btn-success btn">新規作成</button>
-                      <button @click="updateMenu()" class="btn-sm btn-primary btn">更新</button>
+                      <button @click="createMenu()" class="btn-sm btn-success btn">New Menu</button>
+                      <button @click="updateMenu()" class="btn-sm btn-primary btn">Update</button>
                       <button
                         type="reset"
                         class="btn-sm btn-secondary btn"
                         @click="clearForm()"
                       >
-                        フォームクリア
+                        Clear Form
                       </button>
                       <button
                         class="btn-sm btn-danger btn"
                         v-if="menuContent === 'active'"
                         @click="deactivateMenu()"
                       >
-                        無効化
+                        Deactivate
                       </button>
                       <button
                         class="btn-sm btn-danger btn"
                         v-if="menuContent === 'inactive'"
                         @click="activateMenu()"
                       >
-                        有効化
+                        Activate
                       </button>
                     </div>
                   </div>

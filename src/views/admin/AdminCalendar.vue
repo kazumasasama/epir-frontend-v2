@@ -25,7 +25,7 @@
             :max-date="maxDate"
             events-count-on-year-view
             hide-week-number
-            locale="ja"
+            locale="en"
           />
         </div>
       </div>

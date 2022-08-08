@@ -26,16 +26,22 @@
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              管理
+              Admin Menu
             </a>
             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-              <li><a class="dropdown-item" href="/admin/calendar">予約カレンダー</a></li>
-              <li><a class="dropdown-item" href="/admin/menus">メニュー</a></li>
-              <li><a class="dropdown-item" href="/admin/users">ユーザー一覧</a></li>
+              <li>
+                <a class="dropdown-item" href="/admin/calendar">Appointments</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="/admin/menus">Menus</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="/admin/users">Customers</a>
+              </li>
             </ul>
           </li>
           <li class="nav-item" @click="logout()" v-if="showNavMenu">
-            <a class="nav-link">ログアウト</a>
+            <a class="nav-link">Logout</a>
           </li>
           <!-- <li class="nav-item">
             <a class="nav-link" href="/mypage">My Page</a>
