@@ -12,7 +12,7 @@
           aria-valuemin="0"
           aria-valuemax="25"
         >
-          メニュー
+          Menu
         </div>
         <div
           id="progress-2"
@@ -23,7 +23,7 @@
           aria-valuemin="0"
           aria-valuemax="25"
         >
-          日時
+          Date/Time
         </div>
         <div
           id="progress-3"
@@ -34,7 +34,7 @@
           aria-valuemin="0"
           aria-valuemax="25"
         >
-          お客様情報
+          Customer Info
         </div>
         <div
           id="progress-4"
@@ -45,7 +45,7 @@
           aria-valuemin="0"
           aria-valuemax="25"
         >
-          確認
+          Confirmation
         </div>
       </div>
     </nav>
@@ -54,7 +54,7 @@
       <form>
         <div class="row">
           <div class="text-start">
-            <h5>メニュー選択</h5>
+            <h5>Pick menus</h5>
           </div>
           <div class="col-sm-6">
             <div
@@ -104,7 +104,7 @@
                 class="btn btn-primary"
                 @click="nextStep()"
               >
-                次のステップ >>
+                Date/Time >>
               </button>
             </div>
           </div>
@@ -114,7 +114,7 @@
 
     <div class="pick-date" v-if="currentStep === 2">
       <div class="text-start">
-        <h5>日時選択</h5>
+        <h5>Pick a date and time</h5>
       </div>
       <form>
         <div class="row">
@@ -157,14 +157,14 @@
                 class="btn btn-secondary"
                 @click="prevStep()"
               >
-                戻る
+                Go Back
               </button>
               <button
                 type="submit"
                 class="btn btn-primary"
                 @click="nextStep()"
               >
-                次のステップ >>
+                Customer Info >>
               </button>
             </div>
           </div>
@@ -174,20 +174,20 @@
 
     <div class="user-info" v-if="currentStep === 3">
       <div class="text-start">
-        <h5>お客様情報</h5>
+        <h5>Customer Info</h5>
       </div>
       <form>
         <div class="row">
           <div class="col-sm-4">
-            <small>姓</small>
-            <input type="text" v-model="user.last_name" class="form-control">
-            <small>名</small>
+            <small>First name</small>
             <input type="text" v-model="user.first_name" class="booking-input form-control">
-            <small>メールアドレス</small>
+            <small>Last name</small>
+            <input type="text" v-model="user.last_name" class="form-control">
+            <small>Email</small>
             <input type="email" v-model="user.email" class="form-control">
-            <small>電話番号</small>
+            <small>Phone</small>
             <input type="tel" v-model="user.phone" class="form-control">
-            <small>性別</small>
+            <small>Gender</small>
             <select v-model="user.gender" class="form-select">
               <option
                 v-for="gender in genders"
@@ -199,9 +199,9 @@
             </select>
           </div>
           <div class="col-sm-4">
-            <small>郵便番号</small>
+            <small>Zip</small>
             <input type="text" v-model="user.zip" class="form-control">
-            <small>都道府県</small>
+            <small>State</small>
             <select
               v-model="user.state"
               class="form-select"
@@ -215,13 +215,13 @@
                 {{ state }}
               </option>
             </select>
-            <small>市区町村</small>
+            <small>City</small>
             <input type="text" v-model="user.city" class="form-control">
-            <small>以下の住所</small>
+            <small>Address</small>
             <input type="text" v-model="user.address" class="form-control">
           </div>
           <div class="col-sm-4">
-            <small>ご要望など</small>
+            <small>If you have requeasts</small>
             <textarea v-model="user.note" col-sm-6s="30" rows="3" class="user-note form-control"></textarea>
           </div>
           <div class="col-12">
@@ -231,14 +231,14 @@
                 class="btn btn-secondary"
                 @click="prevStep()"
               >
-                戻る
+                Go Back
               </button>
               <button
                 type="submit"
                 class="btn btn-primary"
                 @click="nextStep()"
               >
-                次のステップ >>
+                Confirm >>
               </button>
             </div>
           </div>
@@ -250,36 +250,36 @@
       <form v-on:submit.prevent="createAppointment()">
         <div class="row">
           <div class="text-start">
-            <h5>予約内容の確認</h5>
+            <h5>Confirmation</h5>
           </div>
           <div class="col-sm-4">
-            <small class="confirm-item-tag">お名前:</small>
+            <small class="confirm-item-tag">Name:</small>
             <p>{{ fullName }}</p>
-            <small class="confirm-item-tag">メールアドレス:</small>
+            <small class="confirm-item-tag">Email:</small>z
             <p>{{ user.email }}</p>
-            <small class="confirm-item-tag">電話番号:</small>
+            <small class="confirm-item-tag">Phone:</small>
             <p>{{ user.phone }}</p>
-            <small class="confirm-item-tag">住所:</small>
+            <small class="confirm-item-tag">Address:</small>
             <p>{{ user.address }}</p>
             <p>{{ user.city }}, {{ user.state }} {{ user.zip }}</p>
-            <small class="confirm-item-tag">性別:</small>
+            <small class="confirm-item-tag">Gender:</small>
             <p>{{ user.gender }}</p>
-            <small class="confirm-item-tag">ご要望など:</small>
+            <small class="confirm-item-tag">Requests:</small>
             <p>{{ user.note }}</p>
           </div>
           <div class="col-sm-4">
-            <small class="confirm-item-tag">予約日:</small>
+            <small class="confirm-item-tag">Appointment Date:</small>
             <p>{{ USformattedPicked }}</p>
-            <small class="confirm-item-tag">時間:</small>
+            <small class="confirm-item-tag">Time:</small>
             <p>{{ USformattedTime }} - {{ endTime }}</p>
           </div>
           <div class="col-sm-4">
             <section>
               <div class="product card">
                 <div class="description card-body">
-                  <h5 class="card-title text-center">料金</h5>
+                  <h5 class="card-title text-center">Price</h5>
                   <ul class="payment-item">
-                    <small class="confirm-item-tag">メニュー:</small>
+                    <small class="confirm-item-tag">Menu:</small>
                     <div v-for="menu in selectedMenus" :key="menu.id" class="d-flex justify-content-between">
                       <li>
                         {{ menu.title }}
@@ -289,24 +289,24 @@
                   </ul>
                   <hr>
                   <div class="payment-item d-flex justify-content-between">
-                    <h6 class="text-end">小計</h6>
-                    <span>¥{{ subTotal }}</span>
+                    <h6 class="text-end">Subtotal</h6>
+                    <span>${{ subTotal }}</span>
                   </div>
                   <div class="payment-item d-flex justify-content-between">
-                    <h6 class="text-end">消費税</h6>
-                    <span>¥{{ serviceTax }}</span>
+                    <h6 class="text-end">Tax (NY)</h6>
+                    <span>${{ serviceTax }}</span>
                   </div>
                     <hr>
                   <div class="payment-item d-flex justify-content-between">
-                    <h6 class="text-end">合計</h6>
-                    <h5>¥{{ subTotal + serviceTax }}</h5>
+                    <h6 class="text-end">TOTAL</h6>
+                    <h5>${{ subTotal + serviceTax }}</h5>
                   </div>
                   <hr>
                   <p>
-                    <small>クーポンをお持ちの方は店頭にてご使用いただけます。ご予約当日に担当者にお伝えください。</small>
+                    <small>Bring your coupon and plesent at the salon before treatment starts.</small>
                   </p>
                   <p>
-                    <small>金額は目安となっております。お身体の状態により変更になることがございます。</small>
+                    <small>Price may vary according to body condition.</small>
                   </p>
                   <div class="form-check">
                     <input
@@ -317,22 +317,21 @@
                     >
                     <label class="form-check-label" for="flexCheckDefault">
                       <small class="terms-and-conditions">
-                        当サイトの 
+                        Agree to our 
                         <a
                           href="/termsandconditions"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          利用規約
-                        </a> と 
+                          Teams and Condition
+                        </a> and 
                         <a 
                           href="/privacyandpolicy"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          サイトポリシー
+                          Privacy and Policy
                         </a>
-                        に同意する
                       </small>
                     </label>
                   </div>
@@ -349,21 +348,21 @@
               class="btn btn-secondary"
               @click="prevStep()"
             >
-              戻る
+              Go Back
             </button>
             <button
               type="button"
               class="btn btn-danger"
               @click="clearAppointment()"
             >
-              初めからやり直す
+              Start Again
             </button>
             <button
               type="submit"
               class="btn btn-primary"
               :disabled="!confirmCheckbox"
             >
-              予約する
+              Book Appointment
             </button>
             <!-- <button
               v-if="currentStep === 4"
