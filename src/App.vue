@@ -1,8 +1,8 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3e5fd;">
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #a1a6e1;">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">
-        <img src="@/assets/epiRLogo70x40.png" alt="epiR logo">
+        <h1 id="bisiness-name-logo">Biznesu</h1>
       </a>
       <button
         class="navbar-toggler"
@@ -96,6 +96,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: #e3e5fd;
 }
 
 nav {
@@ -126,5 +127,11 @@ ul {
   padding-bottom: 12px;
   margin-top: 25px;
   margin-bottom: 25px;
+}
+
+#bisiness-name-logo {
+  font-family: Helvetica;
+  font-weight: bold;
+  color: white;
 }
 </style>
