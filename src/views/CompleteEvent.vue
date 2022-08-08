@@ -4,23 +4,21 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-6">
-            <h4>ご予約を承りました</h4>
+            <h4>Thank you!</h4>
             <p></p>
             <p></p>
-            <p>ご利用ありがとうございます。</p>
-            <p>ご予約の変更、キャンセルをされる場合は下記連絡先のお電話かLINEにてお知らせください。施術中はすぐに返信ができないことがございますが、確認が出来次第ご連絡差し上げます。</p>
+            <p>We just made your appointment.</p>
+            <p>If you wish to change/cancel your appintment,please give us a call or contact through Line app. We will get back with you as soon as possible.</p>
             <p>
-              ご予約時間の24時間前以降のキャンセルはキャンセル料が発生することがございます。
-              詳しくは下記連絡先にお問い合わせください。
+              Please note that we might charge cancelation fee for appointments start within 24 hours.
             </p>
             <ul class="store-info-complete">
-              <h5>脱毛サロン エピア祖師谷 epiR</h5>
-              <li>〒157-0073</li>
-              <li>東京都世田谷区</li>
-              <li>砧8丁目3-10 砧OKマンション202</li>
+              <h5>Business Name</h5>
+              <li>111 W 11th Street</li>
+              <li>New York, NY 10001</li>
               <p></p>
-              <li>TEL: 080-3715-9012</li>
-              <li>LINE ID: epir.ikuta</li>
+              <li>TEL: 111-111-1111</li>
+              <li>LINE ID: biznesu.1</li>
             </ul>
           </div>
           <div class="col-sm-6">
