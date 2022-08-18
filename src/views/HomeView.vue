@@ -40,7 +40,7 @@ export default {
 
 <style>
 .card-img-home {
-  max-width: 400px;
+  max-width: 430px;
 }
 .top-card-title {
   margin-top: 8px;

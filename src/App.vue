@@ -1,8 +1,13 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #a1a6e1;">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/">
-        <h1 id="bisiness-name-logo">Biznesu</h1>
+      <a href="/">
+        <img
+          id="bisiness-name-logo"
+          src="@/assets/Biznesu-logo-white.png"
+          alt="Biznesu company logo"
+        >
+        <!-- <h1 id="bisiness-name-logo">Biznesu</h1> -->
       </a>
       <button
         class="navbar-toggler"
@@ -105,10 +110,6 @@
   background-color: #e3e5fd;
 }
 
-nav {
-  padding: 30px;
-}
-
 nav a {
   font-weight: bold;
   color: #2c3e50;
@@ -136,8 +137,11 @@ ul {
 }
 
 #bisiness-name-logo {
-  font-family: Helvetica;
+  /* font-family: Helvetica;
   font-weight: bold;
   color: white;
+  font-size: 20pt;
+  margin-bottom: 0px; */
+  max-width: 200px;
 }
 </style>
