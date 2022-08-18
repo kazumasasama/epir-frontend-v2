@@ -50,12 +50,12 @@ import mapboxgl from 'mapbox-gl';
         mapboxgl.accessToken = process.env.VUE_APP_MAPBOX;
         const map = new mapboxgl.Map({
           container: 'map', // container ID
-          style: 'mapbox://styles/kaznyc/cl3z0c148000i14qp3onp4x8e', // style URL
-          center: [139.60830166136682, 35.64141293315793], // starting position [lng, lat]
-          zoom: 15 // starting zoom
+          style: 'mapbox://styles/mapbox/streets-v11', // style URL
+          center: [-73.99873361830024, 40.735854328717224], // starting position [lng, lat]
+          zoom: 14 // starting zoom
         });
         new mapboxgl.Marker()
-        .setLngLat([139.60774175922208, 35.63984499572222])
+        .setLngLat([-73.99873361830024, 40.735854328717224])
         .addTo(map);
         // const language = event.target.id.substr('button-'.length);
       },
