@@ -13,7 +13,7 @@
             <p></p>
             <p></p>
             <p>We just made your appointment.</p>
-            <p>If you wish to reschedule/cancel your appintment, please give us a call or contact through Line app. We will get back with you as soon as possible.</p>
+            <p>If you wish to reschedule/cancel your appintment, please give us a call.</p>
             <p>
               Please note that we might charge cancelation fee for appointments start within 24 hours.
             </p>
@@ -22,8 +22,7 @@
               <li>111 W 11th Street</li>
               <li>New York, NY 10001</li>
               <p></p>
-              <li>TEL: 111-111-1111</li>
-              <li>LINE ID: biznesu.1</li>
+              <li>Phone: 111-111-1111</li>
             </ul>
           </div>
           <div class="col-sm-6">
