@@ -5,6 +5,7 @@ import CompleteEvent from '@/views/CompleteEvent.vue'
 import SignupView from '@/views/SignupView.vue'
 import LoginView from '@/views/LoginView.vue'
 
+import AdminDashboard from '@/views/admin/AdminDashboard.vue'
 import AdminCalendar from '@/views/admin/AdminCalendar.vue'
 import AdminMenus from '@/views/admin/AdminMenus.vue'
 import UsersIndex from '@/views/admin/UsersIndex.vue'
@@ -19,6 +20,11 @@ const routes = [
     name: 'home',
     component: HomeView,
     meta: { }
+  },
+  {
+    path: '/admin/dashboard',
+    name: 'adminDashboard',
+    component: AdminDashboard
   },
   {
     path: '/admin/calendar',

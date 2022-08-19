@@ -35,6 +35,9 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
               <li>
+                <a class="dropdown-item" href="/admin/dashboard">Dashboard</a>
+              </li>
+              <li>
                 <a class="dropdown-item" href="/admin/calendar">Appointments</a>
               </li>
               <li>
@@ -79,7 +82,7 @@
     watch: {
       $route(to, from) {
         from
-        if (to.path === '/admin/menus' || to.path === '/admin/calendar' || to.path === '/admin/users') {
+        if (to.path === '/admin/menus' || to.path === '/admin/calendar' || to.path === '/admin/users' || to.path === '/admin/dashboard') {
           this.showNavMenu = true;
         }
       }
