@@ -570,6 +570,8 @@ import * as moment from 'moment-timezone';
           "user_id": this.user.id,
           "duration_total": this.totalDuration,
           "menus": this.selectedMenus.map((menu)=> menu.id),
+          "price": this.subTotal,
+          "tax": this.serviceTax,
         }
         axios.post("/events.json", bookingInfo)
         .then((res)=> {
