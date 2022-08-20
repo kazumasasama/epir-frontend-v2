@@ -21,18 +21,6 @@
     <div class="row">
       <div class="card col-12">
         <div class="card-body">
-          <form action="">
-            <div class="col-sm-6">
-              <div class="input-group input-group-sm mb-3">
-                <span class="input-group-text">Year</span>
-                <input type="text" v-model="year" class="form-control">
-                <div class="btn-group" role="group">
-                  <button @click="decreaseYear()" type="button" class="btn btn-outline-secondary btn-sm">{{"<"}}</button>
-                  <button @click="increaseYear()" type="button" class="btn btn-outline-secondary btn-sm">{{">"}}</button>
-                </div>
-              </div>
-            </div>
-          </form>
           <div class="row">
             <div class="col-md-4">
               <DoughnutChart
@@ -46,7 +34,20 @@
                 :chartOptions="genderDoughnutChartOptions"
               />
             </div>
+            <hr class="hr-space-devider">
             <div class="col-md-6">
+              <div>
+                  <form action="">
+                  <div class="input-group input-group-sm mb-3">
+                    <span class="input-group-text">Year</span>
+                    <input type="text" v-model="year" class="form-control">
+                    <div class="btn-group" role="group">
+                      <button @click="decreaseYear()" type="button" class="btn btn-outline-secondary btn-sm">{{"<"}}</button>
+                      <button @click="increaseYear()" type="button" class="btn btn-outline-secondary btn-sm">{{">"}}</button>
+                    </div>
+                  </div>
+              </form>
+                </div>
               <BarChart
                 :chartData="barChartData"
                 :chartOptions="barChartOptions"
@@ -137,7 +138,7 @@ export default {
             stacked: true,
           },
           y: {
-            stacked: true
+            stacked: true,
           }
         },
       },
@@ -182,14 +183,6 @@ export default {
             return delay;
           },
         },
-        scales: {
-          x: {
-            stacked: true,
-          },
-          y: {
-            stacked: true
-          }
-        },
       },
       genderDoughnutChartData: {
         labels: [],
@@ -231,14 +224,6 @@ export default {
             }
             return delay;
           },
-        },
-        scales: {
-          x: {
-            stacked: true,
-          },
-          y: {
-            stacked: true
-          }
         },
       },
     }
@@ -285,5 +270,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+  .hr-space-devider {
+    margin-top: 16px;
+  }
 </style>
