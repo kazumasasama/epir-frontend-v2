@@ -261,7 +261,7 @@ export default {
           },
           title: {
             display: true,
-            text: 'Menus (Times)'
+            text: 'Appointments by Menu'
           }
         },
         animation: {
