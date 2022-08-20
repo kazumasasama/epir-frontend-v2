@@ -9,14 +9,15 @@
     :styles="styles"
     :width="width"
     :height="height"
+    :type="type"
   />
 </template>
 
 <script>
 import { Bar } from 'vue-chartjs'
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
+import { Chart, registerables } from 'chart.js'
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+Chart.register(...registerables)
 
 export default {
   name: 'BarChart',
@@ -30,11 +31,12 @@ export default {
     },
     chartId: {
       type: String,
-      default: 'bar-chart'
     },
     datasetIdKey: {
       type: String,
-      default: 'label'
+    },
+    type: {
+      type: String,
     },
     width: {
       type: Number,

@@ -1,7 +1,25 @@
 <template>
   <div class="container">
-    <div class="card row">
+    <div class="row">
       <div class="col-12">
+        <div class="card-group">
+          <div class="card text-bg-light mb-3">
+            <div class="card-header">Users</div>
+            <div class="card-body">
+              <p class="card-text">{{ usersTotal }}</p>
+            </div>
+          </div>
+          <div class="card text-bg-light mb-3">
+            <div class="card-header">Avarage spent</div>
+            <div class="card-body">
+              <p class="card-text">{{ usersTotal }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="card col-12">
         <div class="card-body">
           <form action="">
             <div class="col-sm-6">
@@ -16,17 +34,23 @@
             </div>
           </form>
           <div class="row">
+            <div class="col-md-4">
+              <DoughnutChart
+                :chartData="doughnutChartData"
+                :chartOptions="doughnutChartOptions"
+              />
+            </div>
+            <div class="col-md-4">
+              <DoughnutChart
+                :chartData="genderDoughnutChartData"
+                :chartOptions="genderDoughnutChartOptions"
+              />
+            </div>
             <div class="col-md-6">
               <BarChart
                 :chartData="barChartData"
                 :chartOptions="barChartOptions"
-                type="bar"
-              />
-            </div>
-            <div class="col-md-6">
-              <DoughnutChart
-                :chartData="doughnutChartData"
-                :chartOptions="doughnutChartOptions"
+                :type="type"
               />
             </div>
           </div>
@@ -49,6 +73,7 @@ export default {
 },
   data () {
     return {
+      usersTotal: 0,
       CHART_COLORS: {
         red: 'rgb(255, 99, 132)',
         orange: 'rgb(255, 159, 64)',
@@ -60,6 +85,7 @@ export default {
       },
       delayed: true,
       year: moment().format('YYYY'),
+      type: "bar",
       barChartData: {
         labels: [
           'Jan', 'Feb', 'Mar', 'Apr',
@@ -68,15 +94,18 @@ export default {
         ],
         datasets: [
           {
+            type: 'bar',
             label: 'This year',
             data: [], //ここにデータを入れる (Array of numbers)
             backgroundColor: 'rgb(255, 99, 132)',
           },
           {
+            type: 'line',
             label: 'Last year',
             data: [], //ここにデータを入れる (Array of numbers)
-            backgroundColor: 'rgb(54, 162, 235)',
+            // backgroundColor: 'rgb(54, 162, 235)',
             borderColor: 'rgb(54, 162, 235)',
+            fill: false
           },
         ]
       },
@@ -162,15 +191,66 @@ export default {
           }
         },
       },
+      genderDoughnutChartData: {
+        labels: [],
+        datasets: [
+          {
+            label: 'This year',
+            data: [1], //ここにデータを入れる (Array of numbers)
+            backgroundColor: Object.values({
+              green: 'rgb(75, 192, 192)',
+              blue: 'rgb(54, 162, 235)',
+              purple: 'rgb(153, 102, 255)',
+              grey: 'rgb(201, 203, 207)',
+              red: 'rgb(255, 99, 132)',
+              orange: 'rgb(255, 159, 64)',
+              yellow: 'rgb(255, 205, 86)',
+            })
+          }
+        ]
+      },
+      genderDoughnutChartOptions: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Gender'
+          }
+        },
+        animation: {
+          onComplete: () => {
+            this.delayed = true;
+          },
+          delay: (context) => {
+            let delay = 0;
+            if (context.type === 'data' && context.mode === 'default' && !this.delayed) {
+              delay = context.dataIndex * 300 + context.datasetIndex * 100;
+            }
+            return delay;
+          },
+        },
+        scales: {
+          x: {
+            stacked: true,
+          },
+          y: {
+            stacked: true
+          }
+        },
+      },
     }
   },
   watch: {
     year() {
-      this.getMonthlyReport();
+      this.getYearlyStatics();
     }
   },
   mounted() {
-    this.getMonthlyReport();
+    this.getYearlyStatics();
+    this.getAllTimeUsersStatics();
   },
   methods: {
     increaseYear() {
@@ -179,7 +259,7 @@ export default {
     decreaseYear() {
       this.year--;
     },
-    getMonthlyReport() {
+    getYearlyStatics() {
       axios.post('/monthly-report.json', {"year": this.year})
       .then((res)=> {
         let appointments = res.data['events']
@@ -190,6 +270,15 @@ export default {
         let currentMenuValues = Object.values(menus)
         this.doughnutChartData.labels = currentMenuKeys;
         this.doughnutChartData.datasets[0].data = currentMenuValues;
+      })
+    },
+    getAllTimeUsersStatics() {
+      axios.post('/users-statics.json')
+      .then((res)=> {
+        let usersStatics = res.data;
+        this.usersTotal = usersStatics[0];
+        this.genderDoughnutChartData.labels = Object.keys(usersStatics[1])
+        this.genderDoughnutChartData.datasets[0].data = Object.values(usersStatics[1]);
       })
     },
   },
