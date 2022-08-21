@@ -10,7 +10,7 @@
     <div class="row">
       <div class="col-12">
         <small>Don't see appointments? Try reflesh this page.</small>
-        <div class="calendar-container">
+        <div class="calendar-container card">
           <vue-cal
             small
             today-button
