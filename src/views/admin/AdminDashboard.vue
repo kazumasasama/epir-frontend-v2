@@ -1,106 +1,121 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <div class="card-group">
-          <div class="card text-bg-light mb-3">
-            <div class="card-header">Users</div>
-            <div class="card-body">
-              <p class="card-text">{{ usersTotal }}</p>
+  <div class="vld-parent">
+    <loading v-model:active="isLoading"
+      :can-cancel="true"
+      :is-full-page="fullPage"
+      color="rgb(140, 146, 232)"
+      loader="dots"
+      height="100"
+      width="150"
+      opacity="0.7"
+    >
+      <template v-slot:after>
+        <p class="spinner-after">Loading</p>
+      </template>
+    </loading>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="card-group">
+            <div class="card text-bg-light mb-3">
+              <div class="card-header">Users</div>
+              <div class="card-body">
+                <p class="card-text">{{ usersTotal }}</p>
+              </div>
             </div>
-          </div>
-          <div class="card text-bg-light mb-3">
-            <div class="card-header">Avarage spent</div>
-            <div class="card-body">
-              <p class="card-text">{{ usersTotal }}</p>
+            <div class="card text-bg-light mb-3">
+              <div class="card-header">Avarage spent</div>
+              <div class="card-body">
+                <p class="card-text">{{ usersTotal }}</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="card col-12">
-        <div class="card-body">
-          <!-- <div class="row">
-            <div class="col-md-4">
-              <DoughnutChart
-                :chartData="genderDoughnutChartData"
-                :chartOptions="genderDoughnutChartOptions"
-              />
-            </div>
-          </div>
-          <hr class="hr-space-devider"> -->
-          <div class="col-md-6">
-            <form action="">
-              <div class="input-group input-group-sm mb-3">
-                <span class="input-group-text">Year</span>
-                <input type="text" v-model="currentYear" class="form-control">
-                <div class="btn-group" role="group">
-                  <button @click="decreaseYear()" type="button" class="btn btn-outline-secondary btn-sm">{{"<"}}</button>
-                  <button @click="increaseYear()" type="button" class="btn btn-outline-secondary btn-sm">{{">"}}</button>
-                </div>
+      <div class="row">
+        <div class="card col-12">
+          <div class="card-body">
+            <!-- <div class="row">
+              <div class="col-md-4">
+                <DoughnutChart
+                  :chartData="genderDoughnutChartData"
+                  :chartOptions="genderDoughnutChartOptions"
+                />
               </div>
-            </form>
-          </div>
-          <div class="row">
-            <div class="col-md-8">
-              <BarChart
-                :chartData="barChartData"
-                :chartOptions="barChartOptions"
-                :height="barChartHeight"
-                type="bar"
-              />
             </div>
-            <div class="col-md-4">
-              <div class="card-group">
-                <div class="card text-bg-light mb-3">
-                  <div class="card-header">{{ currentYear }}</div>
-                  <div class="card-body">
-                    <p class="card-text">{{ currentAppointmentTotal }}</p>
+            <hr class="hr-space-devider"> -->
+            <div class="col-md-6">
+              <form action="">
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text">Year</span>
+                  <input type="text" v-model="currentYear" class="form-control">
+                  <div class="btn-group" role="group">
+                    <button @click="decreaseYear()" type="button" class="btn btn-outline-secondary btn-sm">{{"<"}}</button>
+                    <button @click="increaseYear()" type="button" class="btn btn-outline-secondary btn-sm">{{">"}}</button>
                   </div>
                 </div>
-                <div class="card text-bg-light mb-3">
-                  <div class="card-header">{{ currentYear - 1 }}</div>
-                  <div class="card-body">
-                    <p class="card-text">{{ prevAppointmentTotal }}</p>
-                  </div>
-                </div>
+              </form>
+            </div>
+            <div class="row">
+              <div class="col-md-8">
+                <BarChart
+                  :chartData="barChartData"
+                  :chartOptions="barChartOptions"
+                  :height="barChartHeight"
+                  type="bar"
+                />
               </div>
-              <DoughnutChart
-                :chartData="doughnutChartData"
-                :chartOptions="doughnutChartOptions"
-              />
-            </div>
-          </div>
-          <hr class="hr-space-devider">
-          <div class="row">
-            <div class="col-md-8">
-              <BarChart
-                :chartData="salesBarChartData"
-                :chartOptions="salesBarChartOptions"
-                :height="barChartHeight"
-                type="bar"
-              />
-            </div>
-            <div class="col-md-4">
-              <div class="card-group">
-                <div class="card text-bg-light mb-3">
-                  <div class="card-header">{{ currentYear }}</div>
-                  <div class="card-body">
-                    <p class="card-text">${{ currentSalesTotal }}</p>
+              <div class="col-md-4">
+                <div class="card-group">
+                  <div class="card text-bg-light mb-3">
+                    <div class="card-header">{{ currentYear }}</div>
+                    <div class="card-body">
+                      <p class="card-text">{{ currentAppointmentTotal }}</p>
+                    </div>
+                  </div>
+                  <div class="card text-bg-light mb-3">
+                    <div class="card-header">{{ currentYear - 1 }}</div>
+                    <div class="card-body">
+                      <p class="card-text">{{ prevAppointmentTotal }}</p>
+                    </div>
                   </div>
                 </div>
-                <div class="card text-bg-light mb-3">
-                  <div class="card-header">{{ currentYear - 1 }}</div>
-                  <div class="card-body">
-                    <p class="card-text">${{ prevSalesTotal }}</p>
-                  </div>
-                </div>
+                <DoughnutChart
+                  :chartData="doughnutChartData"
+                  :chartOptions="doughnutChartOptions"
+                />
               </div>
-              <DoughnutChart
-                :chartData="salesByMenuDoughnutChartData"
-                :chartOptions="salesByMenuDoughnutChartOptions"
-              />
+            </div>
+            <hr class="hr-space-devider">
+            <div class="row">
+              <div class="col-md-8">
+                <BarChart
+                  :chartData="salesBarChartData"
+                  :chartOptions="salesBarChartOptions"
+                  :height="barChartHeight"
+                  type="bar"
+                />
+              </div>
+              <div class="col-md-4">
+                <div class="card-group">
+                  <div class="card text-bg-light mb-3">
+                    <div class="card-header">{{ currentYear }}</div>
+                    <div class="card-body">
+                      <p class="card-text">${{ currentSalesTotal }}</p>
+                    </div>
+                  </div>
+                  <div class="card text-bg-light mb-3">
+                    <div class="card-header">{{ currentYear - 1 }}</div>
+                    <div class="card-body">
+                      <p class="card-text">${{ prevSalesTotal }}</p>
+                    </div>
+                  </div>
+                </div>
+                <DoughnutChart
+                  :chartData="salesByMenuDoughnutChartData"
+                  :chartOptions="salesByMenuDoughnutChartOptions"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -115,18 +130,29 @@ import DoughnutChart from '@/components/charts/DoughnutChart.vue'
 import moment from 'moment';
 import axios from 'axios';
 
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
+
 export default {
   components: {
     BarChart,
     DoughnutChart,
+    Loading,
 },
   data () {
     return {
+      // spinner
+      isLoading: false,
+      fullPage: true,
+
+      // statics
       usersTotal: 0,
       currentAppointmentTotal: 0,
       prevAppointmentTotal: 0,
       currentSalesTotal: 0,
       prevSalesTotal: 0,
+
+      // charts
       barChartHeight: 200,
       CHART_COLORS: {
         red: 'rgb(255, 99, 132)',
@@ -368,7 +394,7 @@ export default {
       this.getYearlyStatics();
     }
   },
-  mounted() {
+  created() {
     this.getYearlyStatics();
     this.getAllTimeUsersStatics();
   },
@@ -380,6 +406,7 @@ export default {
       this.currentYear--;
     },
     getYearlyStatics() {
+      this.isLoading = true;
       axios.post('/monthly-report.json', {"year": this.currentYear})
       .then((res)=> {
         // appointments
@@ -423,6 +450,9 @@ export default {
         this.currentSalesTotal = sales['currentMonthlySalesSum'];
         this.prevSalesTotal = sales['prevSalesMonthlySum'];
       })
+      .then(()=> {
+        this.isLoading = false;
+      })
     },
     getAllTimeUsersStatics() {
       axios.post('/users-statics.json')
@@ -443,5 +473,10 @@ export default {
   }
   .card-header {
     font-size: small;
+  }
+  .spinner-after {
+    color: rgb(140, 146, 232);
+    font-size: larger;
+    font-weight: 600;
   }
 </style>
