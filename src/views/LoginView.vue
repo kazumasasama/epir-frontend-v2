@@ -25,7 +25,7 @@
       </div>
       <div class="col-sm-6 login-hint">
         <p class="login-hint-title">Login as User</p>
-        <p class="login-hint-item"><small>Email: user@user.com</small></p>
+        <p class="login-hint-item"><small>Email: test@user.com</small></p>
         <p class="login-hint-item"><small>Password: password</small></p>
       </div>
     </div>
