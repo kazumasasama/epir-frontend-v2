@@ -395,8 +395,14 @@ export default {
     }
   },
   created() {
+    this.isLoading = true;
     this.getYearlyStatics();
     this.getAllTimeUsersStatics();
+  },
+  mounted() {
+    this.$nextTick(function() {
+      this.isLoading = false;
+    })
   },
   methods: {
     increaseYear() {
