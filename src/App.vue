@@ -147,4 +147,10 @@ ul {
   margin-bottom: 0px; */
   max-width: 200px;
 }
+
+.spinner-after {
+    color: rgb(140, 146, 232);
+    font-size: larger;
+    font-weight: 600;
+  }
 </style>

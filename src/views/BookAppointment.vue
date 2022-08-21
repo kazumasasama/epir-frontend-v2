@@ -1,383 +1,398 @@
 <template>
-  <div class="container">
+  <div class="vld-parent">
+    <loading v-model:active="isLoading"
+      :can-cancel="true"
+      :is-full-page="fullPage"
+      color="rgb(140, 146, 232)"
+      loader="dots"
+      height="100"
+      width="150"
+      opacity="0.7"
+    >
+      <template v-slot:after>
+        <p class="spinner-after">{{ spinnerMessage }}</p>
+      </template>
+    </loading>
+    <div class="container">
 
-    <nav aria-label="breadcrumb" class="pg-bar">
-      <div class="progress" style="height: 25px;">
-        <div
-          id="progress-1"
-          class="progress-bar"
-          role="progressbar"
-          style="width: 25%;"
-          aria-valuenow="25"
-          aria-valuemin="0"
-          aria-valuemax="25"
-        >
-          Menu
-        </div>
-        <div
-          id="progress-2"
-          class="progress-bar bg-secondary"
-          role="progressbar"
-          style="width: 25%;"
-          aria-valuenow="25"
-          aria-valuemin="0"
-          aria-valuemax="25"
-        >
-          Date/Time
-        </div>
-        <div
-          id="progress-3"
-          class="progress-bar bg-secondary"
-          role="progressbar"
-          style="width: 25%;"
-          aria-valuenow="25"
-          aria-valuemin="0"
-          aria-valuemax="25"
-        >
-          Customer Info
-        </div>
-        <div
-          id="progress-4"
-          class="progress-bar bg-secondary"
-          role="progressbar"
-          style="width: 25%;"
-          aria-valuenow="25"
-          aria-valuemin="0"
-          aria-valuemax="25"
-        >
-          Confirmation
-        </div>
-      </div>
-    </nav>
-
-    <div class="pick-menus" v-if="currentStep === 1">
-      <form>
-        <div class="row">
-          <div class="text-start">
-            <h5>Pick menus</h5>
+      <nav aria-label="breadcrumb" class="pg-bar">
+        <div class="progress" style="height: 25px;">
+          <div
+            id="progress-1"
+            class="progress-bar"
+            role="progressbar"
+            style="width: 25%;"
+            aria-valuenow="25"
+            aria-valuemin="0"
+            aria-valuemax="25"
+          >
+            Menu
           </div>
-          <div class="col-sm-6">
-            <div
-              class="list-group"
-              id="list-tab"
-              role="tablist"
-            >
-              <label
-                class="list-group-item"
-                v-for="menu in menus"
-                :key="menu.id"
+          <div
+            id="progress-2"
+            class="progress-bar bg-secondary"
+            role="progressbar"
+            style="width: 25%;"
+            aria-valuenow="25"
+            aria-valuemin="0"
+            aria-valuemax="25"
+          >
+            Date/Time
+          </div>
+          <div
+            id="progress-3"
+            class="progress-bar bg-secondary"
+            role="progressbar"
+            style="width: 25%;"
+            aria-valuenow="25"
+            aria-valuemin="0"
+            aria-valuemax="25"
+          >
+            Customer Info
+          </div>
+          <div
+            id="progress-4"
+            class="progress-bar bg-secondary"
+            role="progressbar"
+            style="width: 25%;"
+            aria-valuenow="25"
+            aria-valuemin="0"
+            aria-valuemax="25"
+          >
+            Confirmation
+          </div>
+        </div>
+      </nav>
+
+      <div class="pick-menus" v-if="currentStep === 1">
+        <form>
+          <div class="row">
+            <div class="text-start">
+              <h5>Pick menus</h5>
+            </div>
+            <div class="col-sm-6">
+              <div
+                class="list-group"
+                id="list-tab"
+                role="tablist"
               >
-                <input
-                  class="form-check-input me-1 booking-input"
-                  type="checkbox"
-                  :value="menu"
-                  v-model="selectedMenus"  
+                <label
+                  class="list-group-item"
+                  v-for="menu in menus"
+                  :key="menu.id"
                 >
-                {{ menu.title }}
-                <ul class="text-end">
-                  <li><small>{{ menu.duration }} min</small></li>
-                  <li><small>${{ menu.price }}~</small></li>
-                </ul>
-              </label>
-            </div>
-          </div>
-          <div class="col-sm-6">
-            <div
-              class="list-group"
-              id="list-tab"
-              role="tablist"
-            >
-              <label
-                class="list-group-item"
-              >
-              <p>Total duration</p>
-                <p class="text-end">
-                  {{ durationSumInString }}
-                </p>
-              </label>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="btn-container">
-              <button
-                type="submit"
-                class="btn btn-primary"
-                @click="nextStep()"
-              >
-                Date/Time >>
-              </button>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-
-    <div class="pick-date" v-if="currentStep === 2">
-      <div class="text-start">
-        <h5>Pick a date and time</h5>
-      </div>
-      <form>
-        <div class="row">
-          <div class="col-sm-6">
-            <div class="datepicker-container">
-              <img
-                src="@/assets/icons/calendar.svg"
-                width="25"
-                height="25"
-                class="datepicker-item datepicker-icon"
-              >
-              <Datepicker v-model="picked" class="datepicker-item" inline  autoApply />
-            </div>
-          </div>
-          <div class="col-sm-6">
-            <div
-              class="list-group"
-              id="list-tab"
-              role="tablist"
-            >
-              <label
-                class="list-group-item"
-                v-for="timeSlot in filteredBusinessTimes"
-                :key="timeSlot.id"
-              >
-                <input
-                  class="form-check-input me-1 booking-input"
-                  type="radio"
-                  :value="timeSlot.time"
-                  v-model="selectedTime"
-                >
-                {{ timeSlot.time.slice(11, -13) }}
-              </label>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="btn-container">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                @click="prevStep()"
-              >
-                Go Back
-              </button>
-              <button
-                type="submit"
-                class="btn btn-primary"
-                @click="nextStep()"
-              >
-                Customer Info >>
-              </button>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-
-    <div class="user-info" v-if="currentStep === 3">
-      <div class="text-start">
-        <h5>Customer Info</h5>
-      </div>
-      <form>
-        <div class="row">
-          <div class="col-sm-4">
-            <small>First name</small>
-            <input type="text" v-model="user.first_name" class="booking-input form-control">
-            <small>Last name</small>
-            <input type="text" v-model="user.last_name" class="form-control">
-            <small>Email</small>
-            <input type="email" v-model="user.email" class="form-control">
-            <small>Phone</small>
-            <input type="tel" v-model="user.phone" class="form-control">
-            <small>Gender</small>
-            <select v-model="user.gender" class="form-select">
-              <option
-                v-for="gender in genders"
-                :key="gender"
-                :value="gender"
-              >
-                {{ gender }}
-              </option>
-            </select>
-          </div>
-          <div class="col-sm-4">
-            <small>Zip</small>
-            <input type="text" v-model="user.zip" class="form-control">
-            <small>State</small>
-            <select
-              v-model="user.state"
-              class="form-select"
-              autocomplete="address-level1"
-            >
-              <option
-                v-for="state in states"
-                :key="state"
-                :value="state"
-              >
-                {{ state }}
-              </option>
-            </select>
-            <small>City</small>
-            <input type="text" v-model="user.city" class="form-control">
-            <small>Address</small>
-            <input type="text" v-model="user.address" class="form-control">
-          </div>
-          <div class="col-sm-4">
-            <small>If you have requeasts</small>
-            <textarea v-model="user.note" col-sm-6s="30" rows="3" class="user-note form-control"></textarea>
-          </div>
-          <div class="col-12">
-            <div class="btn-container">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                @click="prevStep()"
-              >
-                Go Back
-              </button>
-              <button
-                type="submit"
-                class="btn btn-primary"
-                @click="nextStep()"
-              >
-                Confirm >>
-              </button>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-
-    <div class="confirmation" v-if="currentStep === 4">
-      <form v-on:submit.prevent="createAppointment()">
-        <div class="row">
-          <div class="text-start">
-            <h5>Confirmation</h5>
-          </div>
-          <div class="col-sm-4">
-            <small class="confirm-item-tag">Name:</small>
-            <p>{{ fullName }}</p>
-            <small class="confirm-item-tag">Email:</small>z
-            <p>{{ user.email }}</p>
-            <small class="confirm-item-tag">Phone:</small>
-            <p>{{ user.phone }}</p>
-            <small class="confirm-item-tag">Address:</small>
-            <p>{{ user.address }}</p>
-            <p>{{ user.city }}, {{ user.state }} {{ user.zip }}</p>
-            <small class="confirm-item-tag">Gender:</small>
-            <p>{{ user.gender }}</p>
-            <small class="confirm-item-tag">Requests:</small>
-            <p>{{ user.note }}</p>
-          </div>
-          <div class="col-sm-4">
-            <small class="confirm-item-tag">Appointment Date:</small>
-            <p>{{ USformattedPicked }}</p>
-            <small class="confirm-item-tag">Time:</small>
-            <p>{{ USformattedTime }} - {{ endTime }}</p>
-          </div>
-          <div class="col-sm-4">
-            <section>
-              <div class="product card">
-                <div class="description card-body">
-                  <h5 class="card-title text-center">Price</h5>
-                  <ul class="payment-item">
-                    <small class="confirm-item-tag">Menu:</small>
-                    <div v-for="menu in selectedMenus" :key="menu.id" class="d-flex justify-content-between">
-                      <li>
-                        {{ menu.title }}
-                      </li>
-                      <span>${{ menu.price }}</span>
-                    </div>
+                  <input
+                    class="form-check-input me-1 booking-input"
+                    type="checkbox"
+                    :value="menu"
+                    v-model="selectedMenus"  
+                  >
+                  {{ menu.title }}
+                  <ul class="text-end">
+                    <li><small>{{ menu.duration }} min</small></li>
+                    <li><small>${{ menu.price }}~</small></li>
                   </ul>
-                  <hr>
-                  <div class="payment-item d-flex justify-content-between">
-                    <h6 class="text-end">Subtotal</h6>
-                    <span>${{ subTotal }}</span>
-                  </div>
-                  <div class="payment-item d-flex justify-content-between">
-                    <h6 class="text-end">Tax (NY)</h6>
-                    <span>${{ serviceTax }}</span>
-                  </div>
+                </label>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div
+                class="list-group"
+                id="list-tab"
+                role="tablist"
+              >
+                <label
+                  class="list-group-item"
+                >
+                <p>Total duration</p>
+                  <p class="text-end">
+                    {{ durationSumInString }}
+                  </p>
+                </label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="btn-container">
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  @click="nextStep()"
+                >
+                  Date/Time >>
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="pick-date" v-if="currentStep === 2">
+        <div class="text-start">
+          <h5>Pick a date and time</h5>
+        </div>
+        <form>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="datepicker-container">
+                <img
+                  src="@/assets/icons/calendar.svg"
+                  width="25"
+                  height="25"
+                  class="datepicker-item datepicker-icon"
+                >
+                <Datepicker v-model="picked" class="datepicker-item" inline  autoApply />
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div
+                class="list-group"
+                id="list-tab"
+                role="tablist"
+              >
+                <label
+                  class="list-group-item"
+                  v-for="timeSlot in filteredBusinessTimes"
+                  :key="timeSlot.id"
+                >
+                  <input
+                    class="form-check-input me-1 booking-input"
+                    type="radio"
+                    :value="timeSlot.time"
+                    v-model="selectedTime"
+                  >
+                  {{ timeSlot.time.slice(11, -13) }}
+                </label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="btn-container">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  @click="prevStep()"
+                >
+                  Go Back
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  @click="nextStep()"
+                >
+                  Customer Info >>
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="user-info" v-if="currentStep === 3">
+        <div class="text-start">
+          <h5>Customer Info</h5>
+        </div>
+        <form>
+          <div class="row">
+            <div class="col-sm-4">
+              <small>First name</small>
+              <input type="text" v-model="user.first_name" class="booking-input form-control">
+              <small>Last name</small>
+              <input type="text" v-model="user.last_name" class="form-control">
+              <small>Email</small>
+              <input type="email" v-model="user.email" class="form-control">
+              <small>Phone</small>
+              <input type="tel" v-model="user.phone" class="form-control">
+              <small>Gender</small>
+              <select v-model="user.gender" class="form-select">
+                <option
+                  v-for="gender in genders"
+                  :key="gender"
+                  :value="gender"
+                >
+                  {{ gender }}
+                </option>
+              </select>
+            </div>
+            <div class="col-sm-4">
+              <small>Zip</small>
+              <input type="text" v-model="user.zip" class="form-control">
+              <small>State</small>
+              <select
+                v-model="user.state"
+                class="form-select"
+                autocomplete="address-level1"
+              >
+                <option
+                  v-for="state in states"
+                  :key="state"
+                  :value="state"
+                >
+                  {{ state }}
+                </option>
+              </select>
+              <small>City</small>
+              <input type="text" v-model="user.city" class="form-control">
+              <small>Address</small>
+              <input type="text" v-model="user.address" class="form-control">
+            </div>
+            <div class="col-sm-4">
+              <small>If you have requeasts</small>
+              <textarea v-model="user.note" col-sm-6s="30" rows="3" class="user-note form-control"></textarea>
+            </div>
+            <div class="col-12">
+              <div class="btn-container">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  @click="prevStep()"
+                >
+                  Go Back
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  @click="nextStep()"
+                >
+                  Confirm >>
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="confirmation" v-if="currentStep === 4">
+        <form v-on:submit.prevent="createAppointment()">
+          <div class="row">
+            <div class="text-start">
+              <h5>Confirmation</h5>
+            </div>
+            <div class="col-sm-4">
+              <small class="confirm-item-tag">Name:</small>
+              <p>{{ fullName }}</p>
+              <small class="confirm-item-tag">Email:</small>z
+              <p>{{ user.email }}</p>
+              <small class="confirm-item-tag">Phone:</small>
+              <p>{{ user.phone }}</p>
+              <small class="confirm-item-tag">Address:</small>
+              <p>{{ user.address }}</p>
+              <p>{{ user.city }}, {{ user.state }} {{ user.zip }}</p>
+              <small class="confirm-item-tag">Gender:</small>
+              <p>{{ user.gender }}</p>
+              <small class="confirm-item-tag">Requests:</small>
+              <p>{{ user.note }}</p>
+            </div>
+            <div class="col-sm-4">
+              <small class="confirm-item-tag">Appointment Date:</small>
+              <p>{{ USformattedPicked }}</p>
+              <small class="confirm-item-tag">Time:</small>
+              <p>{{ USformattedTime }} - {{ endTime }}</p>
+            </div>
+            <div class="col-sm-4">
+              <section>
+                <div class="product card">
+                  <div class="description card-body">
+                    <h5 class="card-title text-center">Price</h5>
+                    <ul class="payment-item">
+                      <small class="confirm-item-tag">Menu:</small>
+                      <div v-for="menu in selectedMenus" :key="menu.id" class="d-flex justify-content-between">
+                        <li>
+                          {{ menu.title }}
+                        </li>
+                        <span>${{ menu.price }}</span>
+                      </div>
+                    </ul>
                     <hr>
-                  <div class="payment-item d-flex justify-content-between">
-                    <h6 class="text-end">TOTAL</h6>
-                    <h5>${{ subTotal + serviceTax }}</h5>
-                  </div>
-                  <hr>
-                  <p>
-                    <small>Bring your coupon and plesent at the salon before treatment starts.</small>
-                  </p>
-                  <p>
-                    <small>Price may vary according to body condition.</small>
-                  </p>
-                  <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      v-model="confirmCheckbox"
-                      id="flexCheckDefault"
-                    >
-                    <label class="form-check-label" for="flexCheckDefault">
-                      <small class="terms-and-conditions">
-                        Agree to our 
-                        <a
-                          href="/termsandconditions"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Teams and Condition
-                        </a> and 
-                        <a 
-                          href="/privacyandpolicy"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Privacy and Policy
-                        </a>
-                      </small>
-                    </label>
+                    <div class="payment-item d-flex justify-content-between">
+                      <h6 class="text-end">Subtotal</h6>
+                      <span>${{ subTotal }}</span>
+                    </div>
+                    <div class="payment-item d-flex justify-content-between">
+                      <h6 class="text-end">Tax (NY)</h6>
+                      <span>${{ serviceTax }}</span>
+                    </div>
+                      <hr>
+                    <div class="payment-item d-flex justify-content-between">
+                      <h6 class="text-end">TOTAL</h6>
+                      <h5>${{ subTotal + serviceTax }}</h5>
+                    </div>
+                    <hr>
+                    <p>
+                      <small>Bring your coupon and plesent at the salon before treatment starts.</small>
+                    </p>
+                    <p>
+                      <small>Price may vary according to body condition.</small>
+                    </p>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        v-model="confirmCheckbox"
+                        id="flexCheckDefault"
+                      >
+                      <label class="form-check-label" for="flexCheckDefault">
+                        <small class="terms-and-conditions">
+                          Agree to our 
+                          <a
+                            href="/termsandconditions"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Teams and Condition
+                          </a> and 
+                          <a 
+                            href="/privacyandpolicy"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Privacy and Policy
+                          </a>
+                        </small>
+                      </label>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <!-- <form action="http://localhost:4242/create-checkout-session" method="POST">
-                <button type="submit" id="checkout-button">Checkout</button>
-              </form> -->
-            </section>
+                <!-- <form action="http://localhost:4242/create-checkout-session" method="POST">
+                  <button type="submit" id="checkout-button">Checkout</button>
+                </form> -->
+              </section>
+            </div>
+            <div class="btn-container">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                @click="prevStep()"
+              >
+                Go Back
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                @click="clearAppointment()"
+              >
+                Start Again
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                :disabled="!confirmCheckbox"
+              >
+                Book Appointment
+              </button>
+              <!-- <button
+                v-if="currentStep === 4"
+                type="button"
+                class="btn btn-primary"
+                @click="checkout()"
+              >
+                checkout
+              </button> -->
+              <p>{{ errors }}</p>
+            </div>
           </div>
-          <div class="btn-container">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              @click="prevStep()"
-            >
-              Go Back
-            </button>
-            <button
-              type="button"
-              class="btn btn-danger"
-              @click="clearAppointment()"
-            >
-              Start Again
-            </button>
-            <button
-              type="submit"
-              class="btn btn-primary"
-              :disabled="!confirmCheckbox"
-            >
-              Book Appointment
-            </button>
-            <!-- <button
-              v-if="currentStep === 4"
-              type="button"
-              class="btn btn-primary"
-              @click="checkout()"
-            >
-              checkout
-            </button> -->
-            <p>{{ errors }}</p>
-          </div>
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
 
+    </div>
   </div>
 </template>
 
@@ -392,10 +407,21 @@ import Datepicker from 'vue3-datepicker';
 import { ref } from 'vue'
 import axios from "axios";
 import * as moment from 'moment-timezone';
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
+
   export default {
-    components: { Datepicker },
+    components: {
+      Datepicker,
+      Loading
+    },
     data() {
       return {
+        // spinner
+        isLoading: false,
+        fullPage: true,
+        spinnerMessage: "",
+
         errors: null,
         event: {},
         currentStep: 1,
@@ -431,7 +457,14 @@ import * as moment from 'moment-timezone';
         picked: ref(new Date),
       }
     },
+    created() {
+      this.spinnerMessage = "Loading"
+      this.isLoading = true;
+    },
     mounted() {
+      this.$nextTick(function() {
+        this.isLoading = false;
+      })
       this.getUser();
       this.indexMenus();
       this.indexBusinessTimes();
@@ -563,6 +596,8 @@ import * as moment from 'moment-timezone';
         }
       },
       createAppointment() {
+        this.spinnerMessage = "Processing"
+        this.isLoading = true;
         let bookingInfo = {
           "date": this.bookingDate,
           "start": this.selectedTime,
@@ -576,6 +611,9 @@ import * as moment from 'moment-timezone';
         axios.post("/events.json", bookingInfo)
         .then((res)=> {
           this.event = res.data;
+          this.isLoading = false;
+        })
+        .then(()=> {
           this.$router.push("/complete");
         })
         .catch((error)=> {

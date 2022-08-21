@@ -480,9 +480,4 @@ export default {
   .card-header {
     font-size: small;
   }
-  .spinner-after {
-    color: rgb(140, 146, 232);
-    font-size: larger;
-    font-weight: 600;
-  }
 </style>
