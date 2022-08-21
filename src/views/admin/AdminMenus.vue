@@ -1,76 +1,68 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-12">
-        <div class="btn-container text-start">
-          <button
-            @click="menuContent = 'active'"
-            class="btn btn-outline-primary btn-sm"
-          >
-            Active
-          </button>
-          <button
-            @click="menuContent = 'inactive'"
-            class="btn btn-outline-danger btn-sm"
-          >
-            Inactive
-          </button>
-        </div>
-      </div>
 
-      <div class="col-sm-6" v-if="menuContent === 'active'">
-        <div
-          class="list-group"
-          id="list-tab"
-          role="tablist"
-          v-for="menu in menus"
-          :key="menu.id"
-        >
-          <label
-            class="list-group-item form-check-label"
-          >
-            <input
-              class="form-check-input me-1"
-              type="radio"
-              :value="menu"
-              v-model="selectedMenu"
+      <div class="col-sm-6">
+        <ul class="nav nav-tabs">
+          <li class="nav-item" @click="menuContent = 'active'">
+            <a class="nav-link active">Active</a>
+          </li>
+          <li class="nav-item" @click="menuContent = 'inactive'">
+            <a class="nav-link">Inactive</a>
+          </li>
+        </ul>
+        <div v-if="menuContent === 'active'">
+          <div class="active-menu-container-card">
+            <div
+              class="list-group"
+              id="list-tab"
+              role="tablist"
+              v-for="menu in menus"
+              :key="menu.id"
             >
-            {{ menu.title }}
-            <div class="text-end">
-              <small>{{ menu.duration }} min</small>
-              <small> | </small>
-              <small>${{ menu.price }}~</small>
+              <label
+                class="list-group-item form-check-label"
+              >
+                <ul>
+                  <input
+                    class="form-check-input me-1 menu-checkbox"
+                    type="radio"
+                    :value="menu"
+                    v-model="selectedMenu"
+                  >
+                  {{ menu.title }}
+                  <li class="text-end"><small>{{ menu.duration }} min | ${{ menu.price }}~</small></li>
+                </ul>
+              </label>
             </div>
-          </label>
+          </div>
         </div>
-      </div>
       
-      <div class="col-sm-6" v-if="menuContent === 'inactive'">
-        <div
-          class="list-group"
-          id="list-tab"
-          role="tablist"
-        >
-          <label
-            class="list-group-item"
-            v-for="menu in inactiveMenus"
-            :key="menu.id"
-          >
-            <input
-              class="form-check-input me-1"
-              type="radio"
-              :value="menu"
-              v-model="selectedMenu"
+        <div v-if="menuContent === 'inactive'">
+          <div class="inactive-menu-container-card">
+            <div
+              class="list-group"
+              id="list-tab"
+              role="tablist"
             >
-            {{ menu.title }}
-            <div>
-              <div class="text-end">
-                <small>{{ menu.duration }} min</small>
-                <small> | </small>
-                <small>${{ menu.price }}~</small>
-              </div>
+              <label
+                class="list-group-item"
+                v-for="menu in inactiveMenus"
+                :key="menu.id"
+              >
+                <ul>
+                  <input
+                    class="form-check-input me-1 menu-checkbox"
+                    type="radio"
+                    :value="menu"
+                    v-model="selectedMenu"
+                  >
+                  {{ menu.title }}
+                  <li class="text-end"><small>{{ menu.duration }} min | ${{ menu.price }}~</small></li>
+                </ul>
+              </label>
             </div>
-          </label>
+          </div>
         </div>
       </div>
 
@@ -218,4 +210,21 @@
   .btn-container {
     margin-top: 10px;
   }
+  .menu-checkbox:checked {
+    background-color: rgb(54, 162, 235);
+  }
+  .nav-tabs .nav-link {
+    background-color: rgba(140, 146, 232);
+    border: rgba(140, 146, 232);
+    color: #fff;
+  }
+  .nav-tabs .nav-link.active {
+    background-color: rgb(255, 99, 132);
+    border: rgb(255, 99, 132);
+    color: #fff;
+  }
+  /* .active-menu-container-card {
+    border-color: rgb(255, 99, 133);
+    border-width: 2px;
+  } */
 </style>

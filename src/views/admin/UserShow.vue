@@ -92,7 +92,7 @@
       </div>
       <hr>
       <div
-        class="col-sm-2 history-event-container card"
+        class="col-sm-4 col-md-3 col-lg-2 history-event-container card"
         v-for="event in events"
         :key="event.id"
       >
@@ -101,12 +101,13 @@
           <h6 class="card-title">{{ event.date }}</h6>
           <ul class="list-group list-group-flush">
             <li
-              class="list-group-item"
               v-for="menu in event.menus"
               :key="menu.id"
             >
               {{ menu.title }}
             </li>
+            <hr class="history-hairline">
+            <li>Total: ${{ event.total_spent }}</li>
           </ul>
         </div>
       </div>
@@ -246,5 +247,13 @@ import axios from 'axios'
   }
   .notification {
     color: red;
+  }
+  .history-hairline {
+    color:#FFFFFF;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border: none;
+    border-top: 2px dashed gray;
+    height: 1px;
   }
 </style>

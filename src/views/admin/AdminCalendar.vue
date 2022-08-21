@@ -44,7 +44,12 @@
                 <div class="col-sm-6">
                   <small class="event-details-tag">Name</small>
                   <p data-bs-toggle="modal" class="event-detail-item">
-                    <a id="linkToUserDetail" data-bs-dismiss="modal" href="#" @click="redirectToUser(selectedEvent.user.id)"
+                    <a
+                      class="link-primary"
+                      href="#"
+                      id="linkToUserDetail"
+                      data-bs-dismiss="modal"
+                      @click="redirectToUser(selectedEvent.user.id)"
                   >
                     {{ selectedEvent.user.full_name }}
                   </a>
@@ -168,7 +173,7 @@ import * as bootstrap from 'bootstrap'
 
 <style>
   .calendar-container {
-    height: 100%;
+    height: 98%;
   }
   .modal {
     position: fixed;

@@ -6,7 +6,7 @@
           <div class="col-sm-6">
             <strong>Clink on the link below to see your appointment on the calendar in the admin page.</strong>
             <p>
-              <a href="https://biznesu.netlify.app/admin/calendar">https://biznesu.netlify.app/admin/calendar</a>
+              <a class="link-primary" href="https://biznesu.netlify.app/admin/calendar">https://biznesu.netlify.app/admin/calendar</a>
             </p>
             <p></p>
             <h4>Thank you!</h4>

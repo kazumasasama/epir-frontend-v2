@@ -13,13 +13,14 @@
         <p class="spinner-after">{{ spinnerMessage }}</p>
       </template>
     </loading>
+    
     <div class="container">
 
       <nav aria-label="breadcrumb" class="pg-bar">
-        <div class="progress" style="height: 25px;">
+        <div class="progress">
           <div
             id="progress-1"
-            class="progress-bar"
+            class="progress-bar bg-success"
             role="progressbar"
             style="width: 25%;"
             aria-valuenow="25"
@@ -65,65 +66,61 @@
       </nav>
 
       <div class="pick-menus" v-if="currentStep === 1">
-        <form>
-          <div class="row">
-            <div class="text-start">
-              <h5>Pick menus</h5>
-            </div>
-            <div class="col-sm-6">
-              <div
-                class="list-group"
-                id="list-tab"
-                role="tablist"
-              >
-                <label
-                  class="list-group-item"
-                  v-for="menu in menus"
-                  :key="menu.id"
-                >
+        <div class="row">
+          <div class="text-start">
+            <h5>Pick menus</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div
+              class="list-group"
+              role="tablist"
+              v-for="menu in menus" :key="menu.id"
+            >
+              <label class="list-group-item">
+                <ul>
                   <input
-                    class="form-check-input me-1 booking-input"
+                    class="form-check-input me-1 booking-checkbox"
                     type="checkbox"
                     :value="menu"
                     v-model="selectedMenus"  
                   >
-                  {{ menu.title }}
-                  <ul class="text-end">
-                    <li><small>{{ menu.duration }} min</small></li>
-                    <li><small>${{ menu.price }}~</small></li>
-                  </ul>
-                </label>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div
-                class="list-group"
-                id="list-tab"
-                role="tablist"
-              >
-                <label
-                  class="list-group-item"
-                >
-                <p>Total duration</p>
-                  <p class="text-end">
-                    {{ durationSumInString }}
-                  </p>
-                </label>
-              </div>
-            </div>
-            <div class="col-12">
-              <div class="btn-container">
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  @click="nextStep()"
-                >
-                  Date/Time >>
-                </button>
-              </div>
+                  <li>{{ menu.title }}</li>
+                  <li class="text-end"><small>{{ menu.duration }} min</small></li>
+                  <li class="text-end"><small>${{ menu.price }}~</small></li>
+                </ul>
+              </label>
             </div>
           </div>
-        </form>
+          <div class="col-sm-6">
+            <div
+              class="list-group"
+              id="list-tab"
+              role="tablist"
+            >
+              <label
+                class="list-group-item"
+              >
+              <p>Total duration</p>
+                <p class="text-end">
+                  {{ durationSumInString }}
+                </p>
+              </label>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="btn-container">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                @click="nextStep()"
+              >
+                Date/Time >>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="pick-date" v-if="currentStep === 2">
@@ -148,19 +145,23 @@
                 class="list-group"
                 id="list-tab"
                 role="tablist"
+                v-for="timeSlot in filteredBusinessTimes"
+                :key="timeSlot.id"
               >
                 <label
                   class="list-group-item"
-                  v-for="timeSlot in filteredBusinessTimes"
-                  :key="timeSlot.id"
                 >
-                  <input
-                    class="form-check-input me-1 booking-input"
-                    type="radio"
-                    :value="timeSlot.time"
-                    v-model="selectedTime"
-                  >
-                  {{ timeSlot.time.slice(11, -13) }}
+                  <ul>
+                    <input
+                      class="form-check-input me-1 booking-checkbox"
+                      type="radio"
+                      :value="timeSlot.time"
+                      v-model="selectedTime"
+                    >
+                    <li>
+                      {{ timeSlot.time.slice(11, -13) }}
+                    </li>
+                  </ul>
                 </label>
               </div>
             </div>
@@ -194,7 +195,7 @@
           <div class="row">
             <div class="col-sm-4">
               <small>First name</small>
-              <input type="text" v-model="user.first_name" class="booking-input form-control">
+              <input type="text" v-model="user.first_name" class="booking-checkbox form-control">
               <small>Last name</small>
               <input type="text" v-model="user.last_name" class="form-control">
               <small>Email</small>
@@ -322,17 +323,18 @@
                     <p>
                       <small>Price may vary according to body condition.</small>
                     </p>
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        v-model="confirmCheckbox"
-                        id="flexCheckDefault"
-                      >
+                    <div>
                       <label class="form-check-label" for="flexCheckDefault">
+                        <input
+                          class="form-check-input booking-checkbox"
+                          type="checkbox"
+                          v-model="confirmCheckbox"
+                          id="flexCheckDefault"
+                        >
                         <small class="terms-and-conditions">
                           Agree to our 
                           <a
+                            class="link-primary"
                             href="/termsandconditions"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -340,6 +342,7 @@
                             Teams and Condition
                           </a> and 
                           <a 
+                            class="link-primary"
                             href="/privacyandpolicy"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -577,10 +580,13 @@ import 'vue-loading-overlay/dist/vue-loading.css';
         }
         if (this.currentStep === 2) {
           document.querySelector('#progress-2').classList.remove('bg-secondary');
+          document.querySelector('#progress-2').classList.add('bg-success');
         } else if (this.currentStep === 3) {
           document.querySelector('#progress-3').classList.remove('bg-secondary');
+          document.querySelector('#progress-3').classList.add('bg-success');
         } else if (this.currentStep === 4) {
           document.querySelector('#progress-4').classList.remove('bg-secondary');
+          document.querySelector('#progress-4').classList.add('bg-success');
         }
       },
       prevStep() {
@@ -588,10 +594,13 @@ import 'vue-loading-overlay/dist/vue-loading.css';
           this.currentStep--;
         }
         if (this.currentStep === 1) {
+          document.querySelector('#progress-2').classList.remove('bg-success');
           document.querySelector('#progress-2').classList.add('bg-secondary');
         } else if (this.currentStep === 2) {
+          document.querySelector('#progress-3').classList.remove('bg-success');
           document.querySelector('#progress-3').classList.add('bg-secondary');
         } else if (this.currentStep === 3) {
+          document.querySelector('#progress-4').classList.remove('bg-success');
           document.querySelector('#progress-4').classList.add('bg-secondary');
         }
       },
@@ -624,8 +633,11 @@ import 'vue-loading-overlay/dist/vue-loading.css';
         this.currentStep = 1;
         this.selectedMenus = [];
         this.selectedTime = null;
+        document.querySelector('#progress-2').classList.remove('bg-success')
         document.querySelector('#progress-2').classList.add('bg-secondary');
+        document.querySelector('#progress-3').classList.remove('bg-success')
         document.querySelector('#progress-3').classList.add('bg-secondary');
+        document.querySelector('#progress-4').classList.remove('bg-success')
         document.querySelector('#progress-4').classList.add('bg-secondary');
       },
       checkout() {
@@ -657,6 +669,7 @@ import 'vue-loading-overlay/dist/vue-loading.css';
     justify-content: center;
     align-items: center;
     margin-bottom: 10px;
+    padding: 8px;
   }
   .datepicker-item {
     box-sizing: border-box;
@@ -700,5 +713,14 @@ import 'vue-loading-overlay/dist/vue-loading.css';
   }
   .terms-and-conditions {
     font-weight: bold;
+  }
+  .progress {
+    margin-bottom: 23px;
+  }
+  .booking-checkbox:checked {
+    background-color: rgb(54, 162, 235);
+  }
+  ul {
+    margin-bottom: 0px;
   }
 </style>
