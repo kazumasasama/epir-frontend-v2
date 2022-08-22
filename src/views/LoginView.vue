@@ -1,4 +1,7 @@
 <template>
+  <div v-if="error" class="alert alert-warning" role="alert">
+    {{ error }}
+  </div>
   <div class="container">
     <div>
       <h4>Login</h4>
@@ -37,6 +40,7 @@ import axios from 'axios'
   export default {
     data() {
       return {
+        error: null,
         user: {
           email: "",
           password: "",
@@ -45,15 +49,26 @@ import axios from 'axios'
     },
     methods: {
       login() {
+        if (!this.user.email && !this.user.password) {
+            this.error = "Please enter email and password.";
+            return
+          } else if (!this.user.email) {
+            this.error = "Please enter the email.";
+            return
+          } else if (!this.user.password) {
+            this.error = "Please enter the password.";
+            return
+          }
         axios.post('/sessions', this.user)
         .then((res)=> {
+          this.error = null;
           axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.jwt;
           localStorage.setItem("jwt", res.data.jwt);
           localStorage.setItem("user_id", res.data.user_id);
           this.$router.push('/appointments');
         })
         .catch((error)=> {
-          console.log(error.response);
+          this.error = `${error.response.statusText}: Invalid email or password`;
         })
       },
       toHome() {
