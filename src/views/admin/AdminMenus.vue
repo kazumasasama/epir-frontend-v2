@@ -235,6 +235,7 @@
     color: #fff;
     position: relative;
     bottom: 0px;
+    cursor: pointer;
   }
   .active-nav-tabs .active-nav-link {
     background-color: rgb(75, 192, 192);
