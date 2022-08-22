@@ -15,6 +15,11 @@
     </loading>
     
     <div class="container">
+      <div v-if="errors">
+        <div v-for="error in errors" :key="error" class="alert alert-warning" role="alert">
+          {{ error }}
+        </div>
+      </div>
 
       <nav aria-label="breadcrumb" class="pg-bar">
         <div class="progress">
@@ -400,7 +405,6 @@
             >
               checkout
             </button> -->
-            <p>{{ errors }}</p>
           </div>
         </form>
       </div>
@@ -431,7 +435,7 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 
         errors: null,
         event: {},
-        currentStep: 4,
+        currentStep: 1,
         menus: [],
         menu: {},
         businessTimes: [],
@@ -475,6 +479,13 @@ import 'vue-loading-overlay/dist/vue-loading.css';
       this.getUser();
       this.indexMenus();
       this.indexBusinessTimes();
+    },
+    watch: {
+      selectedMenus() {
+        if (this.selectedMenus.length !== 0) {
+          this.errors = null;
+        }
+      },
     },
     computed: {
       fullName() {
@@ -579,19 +590,30 @@ import 'vue-loading-overlay/dist/vue-loading.css';
         })
       },
       nextStep() {
-        if (this.currentStep < 4) {
+        if (this.currentStep === 1 && this.selectedMenus.length === 0) {
+          this.errors = ["Please pick at least one menu."];
+        } else if (this.currentStep === 1 && this.selectedMenus.length !== 0) {
           this.currentStep++;
-        }
-        if (this.currentStep === 2) {
-          document.querySelector('#progress-2').classList.remove('bg-secondary');
-          document.querySelector('#progress-2').classList.add('bg-success');
+        // } else if (this.currentStep === 2 && !this.selectedTime) {
+        //   console.log('in error 2')
+        //   this.errors = ["Please pick a time."];
+        } else if (this.currentStep === 2 && this.selectedTime) {
+          this.currentStep++;
+          let targetElement = document.querySelector('#progress-2')
+          targetElement.classList.remove('bg-secondary');
+          targetElement.classList.add('bg-success');
         } else if (this.currentStep === 3) {
-          document.querySelector('#progress-3').classList.remove('bg-secondary');
-          document.querySelector('#progress-3').classList.add('bg-success');
+          this.currentStep++;
+          let targetElement = document.querySelector('#progress-3')
+          targetElement.classList.remove('bg-secondary');
+          targetElement.classList.add('bg-success');
         } else if (this.currentStep === 4) {
-          document.querySelector('#progress-4').classList.remove('bg-secondary');
-          document.querySelector('#progress-4').classList.add('bg-success');
+          this.currentStep++;
+          let targetElement = document.querySelector('#progress-4')
+          targetElement.classList.remove('bg-secondary');
+          targetElement.classList.add('bg-success');
         }
+        console.log('end of function')
       },
       prevStep() {
         if (this.currentStep > 1) {
