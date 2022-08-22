@@ -112,7 +112,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background-color: #e3e5fd;
+  background-color: rgb(227, 229, 253);
 }
 
 nav a {
