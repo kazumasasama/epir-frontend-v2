@@ -5,9 +5,9 @@
       :is-full-page="fullPage"
       color="rgb(140, 146, 232)"
       loader="dots"
-      height="100"
-      width="150"
-      opacity="0.7"
+      :height=100
+      :width=150
+      :opacity=0.7
     >
       <template v-slot:after>
         <p class="spinner-after">{{ spinnerMessage }}</p>
@@ -268,31 +268,41 @@
               <h5>Confirmation</h5>
             </div>
             <div class="col-sm-4">
-              <small class="confirm-item-tag">Name:</small>
-              <p>{{ fullName }}</p>
-              <small class="confirm-item-tag">Email:</small>z
-              <p>{{ user.email }}</p>
-              <small class="confirm-item-tag">Phone:</small>
-              <p>{{ user.phone }}</p>
-              <small class="confirm-item-tag">Address:</small>
-              <p>{{ user.address }}</p>
-              <p>{{ user.city }}, {{ user.state }} {{ user.zip }}</p>
-              <small class="confirm-item-tag">Gender:</small>
-              <p>{{ user.gender }}</p>
-              <small class="confirm-item-tag">Requests:</small>
-              <p>{{ user.note }}</p>
+              <div class="card confirmation-detail-card">
+                <div class="card-body">
+                  <h6 class="body-title text-center">Personal Info</h6>
+                  <small class="confirm-item-tag">Name:</small>
+                  <p>{{ fullName }}</p>
+                  <small class="confirm-item-tag">Email:</small>
+                  <p>{{ user.email }}</p>
+                  <small class="confirm-item-tag">Phone:</small>
+                  <p>{{ user.phone }}</p>
+                  <small class="confirm-item-tag">Address:</small>
+                  <p>{{ user.address }}</p>
+                  <p>{{ user.city }}, {{ user.state }} {{ user.zip }}</p>
+                  <small class="confirm-item-tag">Gender:</small>
+                  <p>{{ user.gender }}</p>
+                  <small class="confirm-item-tag">Requests:</small>
+                  <p>{{ user.note }}</p>
+                </div>
+              </div>
             </div>
             <div class="col-sm-4">
-              <small class="confirm-item-tag">Appointment Date:</small>
-              <p>{{ USformattedPicked }}</p>
-              <small class="confirm-item-tag">Time:</small>
-              <p>{{ USformattedTime }} - {{ endTime }}</p>
+              <div class="card confirmation-detail-card">
+                <div class="card-body">
+                  <h6 class="card-title text-center">Date/Time</h6>
+                  <small class="confirm-item-tag">Appointment Date:</small>
+                  <p>{{ USformattedPicked }}</p>
+                  <small class="confirm-item-tag">Time:</small>
+                  <p>{{ USformattedTime }} - {{ endTime }}</p>
+                </div>
+              </div>
             </div>
             <div class="col-sm-4">
               <section>
-                <div class="product card">
-                  <div class="description card-body">
-                    <h5 class="card-title text-center">Price</h5>
+                <div class="card confirmation-detail-card">
+                  <div class="card-body">
+                    <h6 class="card-title text-center">Price</h6>
                     <ul class="payment-item">
                       <small class="confirm-item-tag">Menu:</small>
                       <div v-for="menu in selectedMenus" :key="menu.id" class="d-flex justify-content-between">
@@ -308,13 +318,13 @@
                       <span>${{ subTotal }}</span>
                     </div>
                     <div class="payment-item d-flex justify-content-between">
-                      <h6 class="text-end">Tax (NY)</h6>
+                      <span class="text-end">Tax (NY)</span>
                       <span>${{ serviceTax }}</span>
                     </div>
                       <hr>
                     <div class="payment-item d-flex justify-content-between">
                       <h6 class="text-end">TOTAL</h6>
-                      <h5>${{ subTotal + serviceTax }}</h5>
+                      <span>${{ subTotal + serviceTax }}</span>
                     </div>
                     <hr>
                     <p>
@@ -359,38 +369,38 @@
                 </form> -->
               </section>
             </div>
-            <div class="btn-container">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                @click="prevStep()"
-              >
-                Go Back
-              </button>
-              <button
-                type="button"
-                class="btn btn-danger"
-                @click="clearAppointment()"
-              >
-                Start Again
-              </button>
-              <button
-                type="submit"
-                class="btn btn-primary"
-                :disabled="!confirmCheckbox"
-              >
-                Book Appointment
-              </button>
-              <!-- <button
-                v-if="currentStep === 4"
-                type="button"
-                class="btn btn-primary"
-                @click="checkout()"
-              >
-                checkout
-              </button> -->
-              <p>{{ errors }}</p>
-            </div>
+          </div>
+          <div class="btn-container">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="prevStep()"
+            >
+              Go Back
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              @click="clearAppointment()"
+            >
+              Start Again
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              :disabled="!confirmCheckbox"
+            >
+              Book Appointment
+            </button>
+            <!-- <button
+              v-if="currentStep === 4"
+              type="button"
+              class="btn btn-primary"
+              @click="checkout()"
+            >
+              checkout
+            </button> -->
+            <p>{{ errors }}</p>
           </div>
         </form>
       </div>
@@ -398,12 +408,6 @@
     </div>
   </div>
 </template>
-
-<!-- <script setup>
-import Datepicker from 'vue3-datepicker'
-import { ref } from 'vue'
-const picked = ref(new Date)
-</script> -->
 
 <script>
 import Datepicker from 'vue3-datepicker';
@@ -427,7 +431,7 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 
         errors: null,
         event: {},
-        currentStep: 1,
+        currentStep: 4,
         menus: [],
         menu: {},
         businessTimes: [],
@@ -704,6 +708,10 @@ import 'vue-loading-overlay/dist/vue-loading.css';
   .btn-container {
     margin-top: 20px;
   }
+  .confirmation-detail-card {
+    border-width: 0px;
+    box-shadow: 0 5px 15px 0 rgba(0, 0, 0, .3);
+  }
   .payment-item {
     padding-left: 8px;
   }
@@ -722,5 +730,8 @@ import 'vue-loading-overlay/dist/vue-loading.css';
   }
   ul {
     margin-bottom: 0px;
+  }
+  hr {
+    border-top: 1px;
   }
 </style>
