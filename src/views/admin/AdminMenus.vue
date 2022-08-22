@@ -226,7 +226,7 @@
     background-color: rgb(54, 162, 235);
   }
   .nav-tabs {
-    margin-bottom: -6px;
+    margin-bottom: -4px;
   }
   .nav-tabs .nav-link {
     background-color: rgb(115, 120, 191);

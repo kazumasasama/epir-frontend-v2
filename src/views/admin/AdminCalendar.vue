@@ -173,7 +173,7 @@ import * as bootstrap from 'bootstrap'
 
 <style>
   .calendar-container {
-    height: 98%;
+    height: 100%;
   }
   .modal {
     position: fixed;

@@ -115,6 +115,10 @@
   background-color: rgb(227, 229, 253);
 }
 
+html {
+  background-color: rgb(227, 229, 253);
+}
+
 nav a {
   font-weight: bold;
   color: #2c3e50;
