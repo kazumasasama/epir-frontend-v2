@@ -127,7 +127,7 @@ import axios from 'axios'
           "Male",
           "Female",
           "Non Binary",
-          "Rather not to say",
+          "Rather not to descrive",
           "N/A"
         ],
         states: [
