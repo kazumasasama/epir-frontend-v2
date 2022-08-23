@@ -128,55 +128,59 @@ export default {
     'user.first_name'() {
       const inputValidationFirstname = document.getElementById('input-validation-firstname');
       if (this.user.first_name === "") {
-        inputValidationFirstname.classList.remove('is-valid');
-        inputValidationFirstname.classList.add('is-invalid');
+        this.AddInvalidCssClass(inputValidationFirstname)
       } else if (this.user.first_name !== "") {
-        inputValidationFirstname.classList.remove('is-invalid');
-        inputValidationFirstname.classList.add('is-valid');
+        this.AddValidCssClass(inputValidationFirstname)
       }
     },
     'user.last_name'() {
       const inputValidationLastname = document.getElementById('input-validation-lastname');
       if (this.user.last_name === "") {
-        inputValidationLastname.classList.remove('is-valid');
-        inputValidationLastname.classList.add('is-invalid');
+        this.AddInvalidCssClass(inputValidationLastname)
       } else if (this.user.last_name !== "") {
-        inputValidationLastname.classList.remove('is-invalid');
-        inputValidationLastname.classList.add('is-valid');
+        this.AddValidCssClass(inputValidationLastname)
       }
     },
     'user.email'() {
       const inputValidationEmail = document.getElementById('input-validation-email');
       if (this.user.email === "") {
-        inputValidationEmail.classList.remove('is-valid');
-        inputValidationEmail.classList.add('is-invalid');
+        this.AddInvalidCssClass(inputValidationEmail)
       } else if (this.user.email !== "") {
-        inputValidationEmail.classList.remove('is-invalid');
-        inputValidationEmail.classList.add('is-valid');
+        this.AddValidCssClass(inputValidationEmail)
       }
     },
     'user.password'() {
       const inputValidationPassword = document.getElementById('input-validation-password');
       if (this.user.password === "") {
-        inputValidationPassword.classList.remove('is-valid');
-        inputValidationPassword.classList.add('is-invalid');
+        this.AddInvalidCssClass(inputValidationPassword)
       } else if (this.user.password !== "") {
-        inputValidationPassword.classList.remove('is-invalid');
-        inputValidationPassword.classList.add('is-valid');
+        this.AddValidCssClass(inputValidationPassword)
       }
     },
     passwordConfirm() {
       const inputValidationPasswordconfirm = document.getElementById('input-validation-passwordconfirm');
+      if (this.user.password === this.passwordConfirm) {
+        this.AddValidCssClass(inputValidationPasswordconfirm);
+      } else if (this.user.password !== this.passwordConfirm) {
+        this.AddInvalidCssClass(inputValidationPasswordconfirm);
+      }
+
       if (this.passwordConfirm === "" || !this.passwordConfirm) {
-        inputValidationPasswordconfirm.classList.remove('is-valid');
-        inputValidationPasswordconfirm.classList.add('is-invalid');
+        this.AddInvalidCssClass(inputValidationPasswordconfirm);
       } else if (this.passwordConfirm) {
-        inputValidationPasswordconfirm.classList.remove('is-invalid');
-        inputValidationPasswordconfirm.classList.add('is-valid');
+        this.AddValidCssClass(inputValidationPasswordconfirm);
       }
     },
   },
   methods: {
+    AddValidCssClass(element) {
+      element.classList.remove('is-invalid');
+      element.classList.add('is-valid');
+    },
+    AddInvalidCssClass(element) {
+      element.classList.remove('is-valid');
+      element.classList.add('is-invalid');
+    },
     validateEmptyRequiredForm() {
       let invalidKeys = [];
       const keys = (Object.keys(this.user));
