@@ -158,17 +158,17 @@ export default {
       }
     },
     passwordConfirm() {
+      const inputValidationPassword = document.getElementById('input-validation-password');
       const inputValidationPasswordconfirm = document.getElementById('input-validation-passwordconfirm');
-      if (this.user.password === this.passwordConfirm) {
-        this.AddValidCssClass(inputValidationPasswordconfirm);
-      } else if (this.user.password !== this.passwordConfirm) {
-        this.AddInvalidCssClass(inputValidationPasswordconfirm);
-      }
-
       if (this.passwordConfirm === "" || !this.passwordConfirm) {
         this.AddInvalidCssClass(inputValidationPasswordconfirm);
       } else if (this.passwordConfirm) {
-        this.AddValidCssClass(inputValidationPasswordconfirm);
+        if (this.user.password === this.passwordConfirm) {
+          this.AddValidCssClass(inputValidationPassword);
+          this.AddValidCssClass(inputValidationPasswordconfirm);
+        } else if (this.user.password !== this.passwordConfirm) {
+          this.AddInvalidCssClass(inputValidationPasswordconfirm);
+        } 
       }
     },
   },
