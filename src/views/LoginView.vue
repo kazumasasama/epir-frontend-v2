@@ -1,72 +1,74 @@
 <template>
-  <loading v-model:active="isLoading"
-    :can-cancel="true"
-    :is-full-page="fullPage"
-    color="rgb(140, 146, 232)"
-    loader="dots"
-    :height=100
-    :width=150
-    :opacity=0.7
-  >
-    <template v-slot:after>
-      <p class="spinner-after">{{ spinnerMessage }}</p>
-    </template>
-  </loading>
+  <div class="vld-parent">
+    <loading v-model:active="isLoading"
+      :can-cancel="true"
+      :is-full-page="fullPage"
+      color="rgb(140, 146, 232)"
+      loader="dots"
+      :height=100
+      :width=150
+      :opacity=1
+    >
+      <template v-slot:after>
+        <p class="spinner-after">{{ spinnerMessage }}</p>
+      </template>
+    </loading>
   
-  <div v-if="error" class="alert alert-warning" role="alert">
-    {{ error }}
-  </div>
-  <div class="container">
-    <div>
-      <h4>Login</h4>
+    <div v-if="error" class="alert alert-warning" role="alert">
+      {{ error }}
     </div>
-    <div class="row">
-      <div class="col-sm-12 login-form-container">
-        <div class="login-form-container">
-          <form v-on:submit.prevent="login()" class="needs-validation" novalidate>
-            <small>Email:</small>
-            <input
-              v-model="user.email"
-              id="login-input-email"
-              class="form-control"
-              type="text"
-              autocomplete="email"
-              required
-            >
-            <div v-if="emailInputError" class="invalid-feedback">
-              {{ emailInputError }}
-            </div>
-            <small>Password:</small>
-            <input
-              v-model="user.password"
-              id="login-input-password"
-              class="form-control"
-              type="password"
-              autocomplete="current-password"
-              required
-            >
-            <div class="btn-container">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                @click="toHome()"
+    <div class="container">
+      <div>
+        <h4>Login</h4>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 login-form-container">
+          <div class="login-form-container">
+            <form v-on:submit.prevent="login()" class="needs-validation" novalidate>
+              <small>Email:</small>
+              <input
+                v-model="user.email"
+                id="login-input-email"
+                class="form-control"
+                type="text"
+                autocomplete="email"
+                required
               >
-                Back to Home
-              </button>
-              <button type="submit" class="btn btn-primary" @click="login()">Login</button>
-            </div>
-          </form>
+              <div v-if="emailInputError" class="invalid-feedback">
+                {{ emailInputError }}
+              </div>
+              <small>Password:</small>
+              <input
+                v-model="user.password"
+                id="login-input-password"
+                class="form-control"
+                type="password"
+                autocomplete="current-password"
+                required
+              >
+              <div class="btn-container">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  @click="toHome()"
+                >
+                  Back to Home
+                </button>
+                <button type="submit" class="btn btn-primary" @click="login()">Login</button>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
-      <div class="col-sm-6 login-hint">
-        <p class="login-hint-title">Login as Admin</p>
-        <p class="login-hint-item"><small>Email: test@test.com</small></p>
-        <p class="login-hint-item"><small>Password: password</small></p>
-      </div>
-      <div class="col-sm-6 login-hint">
-        <p class="login-hint-title">Login as User</p>
-        <p class="login-hint-item"><small>Email: test@user.com</small></p>
-        <p class="login-hint-item"><small>Password: password</small></p>
+        <div class="col-sm-6 login-hint">
+          <p class="login-hint-title">Login as Admin</p>
+          <p class="login-hint-item"><small>Email: test@test.com</small></p>
+          <p class="login-hint-item"><small>Password: password</small></p>
+        </div>
+        <div class="col-sm-6 login-hint">
+          <p class="login-hint-title">Login as User</p>
+          <p class="login-hint-item"><small>Email: test@user.com</small></p>
+          <p class="login-hint-item"><small>Password: password</small></p>
+        </div>
       </div>
     </div>
   </div>

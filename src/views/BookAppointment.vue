@@ -7,7 +7,7 @@
       loader="dots"
       :height=100
       :width=150
-      :opacity=0.7
+      :opacity=1
     >
       <template v-slot:after>
         <p class="spinner-after">{{ spinnerMessage }}</p>
