@@ -1,13 +1,14 @@
 <template>
   <div class="vld-parent">
-    <loading v-model:active="isLoading"
-      :can-cancel="true"
+    <loading
+      v-model:active="isLoading"
+      :can-cancel=true
       :is-full-page="fullPage"
       color="rgb(140, 146, 232)"
       loader="dots"
-      height="100"
-      width="150"
-      opacity="0.7"
+      :height=100
+      :width=150
+      :opacity=0.7
     >
       <template v-slot:after>
         <p class="spinner-after">Loading</p>
@@ -48,10 +49,26 @@
               <form action="">
                 <div class="input-group input-group-sm mb-3">
                   <span class="input-group-text">Year</span>
-                  <input type="text" v-model="currentYear" class="form-control">
+                  <input
+                    type="text"
+                    v-model="currentYear"
+                    class="form-control"
+                  >
                   <div class="btn-group" role="group">
-                    <button @click="decreaseYear()" type="button" class="btn btn-outline-secondary btn-sm">{{"<"}}</button>
-                    <button @click="increaseYear()" type="button" class="btn btn-outline-secondary btn-sm">{{">"}}</button>
+                    <button
+                      @click="decreaseYear()"
+                      type="button"
+                      class="btn btn-outline-secondary btn-sm"
+                    >
+                      {{"<"}}
+                    </button>
+                    <button
+                      @click="increaseYear()"
+                      type="button"
+                      class="btn btn-outline-secondary btn-sm"
+                    >
+                      {{">"}}
+                    </button>
                   </div>
                 </div>
               </form>
