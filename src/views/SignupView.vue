@@ -10,15 +10,50 @@
             <div class="col-sm-6">
               <p><strong>Required</strong></p>
               <small>First name</small>
-              <input id="input-validation-firstname" autocomplete="given-name" type="text" v-model="user.first_name" class="form-control" required>
+              <input
+                id="input-validation-firstname"
+                autocomplete="given-name"
+                type="text"
+                v-model="user.first_name"
+                class="form-control"
+                required
+              >
               <small>Last name</small>
-              <input id="input-validation-lastname" autocomplete="family-name" type="text" v-model="user.last_name" class="form-control" required>
+              <input
+                id="input-validation-lastname"
+                autocomplete="family-name"
+                type="text"
+                v-model="user.last_name"
+                class="form-control"
+                required
+              >
               <small>Email</small>
-              <input id="input-validation-email" autocomplete="email" type="email" v-model="user.email" class="form-control" required>
+              <input
+                id="input-validation-email"
+                autocomplete="email"
+                type="email"
+                v-model="user.email"
+                class="form-control"
+                required
+              >
               <small>Password</small>
-              <input id="input-validation-password" autocomplete="new-password" type="password" v-model="user.password" class="form-control" required>
+              <input
+                id="input-validation-password"
+                autocomplete="new-password"
+                type="password"
+                v-model="user.password"
+                class="form-control"
+                required
+              >
               <small>Confirm password</small>
-              <input id="input-validation-passwordconfirm" autocomplete="new-password" type="password" v-model="passwordConfirm" class="form-control" required>
+              <input
+                id="input-validation-passwordconfirm"
+                autocomplete="new-password"
+                type="password"
+                v-model="passwordConfirm"
+                class="form-control"
+                required
+              >
               <small v-if="passwordMatch" class="password-match">
                 Not a matching Password.
               </small>
@@ -26,11 +61,25 @@
             <div class="col-sm-6">
               <p><strong>Optional</strong></p>
               <small>Phone</small>
-              <input autocomplete="tel-national" type="text" v-model="user.phone" class="form-control">
+              <input
+                autocomplete="tel-national"
+                type="text"
+                v-model="user.phone"
+                class="form-control"
+              >
               <small>Zip</small>
-              <input autocomplete="postal-code" type="text" v-model="user.zip" class="form-control">
+              <input
+                autocomplete="postal-code"
+                type="text"
+                v-model="user.zip"
+                class="form-control"
+              >
               <small>State</small>
-              <select v-model="user.state" class="form-select" autocomplete="address-level1">
+              <select
+                v-model="user.state"
+                class="form-select"
+                autocomplete="address-level1"
+              >
                 <option
                   v-for="state in states"
                   :key="state"
@@ -40,9 +89,19 @@
                 </option>
               </select>
               <small>City</small>
-              <input autocomplete="address-level2" type="text" v-model="user.city" class="form-control">
+              <input
+                autocomplete="address-level2"
+                type="text"
+                v-model="user.city"
+                class="form-control"
+              >
               <small>Address</small>
-              <input autocomplete="street-address" type="text" v-model="user.address" class="form-control">
+              <input
+                autocomplete="street-address"
+                type="text"
+                v-model="user.address"
+                class="form-control"
+              >
               <small>Gender</small>
               <select v-model="user.gender" class="form-select">
                 <option
@@ -54,7 +113,12 @@
                 </option>
               </select>
               <small>Birthday</small>
-              <input autocomplete="bday" type="date" v-model="user.birthday" class="form-control">
+              <input
+                autocomplete="bday"
+                type="date"
+                v-model="user.birthday"
+                class="form-control"
+              >
             </div>
             <div class="btn-container col-sm-6">
               <button
