@@ -1,6 +1,9 @@
 <template>
 <div id="app">
-  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #a1a6e1;">
+  <nav 
+    class="navbar navbar-expand-lg navbar-light"
+    style="background-color: rgb(140, 146, 232);"
+  >
     <div class="container-fluid">
       <a href="/">
         <img
