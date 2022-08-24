@@ -1,4 +1,18 @@
 <template>
+  <loading v-model:active="isLoading"
+    :can-cancel="true"
+    :is-full-page="fullPage"
+    color="rgb(140, 146, 232)"
+    loader="dots"
+    :height=100
+    :width=150
+    :opacity=0.7
+  >
+    <template v-slot:after>
+      <p class="spinner-after">{{ spinnerMessage }}</p>
+    </template>
+  </loading>
+  
   <div v-if="error" class="alert alert-warning" role="alert">
     {{ error }}
   </div>
@@ -60,103 +74,117 @@
 
 <script>
 import axios from 'axios'
-  export default {
-    data() {
-      return {
-        error: null,
-        emailInputError: null,
-        user: {
-          email: "",
-          password: "",
-        },
-      }
-    },
-    watch: {
-      'user.email'() {
-        const inputValidationEmail = document.getElementById('login-input-email');
-        const email = this.user.email
-        if (email === "") {
-          this.AddInvalidCssClass(inputValidationEmail)
-        } else if (email !== "") {
-          if (email.split('').includes('@') === false) {
-            this.AddInvalidCssClass(inputValidationEmail)
-            this.emailInputError = "Invalid email address. Email has to contain '@'"
-          } else if (email.split('').includes('@')) {
-            this.AddValidCssClass(inputValidationEmail)
-            this.emailInputError = null;
-          } else {
-            this.AddValidCssClass(inputValidationEmail)
-          }
-        }
-      },
-      'user.password'() {
-        const inputValidationPassword = document.getElementById('login-input-password');
-        if (this.user.password === "") {
-          this.AddInvalidCssClass(inputValidationPassword)
-        } else if (this.user.password !== "") {
-          this.AddValidCssClass(inputValidationPassword)
-        }
-      },
-    },
-    methods: {
-      AddValidCssClass(element) {
-        element.classList.remove('is-invalid');
-        element.classList.add('is-valid');
-      },
-      AddInvalidCssClass(element) {
-        element.classList.remove('is-valid');
-        element.classList.add('is-invalid');
-      },
-      validateEmptyRequiredForm() {
-        let invalidKeys = [];
-        let user = this.user
-        const keys = (Object.keys(user));
-        for (let i in keys) {
-          if (user[keys[i]] === "") {
-            invalidKeys.push(keys[i])
-          }
-        }
-        if (!invalidKeys.length) {
-          if (user.email.split('').includes('@') === false) {
-            return false
-          } else {
-            this.emailInputError = null
-            return true;
-          }
-        } else {
-          if (!user.email && !user.password) {
-            this.error = "Please enter email and password.";
-          } else if (!user.email) {
-            this.error = "Please enter the email.";
-          } else if (!user.password) {
-            this.error = "Please enter the password.";
-          } else {
-            this.error = "Something went wrong. Tray again."
-          }
-          return false;
-        }
-      },
-      login() {
-        if (this.validateEmptyRequiredForm()) {
-          axios.post('/sessions', this.user)
-          .then((res)=> {
-            this.error = null;
-            axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.jwt;
-            localStorage.setItem("jwt", res.data.jwt);
-            localStorage.setItem("user_id", res.data.user_id);
-            this.$router.push('/appointments');
-          })
-          .catch((error)=> {
-            this.error = `${error.response.statusText}: Invalid email or password`;
-          })
-        }
-      },
-      toHome() {
-        this.user = {};
-        this.$router.push('/');
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
+
+export default {
+  components: {
+    Loading,
+  },
+  data() {
+    return {
+      error: null,
+      emailInputError: null,
+      isLoading: false,
+      fullPage: true,
+      spinnerMessage: "Loading",
+      user: {
+        email: "",
+        password: "",
       },
     }
+  },
+  watch: {
+    'user.email'() {
+      const inputValidationEmail = document.getElementById('login-input-email');
+      const email = this.user.email
+      if (email === "") {
+        this.AddInvalidCssClass(inputValidationEmail)
+      } else if (email !== "") {
+        if (email.split('').includes('@') === false) {
+          this.AddInvalidCssClass(inputValidationEmail)
+          this.emailInputError = "Invalid email address. Email has to contain '@'"
+        } else if (email.split('').includes('@')) {
+          this.AddValidCssClass(inputValidationEmail)
+          this.emailInputError = null;
+        } else {
+          this.AddValidCssClass(inputValidationEmail)
+        }
+      }
+    },
+    'user.password'() {
+      const inputValidationPassword = document.getElementById('login-input-password');
+      if (this.user.password === "") {
+        this.AddInvalidCssClass(inputValidationPassword)
+      } else if (this.user.password !== "") {
+        this.AddValidCssClass(inputValidationPassword)
+      }
+    },
+  },
+  methods: {
+    AddValidCssClass(element) {
+      element.classList.remove('is-invalid');
+      element.classList.add('is-valid');
+    },
+    AddInvalidCssClass(element) {
+      element.classList.remove('is-valid');
+      element.classList.add('is-invalid');
+    },
+    validateEmptyRequiredForm() {
+      let invalidKeys = [];
+      let user = this.user
+      const keys = (Object.keys(user));
+      for (let i in keys) {
+        if (user[keys[i]] === "") {
+          invalidKeys.push(keys[i])
+        }
+      }
+      if (!invalidKeys.length) {
+        if (user.email.split('').includes('@') === false) {
+          return false
+        } else {
+          this.emailInputError = null
+          return true;
+        }
+      } else {
+        if (!user.email && !user.password) {
+          this.error = "Please enter email and password.";
+        } else if (!user.email) {
+          this.error = "Please enter the email.";
+        } else if (!user.password) {
+          this.error = "Please enter the password.";
+        } else {
+          this.error = "Something went wrong. Tray again."
+        }
+        return false;
+      }
+    },
+    login() {
+      if (this.validateEmptyRequiredForm()) {
+        this.isLoading = true;
+        axios.post('/sessions', this.user)
+        .then((res)=> {
+          this.error = null;
+          axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.jwt;
+          localStorage.setItem("jwt", res.data.jwt);
+          localStorage.setItem("user_id", res.data.user_id);
+          this.$router.push('/appointments');
+        })
+        .then(()=> {
+          this.isLoading = false
+        })
+        .catch((error)=> {
+          this.error = `${error.response.statusText}: Invalid email or password`;
+          this.isLoading = false
+        })
+      }
+    },
+    toHome() {
+      this.user = {};
+      this.$router.push('/');
+    },
   }
+}
 </script>
 
 <style scoped>
