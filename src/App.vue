@@ -37,9 +37,11 @@
             >
               Admin Menu
             </a>
-            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+            <ul
+              class="dropdown-menu"
+            >
               <li>
-                <a class="dropdown-item" href="/admin/dashboard">Dashboard</a>
+                <a class="dropdown-item admin-dropdown-item" href="/admin/dashboard">Dashboard</a>
               </li>
               <li>
                 <a class="dropdown-item" href="/admin/calendar">Appointments</a>
@@ -96,6 +98,7 @@
       logout() {
         localStorage.removeItem("jwt");
         localStorage.removeItem("user_id");
+        localStorage.removeItem("admin");
         this.message = "Successfully logged out. Redirecting to the top page.";
         if (this.$route.path === '/') {
           setTimeout(()=> {this.message = null}, 3000);
@@ -114,7 +117,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: rgb(44, 62, 80);
   background-color: rgb(227, 229, 253);
 }
 
@@ -124,7 +127,7 @@ html {
 
 nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: rgb(44, 62, 80);
 }
 
 nav a.router-link-exact-active {
@@ -162,4 +165,7 @@ ul {
   font-size: larger;
   font-weight: 600;
 }
+/* .dropdown-menu-dark .admin-dropdown-item {
+  color: rgb(44, 62, 80);
+} */
 </style>
