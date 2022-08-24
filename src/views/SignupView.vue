@@ -305,8 +305,7 @@ export default {
         this.isLoading = true;
         axios.post('/users', this.user)
         .then((res)=> {
-          localStorage.setItem("user_id", res.data.user_id);
-          let user = {
+          const user = {
             email: res.data.email,
             password: this.user.password
           }
@@ -318,6 +317,7 @@ export default {
             axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.jwt;
             localStorage.setItem("jwt", res.data.jwt);
             localStorage.setItem("user_id", res.data.user_id);
+            localStorage.setItem("admin", res.data.admin);
           })
           .then(()=> {
             this.user = {};

@@ -170,6 +170,7 @@ export default {
           axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.jwt;
           localStorage.setItem("jwt", res.data.jwt);
           localStorage.setItem("user_id", res.data.user_id);
+          localStorage.setItem("admin", res.data.admin);
           this.$router.push('/appointments');
         })
         .then(()=> {
