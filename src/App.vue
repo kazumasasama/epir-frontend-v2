@@ -171,6 +171,9 @@ textarea {
 ul {
     list-style: none;
   }
+hr {
+  border-top: 1px;
+}
 
 .container {
   padding-top: 12px;
