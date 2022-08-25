@@ -170,7 +170,6 @@ import axios from 'axios'
           return 0
         }
         let booked = this.events.filter((event)=> event.status === "booked")
-        console.log(booked);
         return booked.map((event)=> event.total_spent).reduce((sum, price)=> sum + price, 0)
       },
       lastVisit() {
