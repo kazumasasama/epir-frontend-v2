@@ -4,6 +4,9 @@
   </div>
   <div class="container">
     <div class="row">
+      <div class="col-12 text-end">
+        <button @click="staticDataKey++;" class="btn btn-info">Reload Data</button>
+      </div>
       <div class="col-12">
         <div class="card-group">
           <div class="card text-bg-light mb-3">
@@ -20,106 +23,110 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="card col-12">
-        <div class="card-body">
-          <!-- <div class="row">
-            <div class="col-md-4">
-              <DoughnutChart
-                :chartData="genderDoughnutChartData"
-                :chartOptions="genderDoughnutChartOptions"
-              />
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <!-- <div class="row">
+              <div class="col-md-4">
+                <DoughnutChart
+                  :chartData="genderDoughnutChartData"
+                  :chartOptions="genderDoughnutChartOptions"
+                />
+              </div>
             </div>
-          </div>
-          <hr class="hr-space-devider"> -->
-          <div class="col-md-6">
-            <form action="">
-              <div class="input-group input-group-sm mb-3">
-                <span class="input-group-text">Year</span>
-                <input
-                  type="text"
-                  v-model="currentYear"
-                  class="form-control"
-                >
-                <div class="btn-group" role="group">
-                  <button
-                    @click="decreaseYear()"
-                    type="button"
-                    class="btn btn-outline-secondary btn-sm"
+            <hr class="hr-space-devider"> -->
+            <div class="col-md-6">
+              <form action="">
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text">Year</span>
+                  <input
+                    type="text"
+                    v-model="currentYear"
+                    class="form-control"
                   >
-                    {{"<"}}
-                  </button>
-                  <button
-                    @click="increaseYear()"
-                    type="button"
-                    class="btn btn-outline-secondary btn-sm"
-                  >
-                    {{">"}}
-                  </button>
+                  <div class="btn-group" role="group">
+                    <button
+                      @click="decreaseYear()"
+                      type="button"
+                      class="btn btn-outline-secondary btn-sm"
+                    >
+                      {{"<"}}
+                    </button>
+                    <button
+                      @click="increaseYear()"
+                      type="button"
+                      class="btn btn-outline-secondary btn-sm"
+                    >
+                      {{">"}}
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </form>
-          </div>
-          <div class="row">
-            <div class="col-md-8">
-              <BarChart
-                :chartData="barChartData"
-                :chartOptions="barChartOptions"
-                :height="barChartHeight"
-                type="bar"
-              />
+              </form>
             </div>
-            <div class="col-md-4">
-              <div class="card-group">
-                <div class="card text-bg-light mb-3">
-                  <div class="card-header">{{ currentYear }}</div>
-                  <div class="card-body">
-                    <p class="card-text">{{ currentAppointmentTotal }}</p>
-                  </div>
-                </div>
-                <div class="card text-bg-light mb-3">
-                  <div class="card-header">{{ currentYear - 1 }}</div>
-                  <div class="card-body">
-                    <p class="card-text">{{ prevAppointmentTotal }}</p>
-                  </div>
-                </div>
+            <div class="row">
+              <div class="col-md-8">
+                <BarChart
+                  :chartData="barChartData"
+                  :chartOptions="barChartOptions"
+                  :height="barChartHeight"
+                  type="bar"
+                  :key="staticDataKey"
+                />
               </div>
-              <DoughnutChart
-                :chartData="doughnutChartData"
-                :chartOptions="doughnutChartOptions"
-              />
-            </div>
-          </div>
-          <hr class="hr-space-devider">
-          <div class="row">
-            <div class="col-md-8">
-              <BarChart
-                :chartData="salesBarChartData"
-                :chartOptions="salesBarChartOptions"
-                :height="barChartHeight"
-                type="bar"
-              />
-            </div>
-            <div class="col-md-4">
-              <div class="card-group">
-                <div class="card text-bg-light mb-3">
-                  <div class="card-header">{{ currentYear }}</div>
-                  <div class="card-body">
-                    <p class="card-text">${{ currentSalesTotal }}</p>
+              <div class="col-md-4">
+                <div class="card-group">
+                  <div class="card text-bg-light mb-3">
+                    <div class="card-header">{{ currentYear }}</div>
+                    <div class="card-body">
+                      <p class="card-text">{{ currentAppointmentTotal }}</p>
+                    </div>
+                  </div>
+                  <div class="card text-bg-light mb-3">
+                    <div class="card-header">{{ currentYear - 1 }}</div>
+                    <div class="card-body">
+                      <p class="card-text">{{ prevAppointmentTotal }}</p>
+                    </div>
                   </div>
                 </div>
-                <div class="card text-bg-light mb-3">
-                  <div class="card-header">{{ currentYear - 1 }}</div>
-                  <div class="card-body">
-                    <p class="card-text">${{ prevSalesTotal }}</p>
-                  </div>
-                </div>
+                <DoughnutChart
+                  :chartData="doughnutChartData"
+                  :chartOptions="doughnutChartOptions"
+                  :key="staticDataKey"
+                />
               </div>
-              <DoughnutChart
-                :chartData="salesByMenuDoughnutChartData"
-                :chartOptions="salesByMenuDoughnutChartOptions"
-              />
+            </div>
+            <hr class="hr-space-devider">
+            <div class="row">
+              <div class="col-md-8">
+                <BarChart
+                  :chartData="salesBarChartData"
+                  :chartOptions="salesBarChartOptions"
+                  :height="barChartHeight"
+                  type="bar"
+                  :key="staticDataKey"
+                />
+              </div>
+              <div class="col-md-4">
+                <div class="card-group">
+                  <div class="card text-bg-light mb-3">
+                    <div class="card-header">{{ currentYear }}</div>
+                    <div class="card-body">
+                      <p class="card-text">${{ currentSalesTotal }}</p>
+                    </div>
+                  </div>
+                  <div class="card text-bg-light mb-3">
+                    <div class="card-header">{{ currentYear - 1 }}</div>
+                    <div class="card-body">
+                      <p class="card-text">${{ prevSalesTotal }}</p>
+                    </div>
+                  </div>
+                </div>
+                <DoughnutChart
+                  :chartData="salesByMenuDoughnutChartData"
+                  :chartOptions="salesByMenuDoughnutChartOptions"
+                  :key="staticDataKey"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -151,6 +158,7 @@ export default {
     return {
       error: null,
       // statics
+      staticDataKey: 0,
       usersTotal: 0,
       currentAppointmentTotal: 0,
       prevAppointmentTotal: 0,
