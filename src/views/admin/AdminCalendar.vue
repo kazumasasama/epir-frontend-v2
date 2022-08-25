@@ -8,8 +8,11 @@
 
   <div class="container">
     <div class="row">
+      <div class="col-12 text-end">
+        <small>Don't see appointments?</small>
+        <button @click="calendarKey++;" class="btn btn-info">Reload Calendar</button>
+      </div>
       <div class="col-12">
-        <small>Don't see appointments? Try reflesh this page.</small>
         <div class="calendar-container card">
           <vue-cal
             small
@@ -17,7 +20,7 @@
             class="vuecal--blue-theme"
             :selected-date="selectedDate"
             :time-from="9.5 * 60"
-            :time-to="20 * 60"
+            :time-to="20.5 * 60"
             :time-step="30"
             :events="events"
             :disable-views="['years', 'year']"
@@ -27,6 +30,7 @@
             events-count-on-year-view
             hide-week-number
             locale="en"
+            :key="calendarKey"
           />
         </div>
       </div>
@@ -113,6 +117,7 @@ export default {
       menus: [],
       new_menus: [],
       eventDetailsModal: null,
+      calendarKey: 0,
     }
   },
   created() {

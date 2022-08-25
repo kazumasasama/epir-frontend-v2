@@ -1,4 +1,7 @@
 <template>
+  <div v-if="error" class="alert alert-warning" role="alert">
+    {{ error }}
+  </div>
   <div class="container">
     <div class="row">
       <div class="col-12">
@@ -131,6 +134,7 @@ import DoughnutChart from '@/components/charts/DoughnutChart.vue'
 import moment from 'moment';
 import axios from 'axios';
 import { useSystemStore } from '@/store/systemStore';
+// import { getCurrentInstance } from 'vue';
 
 export default {
   setup() {
@@ -145,6 +149,7 @@ export default {
   },
   data () {
     return {
+      error: null,
       // statics
       usersTotal: 0,
       currentAppointmentTotal: 0,
@@ -405,6 +410,11 @@ export default {
     })
   },
   methods: {
+    // reloadPage() {
+    //   const instance = getCurrentInstance()
+    //   console.log(instance)
+    //   this.$forceUpdate()
+    // },
     increaseYear() {
       this.currentYear++;
     },
@@ -460,6 +470,9 @@ export default {
       .then(()=> {
         this.systemStore.endLoading();
       })
+      .catch((error)=> {
+        this.error = `${error.response.statusText}: Please reload this page`;
+      })
     },
     getAllTimeUsersStatics() {
       axios.post('/users-statics.json')
@@ -468,6 +481,9 @@ export default {
         this.usersTotal = usersStatics[0];
         this.genderDoughnutChartData.labels = Object.keys(usersStatics[1])
         this.genderDoughnutChartData.datasets[0].data = Object.values(usersStatics[1]);
+      })
+      .catch((error)=> {
+        this.error = error.response.statusText;
       })
     },
   },
