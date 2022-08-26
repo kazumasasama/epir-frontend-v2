@@ -14,6 +14,8 @@ import UserShow from '@/views/admin/UserShow.vue'
 import TermsAndConditions from '@/views/TermsAndConditions.vue'
 import PrivacyAndPolicy from '@/views/PrivacyAndPolicy.vue'
 
+import { useUserStore } from '@/store/userStore'
+
 const routes = [
   {
     path: '/',
@@ -24,7 +26,15 @@ const routes = [
   {
     path: '/admin/dashboard',
     name: 'adminDashboard',
-    component: AdminDashboard
+    component: AdminDashboard,
+    beforeEnter: (to, from, next)=> {
+      const userStore = useUserStore();
+      if (userStore.user.admin) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
   },
   {
     path: '/admin/calendar',

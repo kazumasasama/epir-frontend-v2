@@ -41,7 +41,7 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           </ul>
           <ul class="navbar-nav mb-2 mb-lg-0">
-            <li class="nav-item dropdown" v-if="showNavMenu">
+            <li class="nav-item dropdown" v-if="userStore.user.admin">
               <a
                 class="nav-link dropdown-toggle"
                 id="navbar-link-admin"
@@ -68,7 +68,7 @@
                 </li>
               </ul>
             </li>
-            <li class="nav-item" @click="logout()" v-if="showNavMenu">
+            <li class="nav-item" @click="logout()" v-if="userStore.isLoggedin">
               <a class="nav-link">Logout</a>
             </li>
             <!-- <li class="nav-item">
@@ -90,18 +90,27 @@
 
 <script>
 import { useSystemStore } from '@/store/systemStore'
+import { useUserStore } from '@/store/userStore'
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+import axios from 'axios'
 
 export default {
   setup() {
     const systemStore = useSystemStore();
+    const userStore = useUserStore();
     return {
       systemStore,
+      userStore,
     }
   },
   components: {
     Loading,
+  },
+  mounted() {
+    if (localStorage.getItem('user_id')) {
+      this.reLogin();
+    }
   },
   data() {
     return {
@@ -110,23 +119,51 @@ export default {
         password: "",
         passwordConfirm: "",
       },
-      showNavMenu: false,
       message: null,
     }
   },
-  watch: {
-    $route(to, from) {
-      from
-      if (to.path === '/admin/menus' || to.path === '/admin/calendar' || to.path === '/admin/users' || to.path === '/admin/dashboard') {
-        this.showNavMenu = true;
-      }
-    }
-  },
+  // watch: {
+  //   $route(to, from) {
+  //     from
+  //     if (to.path === '/admin/menus' || to.path === '/admin/calendar' || to.path === '/admin/users' || to.path === '/admin/dashboard') {
+  //       this.showNavMenu = true;
+  //     }
+  //   }
+  // },
   methods: {
+    reLogin() {
+      this.systemStore.modifyLoadingMessage('Logging in')
+      this.systemStore.startLoading()
+      const userId = localStorage.getItem('user_id')
+      axios.get(`/users/${userId}.json`)
+      .then((res)=> {
+        this.userStore.pushUser(res.data);
+        this.userStore.switchLoggedin(true);
+        return res.data
+      })
+      .then((user)=> {
+        this.systemStore.endLoading();
+        if (user.admin) {
+          this.$router.push('/admin/dashboard');
+        } else {
+          this.$router.push('/appointments');
+        }
+        return
+      })
+      .catch((error)=> {
+        this.systemStore.endLoading();
+        this.userStore.switchLoggedin(false);
+        this.error = `${error.response}: Auto login failed. Redirecting to Login page`
+        setTimeout(()=> {
+          this.$router.push('/login')
+        }, 3000)
+      })
+    },
     logout() {
       localStorage.removeItem("jwt");
       localStorage.removeItem("user_id");
       localStorage.removeItem("admin");
+      this.userStore.switchLoggedin(false);
       this.message = "Successfully logged out. Redirecting to the top page.";
       if (this.$route.path === '/') {
         setTimeout(()=> {this.message = null}, 3000);

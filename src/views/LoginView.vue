@@ -60,13 +60,16 @@
 
 <script>
 import { useSystemStore } from '@/store/systemStore'
+import { useUserStore } from '@/store/userStore'
 import axios from 'axios'
 
 export default {
   setup() {
     const systemStore = useSystemStore();
+    const userStore = useUserStore();
     return {
       systemStore,
+      userStore,
     }
   },
   data() {
@@ -154,15 +157,34 @@ export default {
           axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.jwt;
           localStorage.setItem("jwt", res.data.jwt);
           localStorage.setItem("user_id", res.data.user_id);
-          localStorage.setItem("admin", res.data.admin);
-          this.$router.push('/appointments');
+          return res.data.user_id
         })
-        .then(()=> {
-          this.systemStore.endLoading()
+        .then((userId)=> {
+          axios.get(`/users/${userId}.json`)
+          .then((res)=> {
+            this.userStore.pushUser(res.data);
+            this.userStore.switchLoggedin(true);
+            let isAdmin = res.data.admin
+            return isAdmin
+          })
+          .then((isAdmin)=> {
+            if (isAdmin) {
+              this.$router.push('/admin/dashboard');
+            } else {
+              this.$router.push('/appointments');
+            }
+            this.systemStore.endLoading();
+            return
+          })
+          .catch((error)=> {
+            this.systemStore.endLoading();
+            this.error = `${error.response}: Invalid email or password`;
+            error.response;
+          })
         })
         .catch((error)=> {
-          this.error = `${error.response.statusText}: Invalid email or password`;
-          this.systemStore.endLoading()
+          this.systemStore.endLoading();
+          this.error = `${error.response}: Invalid email or password`;
         })
       }
     },

@@ -403,12 +403,15 @@ import { ref } from 'vue'
 import axios from "axios";
 import * as moment from 'moment-timezone';
 import { useSystemStore } from '@/store/systemStore'
+import { useUserStore } from '@/store/userStore'
 
 export default {
   setup() {
     const systemStore = useSystemStore();
+    const userStore = useUserStore();
     return {
       systemStore,
+      userStore,
     }
   },
   components: {
@@ -454,7 +457,7 @@ export default {
   created() {
     this.systemStore.modifyLoadingMessage("Loading");
     this.systemStore.startLoading();
-    this.getUser();
+    this.user = this.userStore.user;
     this.indexMenus();
     this.indexBusinessTimes();
   },
@@ -562,16 +565,6 @@ export default {
         this.businessTimes = res.data;
       })
     },
-    getUser() {
-      var id = localStorage.user_id;
-      axios.get(`/users/${id}.json`)
-      .then((res)=> {
-        this.user = res.data;
-      })
-      .catch((error)=> {
-        error.response;
-      })
-    },
     nextStep() {
       if (this.currentStep === 1 && this.selectedMenus.length === 0) {
         this.errors = ["Please pick at least one menu."];
@@ -596,7 +589,6 @@ export default {
         targetElement.classList.remove('bg-secondary');
         targetElement.classList.add('bg-success');
       }
-      console.log('end of function')
     },
     prevStep() {
       if (this.currentStep > 1) {
