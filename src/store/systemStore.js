@@ -5,6 +5,7 @@ export const useSystemStore = defineStore("systemStore", {
     return {
       isLoading: false,
       LoadingMessage: 'Loading',
+      i18n: 'en',
     };
   },
   actions: {
@@ -17,5 +18,8 @@ export const useSystemStore = defineStore("systemStore", {
     modifyLoadingMessage(message) {
       this.LoadingMessage = message
     },
+    changeI18n(lang) {
+      this.i18n = lang
+    }
   },
 });

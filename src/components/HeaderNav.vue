@@ -28,6 +28,27 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           </ul>
           <ul class="navbar-nav mb-2 mb-lg-0">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                id="navbar-link-admin"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                i18n
+              </a>
+              <ul
+                class="dropdown-menu"
+              >
+                <li @click="this.$i18n.locale = 'en'">
+                  <a class="dropdown-item admin-dropdown-item" href="#">ENG</a>
+                </li>
+                <li @click="this.$i18n.locale = 'ja'">
+                  <a class="dropdown-item" href="#">JPN</a>
+                </li>
+              </ul>
+            </li>
             <li v-if="isAdmin" class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"

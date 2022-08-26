@@ -2,7 +2,7 @@
   <div class="container home-container">
     <div class="row">
       <div class="col-sm-12">
-        <h4 class="card-title top-card-title">Welcome to Booking App Biznesu</h4>
+        <h4 class="card-title top-card-title">{{ $t('Home.greeting') }}</h4>
         <div class="card-body home" id="card-home">
           <img src="@/assets/people-top-image.jpg" class="card-img-home">
           <p class="illust-credit">
@@ -14,23 +14,23 @@
               People set vector created by pikisuperstar - www.freepik.com
             </a>
           </p>
-          <p class="card-text" id="text-home">Please login/signup to book an appontment</p>
+          <p class="card-text" id="text-home">{{ $t('Home.message') }}</p>
         </div>
       </div>
       <div class="col-sm-6 login-hint">
-        <p class="login-hint-title">Login as Admin</p>
-        <p class="login-hint-item"><small>Email: test@test.com</small></p>
-        <p class="login-hint-item"><small>Password: password</small></p>
+        <p class="login-hint-title">{{ $t('Home.loginAdmin') }}</p>
+        <p class="login-hint-item"><small>{{ $t('El.form.email') }}: test@test.com</small></p>
+        <p class="login-hint-item"><small>{{ $t('El.form.password') }}: password</small></p>
       </div>
       <div class="col-sm-6 login-hint">
-        <p class="login-hint-title">Login as User</p>
-        <p class="login-hint-item"><small>Email: test@user.com</small></p>
-        <p class="login-hint-item"><small>Password: password</small></p>
+        <p class="login-hint-title">{{ $t('Home.loginUser') }}</p>
+        <p class="login-hint-item"><small>{{ $t('El.form.email') }}: test@user.com</small></p>
+        <p class="login-hint-item"><small>{{ $t('El.form.password') }}: password</small></p>
       </div>
       <div class="col-12">
         <div class="btn-container"></div>
-          <button @click="this.$router.push('/login')" class="btn btn-primary">Login</button>
-          <button @click="this.$router.push('/signup')" class="btn btn-primary">Signup</button>
+          <button @click="this.$router.push('/login')" class="btn btn-primary">{{ $t('El.btn.login') }}</button>
+          <button @click="this.$router.push('/signup')" class="btn btn-primary">{{ $t('El.btn.signup') }}</button>
       </div>
     </div>
   </div>
