@@ -4,13 +4,13 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-6">
-            <strong>Clink on the link below to see your appointment on the calendar in the admin page.</strong>
-            <p>
-              <a class="link-primary" href="https://biznesu.netlify.app/admin/calendar">https://biznesu.netlify.app/admin/calendar</a>
+            <strong>Clink on the link below to see your appointment on the calendar in the admin page.(You should be logged in as admin)</strong>
+            <p></p>
+            <p @click="this.$router.push('/admin/calendar')">
+              <a class="link-primary" href="#">https://biznesu.netlify.app/admin/calendar</a>
             </p>
             <p></p>
             <h4>Thank you!</h4>
-            <p></p>
             <p></p>
             <p>We just made your appointment.</p>
             <p>If you wish to reschedule/cancel your appintment, please give us a call.</p>
@@ -18,7 +18,7 @@
               Please note that we might charge cancelation fee for appointments start within 24 hours.
             </p>
             <ul class="store-info-complete">
-              <h5>Business Name</h5>
+              <h5>Biznesu</h5>
               <li>111 W 11th Street</li>
               <li>New York, NY 10001</li>
               <p></p>

@@ -23,65 +23,68 @@
   </nav>
 
   <div class="container">
-    <form v-if="!showHistory">
-      <div class="row">
-        <div class="col-12">
-          <h5>Customer Detail</h5>
-          <span class="notification">{{ message }}</span>
-        </div>
-
-        <div class="col-sm-6">
-          <small>First Name</small>
-          <input type="text" v-model="user.first_name" class="form-control">
-          <small>Last Name</small>
-          <input type="text" v-model="user.last_name" class="form-control">
-          <small>Gender</small>
-          <select v-model="user.gender" class="form-select">
-            <option
-              v-for="gender in genders"
-              :key="gender"
-              :value="gender"
-            >
-              {{ gender }}
-            </option>
-          </select>
-          <small>Email</small>
-          <input type="text" v-model="user.email" class="form-control">
-          <small>Phone</small>
-          <input type="text" v-model="user.phone" class="form-control">
-          <small>Birthday</small>
-          <input class="form-control" type="text" v-model="user.birthday">
-          <small>Status</small>
-          <input class="form-control" type="text" v-model="user.status">
-        </div>
-
-        <div class="col-sm-6">
-          <small>Zip</small>
-          <input class="form-control" type="text" v-model="user.zip">
-          <small>State</small>
-          <select v-model="user.state" class="form-select" autocomplete="address-level1">
-            <option
-              v-for="state in states"
-              :key="state"
-              :value="state"
-            >
-              {{ state }}
-            </option>
-          </select>
-          <small>City</small>
-          <input class="form-control" type="text" v-model="user.city">
-          <small>Address</small>
-          <input class="form-control" type="text" v-model="user.address">
-          <small>Requirements/Note</small>
-          <textarea rows="3" class="form-control" v-model="user.note"></textarea>
-          <div class="control-navbar-item">
-            <button class="btn btn-sm btn-outline-primary" @click.prevent="updateUser()">Update</button>
-            <button class="btn btn-sm btn-outline-danger">Deactivate</button>
-          </div>
-        </div>
-
+    <div class="row">
+      <div class="col-12">
+        <h5>Customer Detail</h5>
+        <span class="notification">{{ message }}</span>
       </div>
-    </form>
+
+      <div v-if="!showHistory" class="col-12">
+        <form>
+          <div class="row">
+            <div class="col-sm-6">
+              <small>First Name</small>
+              <input type="text" v-model="user.first_name" class="form-control">
+              <small>Last Name</small>
+              <input type="text" v-model="user.last_name" class="form-control">
+              <small>Gender</small>
+              <select v-model="user.gender" class="form-select">
+                <option
+                  v-for="gender in genders"
+                  :key="gender"
+                  :value="gender"
+                >
+                  {{ gender }}
+                </option>
+              </select>
+              <small>Email</small>
+              <input type="text" v-model="user.email" class="form-control">
+              <small>Phone</small>
+              <input type="text" v-model="user.phone" class="form-control">
+              <small>Birthday</small>
+              <input class="form-control" type="text" v-model="user.birthday">
+              <small>Status</small>
+              <input class="form-control" type="text" v-model="user.status">
+            </div>
+    
+            <div class="col-sm-6">
+              <small>Zip</small>
+              <input class="form-control" type="text" v-model="user.zip">
+              <small>State</small>
+              <select v-model="user.state" class="form-select" autocomplete="address-level1">
+                <option
+                  v-for="state in states"
+                  :key="state"
+                  :value="state"
+                >
+                  {{ state }}
+                </option>
+              </select>
+              <small>City</small>
+              <input class="form-control" type="text" v-model="user.city">
+              <small>Address</small>
+              <input class="form-control" type="text" v-model="user.address">
+              <small>Requirements/Note</small>
+              <textarea rows="3" class="form-control" v-model="user.note"></textarea>
+              <div class="control-navbar-item">
+                <button class="btn btn-sm btn-primary" @click.prevent="updateUser()">Update</button>
+                <button class="btn btn-sm btn-danger">Deactivate</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <div class="row" v-if="showHistory">
       <div class="col-12">
@@ -90,7 +93,7 @@
         <small>Total Spent: ${{ totalSpent }} | </small>
         <small>Last visit: {{ lastVisit }}</small>
       </div>
-      <hr>
+      <hr class="hr-user-statics">
       <div
         class="col-sm-4 col-md-3 col-lg-2 history-event-container card"
         v-for="event in events"
@@ -170,7 +173,6 @@ import axios from 'axios'
           return 0
         }
         let booked = this.events.filter((event)=> event.status === "booked")
-        console.log(booked);
         return booked.map((event)=> event.total_spent).reduce((sum, price)=> sum + price, 0)
       },
       lastVisit() {
@@ -255,5 +257,8 @@ import axios from 'axios'
     border: none;
     border-top: 2px dashed gray;
     height: 1px;
+  }
+  .hr-user-statics {
+    border-top: 1px;
   }
 </style>

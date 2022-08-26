@@ -6,11 +6,15 @@
         <div class="card-body home" id="card-home">
           <img src="@/assets/people-top-image.jpg" class="card-img-home">
           <p class="illust-credit">
-            <a href="https://www.freepik.com/vectors/people-set">People set vector created by pikisuperstar - www.freepik.com</a>
+            <a
+              href="https://www.freepik.com/vectors/people-set"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              People set vector created by pikisuperstar - www.freepik.com
+            </a>
           </p>
           <p class="card-text" id="text-home">Please login/signup to book an appontment</p>
-          <!-- <p>or</p>
-          <a href="/appointments" class="btn btn-primary">Continue as guest</a> -->
         </div>
       </div>
       <div class="col-sm-6 login-hint">
@@ -24,8 +28,9 @@
         <p class="login-hint-item"><small>Password: password</small></p>
       </div>
       <div class="col-12">
-        <a class="btn btn-primary" href="/login">Login</a>
-        <a href="/signup" class="btn btn-primary">Signup</a>
+        <div class="btn-container"></div>
+          <button @click="this.$router.push('/login')" class="btn btn-primary">Login</button>
+          <button @click="this.$router.push('/signup')" class="btn btn-primary">Signup</button>
       </div>
     </div>
   </div>

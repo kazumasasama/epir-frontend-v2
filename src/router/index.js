@@ -1,3 +1,5 @@
+import NotFound from '@/views/NotFound.vue'
+
 import HomeView from '@/views/HomeView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import BookAppointment from '@/views/BookAppointment.vue'
@@ -19,7 +21,6 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView,
-    meta: { }
   },
   {
     path: '/admin/dashboard',
@@ -80,6 +81,15 @@ const routes = [
     path: '/privacyandpolicy',
     name: 'privacyandpolicy',
     component: PrivacyAndPolicy
+  },
+  {
+    path: '/404',
+    name: 'NotFound',
+    component: NotFound,
+  },
+  {
+    path: '/:catchAll(.*)',
+    redirect: '/404'
   },
   // {
   //   path: '/about',

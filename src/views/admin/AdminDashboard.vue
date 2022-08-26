@@ -1,40 +1,30 @@
 <template>
-  <div class="vld-parent">
-    <loading
-      v-model:active="isLoading"
-      :can-cancel=true
-      :is-full-page="fullPage"
-      color="rgb(140, 146, 232)"
-      loader="dots"
-      :height=100
-      :width=150
-      :opacity=0.7
-    >
-      <template v-slot:after>
-        <p class="spinner-after">Loading</p>
-      </template>
-    </loading>
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <div class="card-group">
-            <div class="card text-bg-light mb-3">
-              <div class="card-header">Users</div>
-              <div class="card-body">
-                <p class="card-text">{{ usersTotal }}</p>
-              </div>
+  <div v-if="error" class="alert alert-warning" role="alert">
+    {{ error }}
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-end">
+        <button @click="staticDataKey++;" class="btn btn-info">Reload Data</button>
+      </div>
+      <div class="col-12">
+        <div class="card-group">
+          <div class="card text-bg-light mb-3">
+            <div class="card-header">Users</div>
+            <div class="card-body">
+              <p class="card-text">{{ usersTotal }}</p>
             </div>
-            <div class="card text-bg-light mb-3">
-              <div class="card-header">Avarage spent</div>
-              <div class="card-body">
-                <p class="card-text">{{ usersTotal }}</p>
-              </div>
+          </div>
+          <div class="card text-bg-light mb-3">
+            <div class="card-header">Avarage spent</div>
+            <div class="card-body">
+              <p class="card-text">{{ usersTotal }}</p>
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="card col-12">
+      <div class="col-12">
+        <div class="card">
           <div class="card-body">
             <!-- <div class="row">
               <div class="col-md-4">
@@ -80,6 +70,7 @@
                   :chartOptions="barChartOptions"
                   :height="barChartHeight"
                   type="bar"
+                  :key="staticDataKey"
                 />
               </div>
               <div class="col-md-4">
@@ -100,6 +91,7 @@
                 <DoughnutChart
                   :chartData="doughnutChartData"
                   :chartOptions="doughnutChartOptions"
+                  :key="staticDataKey"
                 />
               </div>
             </div>
@@ -111,6 +103,7 @@
                   :chartOptions="salesBarChartOptions"
                   :height="barChartHeight"
                   type="bar"
+                  :key="staticDataKey"
                 />
               </div>
               <div class="col-md-4">
@@ -131,6 +124,7 @@
                 <DoughnutChart
                   :chartData="salesByMenuDoughnutChartData"
                   :chartOptions="salesByMenuDoughnutChartOptions"
+                  :key="staticDataKey"
                 />
               </div>
             </div>
@@ -146,23 +140,25 @@ import BarChart from '@/components/charts/BarChart.vue'
 import DoughnutChart from '@/components/charts/DoughnutChart.vue'
 import moment from 'moment';
 import axios from 'axios';
-
-import Loading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
+import { useSystemStore } from '@/store/systemStore';
+// import { getCurrentInstance } from 'vue';
 
 export default {
+  setup() {
+    const systemStore = useSystemStore();
+    return {
+      systemStore,
+    }
+  },
   components: {
     BarChart,
     DoughnutChart,
-    Loading,
-},
+  },
   data () {
     return {
-      // spinner
-      isLoading: false,
-      fullPage: true,
-
+      error: null,
       // statics
+      staticDataKey: 0,
       usersTotal: 0,
       currentAppointmentTotal: 0,
       prevAppointmentTotal: 0,
@@ -412,16 +408,21 @@ export default {
     }
   },
   created() {
-    this.isLoading = true;
+    this.systemStore.startLoading();
     this.getYearlyStatics();
     this.getAllTimeUsersStatics();
   },
   mounted() {
     this.$nextTick(function() {
-      this.isLoading = false;
+      this.systemStore.endLoading();
     })
   },
   methods: {
+    // reloadPage() {
+    //   const instance = getCurrentInstance()
+    //   console.log(instance)
+    //   this.$forceUpdate()
+    // },
     increaseYear() {
       this.currentYear++;
     },
@@ -429,7 +430,8 @@ export default {
       this.currentYear--;
     },
     getYearlyStatics() {
-      this.isLoading = true;
+      this.systemStore.modifyLoadingMessage('Collecting Data');
+      this.systemStore.startLoading();
       axios.post('/monthly-report.json', {"year": this.currentYear})
       .then((res)=> {
         // appointments
@@ -474,7 +476,10 @@ export default {
         this.prevSalesTotal = sales['prevSalesMonthlySum'];
       })
       .then(()=> {
-        this.isLoading = false;
+        this.systemStore.endLoading();
+      })
+      .catch((error)=> {
+        this.error = `${error.response.statusText}: Please reload this page`;
       })
     },
     getAllTimeUsersStatics() {
@@ -484,6 +489,9 @@ export default {
         this.usersTotal = usersStatics[0];
         this.genderDoughnutChartData.labels = Object.keys(usersStatics[1])
         this.genderDoughnutChartData.datasets[0].data = Object.values(usersStatics[1]);
+      })
+      .catch((error)=> {
+        this.error = error.response.statusText;
       })
     },
   },

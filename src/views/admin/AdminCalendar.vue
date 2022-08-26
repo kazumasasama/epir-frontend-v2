@@ -8,8 +8,11 @@
 
   <div class="container">
     <div class="row">
+      <div class="col-12 text-end">
+        <small>Don't see appointments?</small>
+        <button @click="calendarKey++;" class="btn btn-info">Reload Calendar</button>
+      </div>
       <div class="col-12">
-        <small>Don't see appointments? Try reflesh this page.</small>
         <div class="calendar-container card">
           <vue-cal
             small
@@ -17,7 +20,7 @@
             class="vuecal--blue-theme"
             :selected-date="selectedDate"
             :time-from="9.5 * 60"
-            :time-to="20 * 60"
+            :time-to="20.5 * 60"
             :time-step="30"
             :events="events"
             :disable-views="['years', 'year']"
@@ -27,6 +30,7 @@
             events-count-on-year-view
             hide-week-number
             locale="en"
+            :key="calendarKey"
           />
         </div>
       </div>
@@ -88,87 +92,101 @@ import 'vue-cal/dist/vuecal.css'
 import axios from 'axios'
 import * as moment from 'moment-timezone';
 import * as bootstrap from 'bootstrap'
-  export default {
-    components: { 
-      VueCal,
+import { useSystemStore } from '@/store/systemStore';
+
+export default {
+  setup() {
+    const systemStore = useSystemStore();
+    return {
+      systemStore,
+    }
+  },
+  components: { 
+    VueCal,
+  },
+  data() {
+    return {
+      events: [],
+      selectedEvent: {
+        user: {},
       },
-    data() {
-      return {
-        events: [],
-        selectedEvent: {
-          user: {},
-        },
-        selectedDate: moment().format('YYYY-MM-DD'),
-        disableDays: [],
-        newEvent: {},
-        users: [],
-        menus: [],
-        new_menus: [],
-        eventDetailsModal: null,
-      }
+      selectedDate: moment().format('YYYY-MM-DD'),
+      disableDays: [],
+      newEvent: {},
+      users: [],
+      menus: [],
+      new_menus: [],
+      eventDetailsModal: null,
+      calendarKey: 0,
+    }
+  },
+  created() {
+    this.systemStore.modifyLoadingMessage('Collecting Data')
+    this.systemStore.startLoading();
+    this.indexEvents();
+    this.indexUsers();
+    this.indexMenus();
+  },
+  mounted() {
+    this.eventDetailsModal = new bootstrap.Modal(document.getElementById('event-details'));
+    this.$nextTick(function() {
+      this.systemStore.endLoading();
+    })
+  },
+  computed: {
+    maxDate() {
+      return moment().add(90, 'days').format('YYYY-MM-DD');
     },
-    created() {
-      this.indexEvents();
-      this.indexUsers();
-      this.indexMenus();
+    selectedDateString() {
+      return moment(this.selectedDate).format('YYYY-MM-DD')
     },
-    mounted() {
-      this.eventDetailsModal = new bootstrap.Modal(document.getElementById('event-details'));
+    eventStartEndDateTime() {
+      let start = moment(this.selectedEvent.start).format('MM-DD-YYYY / HH:mm')
+      let end = moment(this.selectedEvent.end).format('HH:mm')
+      return `${start} - ${end}`
+    }
+  },
+  methods: {
+    indexEvents() {
+      axios.get('/events.json')
+      .then((res)=> {
+        this.events = res.data.filter((event)=> event.status === "booked")
+      })
     },
-    computed: {
-      maxDate() {
-        return moment().add(90, 'days').format('YYYY-MM-DD');
-      },
-      selectedDateString() {
-        return moment(this.selectedDate).format('YYYY-MM-DD')
-      },
-      eventStartEndDateTime() {
-        let start = moment(this.selectedEvent.start).format('MM-DD-YYYY / HH:mm')
-        let end = moment(this.selectedEvent.end).format('HH:mm')
-        return `${start} - ${end}`
-      }
+    indexUsers() {
+      axios.get('/users.json')
+      .then((res)=> {
+        this.users = res.data;
+      })
     },
-    methods: {
-      indexEvents() {
-        axios.get('/events.json')
-        .then((res)=> {
-          this.events = res.data.filter((event)=> event.status === "booked")
-        })
-      },
-      indexUsers() {
-        axios.get('/users.json')
-        .then((res)=> {
-          this.users = res.data;
-        })
-      },
-      indexMenus() {
-        axios.get('/menus.json')
-        .then((res)=> {
-          this.menus = res.data;
-        })
-      },
-      onEventClick (event, e) {
-        this.selectedEvent = event;
-        // Prevent navigating to narrower view (default vue-cal behavior).
-        e.stopPropagation();
-        this.eventDetailsModal.show();
-      },
-      redirectToUser(id) {
-        this.$router.push(`/admin/users/${id}`);
-      },
-      destroyEvent() {
-        let id = this.selectedEvent.id
-        axios
-        .delete(`/events/${id}`)
-        .then(()=> {
-          let event = this.events.find(event => event.id === id);
-          let i = this.events.indexOf(event);
-          this.events.splice(i, 1);
-          this.eventDetailsModal.hide();
-        })
-      }
+    indexMenus() {
+      axios.get('/menus.json')
+      .then((res)=> {
+        this.menus = res.data;
+      })
     },
-  }
+    onEventClick (event, e) {
+      this.selectedEvent = event;
+      // Prevent navigating to narrower view (default vue-cal behavior).
+      e.stopPropagation();
+      this.eventDetailsModal.show();
+    },
+    redirectToUser(id) {
+      this.$router.push(`/admin/users/${id}`);
+    },
+    destroyEvent() {
+      let id = this.selectedEvent.id
+      axios
+      .delete(`/events/${id}`)
+      .then(()=> {
+        let event = this.events.find(event => event.id === id);
+        let i = this.events.indexOf(event);
+        this.events.splice(i, 1);
+        this.eventDetailsModal.hide();
+      })
+    }
+  },
+}
 </script>
 
 <style>
