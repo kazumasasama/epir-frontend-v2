@@ -1,4 +1,4 @@
-// import NotFound from '@/views/NotFound.vue'
+import NotFound from '@/views/NotFound.vue'
 
 import HomeView from '@/views/HomeView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
@@ -129,15 +129,15 @@ const routes = [
     name: 'privacyandpolicy',
     component: PrivacyAndPolicy
   },
-  // {
-  //   path: '/404',
-  //   name: 'NotFound',
-  //   component: NotFound,
-  // },
-  // {
-  //   path: '/:catchAll(.*)',
-  //   redirect: '/404'
-  // },
+  {
+    path: '/404',
+    name: 'NotFound',
+    component: NotFound,
+  },
+  {
+    path: '/:catchAll(.*)',
+    redirect: '/404'
+  },
   // {
   //   path: '/about',
   //   name: 'about',
