@@ -1,4 +1,4 @@
-import NotFound from '@/views/NotFound.vue'
+// import NotFound from '@/views/NotFound.vue'
 
 import HomeView from '@/views/HomeView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
@@ -16,6 +16,8 @@ import UserShow from '@/views/admin/UserShow.vue'
 import TermsAndConditions from '@/views/TermsAndConditions.vue'
 import PrivacyAndPolicy from '@/views/PrivacyAndPolicy.vue'
 
+import { useUserStore } from '@/store/userStore'
+
 const routes = [
   {
     path: '/',
@@ -25,27 +27,72 @@ const routes = [
   {
     path: '/admin/dashboard',
     name: 'adminDashboard',
-    component: AdminDashboard
+    component: AdminDashboard,
+    beforeEnter: (to, from, next)=> {
+      const userStore = useUserStore();
+      if (!userStore.isAdmin) {
+        window.alert("You don't have permission to access this page.")
+        next('/login')
+      } else {
+        next()
+      }
+    }
   },
   {
     path: '/admin/calendar',
     name: 'adminCalendar',
-    component: AdminCalendar
+    component: AdminCalendar,
+    beforeEnter: (to, from, next)=> {
+      const userStore = useUserStore();
+      if (!userStore.isAdmin) {
+        window.alert("You don't have permission to access this page.")
+        next('/login')
+      } else {
+        next()
+      }
+    }
   },
   {
     path: '/admin/menus',
     name: 'adminMenus',
-    component: AdminMenus
+    component: AdminMenus,
+    beforeEnter: (to, from, next)=> {
+      const userStore = useUserStore();
+      if (!userStore.isAdmin) {
+        window.alert("You don't have permission to access this page.")
+        next('/login')
+      } else {
+        next()
+      }
+    }
   },
   {
     path: '/admin/users',
     name: 'adminUsers',
-    component: UsersIndex
+    component: UsersIndex,
+    beforeEnter: (to, from, next)=> {
+      const userStore = useUserStore();
+      if (!userStore.isAdmin) {
+        window.alert("You don't have permission to access this page.")
+        next('/login')
+      } else {
+        next()
+      }
+    }
   },
   {
     path: '/admin/users/:id',
     name: 'adminShowUsers',
-    component: UserShow
+    component: UserShow,
+    beforeEnter: (to, from, next)=> {
+      const userStore = useUserStore();
+      if (!userStore.isAdmin) {
+        window.alert("You don't have permission to access this page.")
+        next('/login')
+      } else {
+        next()
+      }
+    }
   },
   {
     path: '/signup',
@@ -82,15 +129,15 @@ const routes = [
     name: 'privacyandpolicy',
     component: PrivacyAndPolicy
   },
-  {
-    path: '/404',
-    name: 'NotFound',
-    component: NotFound,
-  },
-  {
-    path: '/:catchAll(.*)',
-    redirect: '/404'
-  },
+  // {
+  //   path: '/404',
+  //   name: 'NotFound',
+  //   component: NotFound,
+  // },
+  // {
+  //   path: '/:catchAll(.*)',
+  //   redirect: '/404'
+  // },
   // {
   //   path: '/about',
   //   name: 'about',
