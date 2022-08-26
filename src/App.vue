@@ -1,7 +1,7 @@
 <template>
 <div id="app">
   <div class="vld-parent">
-    <loading v-model:active="systemStore.isLoading"
+    <loading v-model:active="isLoading"
       :can-cancel="true"
       :is-full-page=true
       color="rgb(140, 146, 232)"
@@ -14,86 +14,29 @@
         <p class="spinner-after">{{ systemStore.LoadingMessage }}</p>
       </template>
     </loading>
-    <nav 
-      class="navbar navbar-expand-lg navbar-light"
-      style="background-color: rgb(140, 146, 232);"
-    >
-      <div class="container-fluid">
-        <a href="/">
-          <img
-            id="bisiness-name-logo"
-            src="@/assets/Biznesu-logo-white.png"
-            alt="Biznesu company logo"
-          >
-          <!-- <h1 id="bisiness-name-logo">Biznesu</h1> -->
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          </ul>
-          <ul class="navbar-nav mb-2 mb-lg-0">
-            <li class="nav-item dropdown" v-if="userStore.user.admin">
-              <a
-                class="nav-link dropdown-toggle"
-                id="navbar-link-admin"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Admin Menu
-              </a>
-              <ul
-                class="dropdown-menu"
-              >
-                <li>
-                  <a class="dropdown-item admin-dropdown-item" href="/admin/dashboard">Dashboard</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="/admin/calendar">Appointments</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="/admin/menus">Menus</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="/admin/users">Customers</a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item" @click="logout()" v-if="userStore.isLoggedin">
-              <a class="nav-link">Logout</a>
-            </li>
-            <!-- <li class="nav-item">
-              <a class="nav-link" href="/mypage">My Page</a>
-            </li> -->
-          </ul>
-        </div>
-      </div>
-    </nav>
+
+    <HeaderNav
+      @getMessage="getMessage"
+    />
+
     <div class="alert alert-info" role="alert" v-if="message">
       {{ message }}
     </div>
 
     <router-view/>
+
   </div>
 </div>
 
 </template>
 
 <script>
+import { mapWritableState } from 'pinia'
 import { useSystemStore } from '@/store/systemStore'
 import { useUserStore } from '@/store/userStore'
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
-import axios from 'axios'
+import HeaderNav from '@/components/HeaderNav.vue'
 
 export default {
   setup() {
@@ -106,72 +49,27 @@ export default {
   },
   components: {
     Loading,
+    HeaderNav,
   },
-  mounted() {
-    if (localStorage.getItem('user_id')) {
-      this.reLogin();
-    }
+  // mounted() {
+  //   console.log(localStorage.user_id)
+  //   console.log(this.userStore.isLoggedin)
+  //   if (this.userStore.isLoggedin === false && localStorage.user_id) {
+  //     this.reLogin();
+  //   }
+  // },
+  computed: {
+    ...mapWritableState(useSystemStore, ['isLoading'])
   },
   data() {
     return {
-      user: {
-        email: "",
-        password: "",
-        passwordConfirm: "",
-      },
       message: null,
     }
   },
-  // watch: {
-  //   $route(to, from) {
-  //     from
-  //     if (to.path === '/admin/menus' || to.path === '/admin/calendar' || to.path === '/admin/users' || to.path === '/admin/dashboard') {
-  //       this.showNavMenu = true;
-  //     }
-  //   }
-  // },
   methods: {
-    reLogin() {
-      this.systemStore.modifyLoadingMessage('Logging in')
-      this.systemStore.startLoading()
-      const userId = localStorage.getItem('user_id')
-      axios.get(`/users/${userId}.json`)
-      .then((res)=> {
-        this.userStore.pushUser(res.data);
-        this.userStore.switchLoggedin(true);
-        return res.data
-      })
-      .then((user)=> {
-        this.systemStore.endLoading();
-        if (user.admin) {
-          this.$router.push('/admin/dashboard');
-        } else {
-          this.$router.push('/appointments');
-        }
-        return
-      })
-      .catch((error)=> {
-        this.systemStore.endLoading();
-        this.userStore.switchLoggedin(false);
-        this.error = `${error.response}: Auto login failed. Redirecting to Login page`
-        setTimeout(()=> {
-          this.$router.push('/login')
-        }, 3000)
-      })
-    },
-    logout() {
-      localStorage.removeItem("jwt");
-      localStorage.removeItem("user_id");
-      localStorage.removeItem("admin");
-      this.userStore.switchLoggedin(false);
-      this.message = "Successfully logged out. Redirecting to the top page.";
-      if (this.$route.path === '/') {
-        setTimeout(()=> {this.message = null}, 3000);
-      } else {
-        setTimeout(()=> {this.$router.push('/')}, 3000);
-        setTimeout(()=> {this.message = null}, 3000);
-      }
-    },
+    getMessage(message) {
+      this.message = message
+    }
   },
 }
 </script>

@@ -1,9 +1,12 @@
 <template>
   <div class="container">
-    <h1>This is Terms and Conditions</h1>
-    <p>Under construction</p>
-    <div class="btn-container">
-      <button @click="this.$router.go(-1)" class="btn btn-success">Go Back</button>
+    <div class="row">
+      <div class="col-12">
+        <div class=card>
+          <h1>404 Page Not Found.</h1>
+          <button @click="this.$router.go(-1)" class="btn btn-danger">Go Back</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>

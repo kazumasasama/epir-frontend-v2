@@ -5,7 +5,8 @@ export const useUserStore = defineStore('userStore', {
     return {
       userStoreError: null,
       users: [],
-      user: {},
+      user: null,
+      isAdmin: false,
       isLoggedin: false,
     };
   },
@@ -15,6 +16,9 @@ export const useUserStore = defineStore('userStore', {
     },
     switchLoggedin(boolean) {
       this.isLoggedin = boolean;
+    },
+    handleAdmin(boolean) {
+      this.isAdmin = boolean;
     },
   },
 });

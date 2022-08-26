@@ -333,22 +333,25 @@
                       >
                       <small class="terms-and-conditions">
                         Agree to our 
-                        <a
-                          class="link-primary"
-                          href="/termsandconditions"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Teams and Condition
-                        </a> and 
-                        <a 
-                          class="link-primary"
-                          href="/privacyandpolicy"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Privacy and Policy
-                        </a>
+                        <span @click="this.$router.push('/termsandconditions')">
+                          <a
+                            class="link-primary"
+                            href="#"
+                            rel="noopener noreferrer"
+                          >
+                            Teams and Condition
+                          </a>
+                        </span>
+                        and
+                        <span @click="this.$router.push('/privacyandpolicy')">
+                          <a 
+                            class="link-primary"
+                            href="#"
+                            rel="noopener noreferrer"
+                          >
+                            Privacy Policy
+                          </a>
+                        </span>
                       </small>
                     </label>
                   </div>

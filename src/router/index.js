@@ -1,3 +1,5 @@
+import NotFound from '@/views/NotFound.vue'
+
 import HomeView from '@/views/HomeView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import BookAppointment from '@/views/BookAppointment.vue'
@@ -14,27 +16,16 @@ import UserShow from '@/views/admin/UserShow.vue'
 import TermsAndConditions from '@/views/TermsAndConditions.vue'
 import PrivacyAndPolicy from '@/views/PrivacyAndPolicy.vue'
 
-import { useUserStore } from '@/store/userStore'
-
 const routes = [
   {
     path: '/',
     name: 'home',
     component: HomeView,
-    meta: { }
   },
   {
     path: '/admin/dashboard',
     name: 'adminDashboard',
-    component: AdminDashboard,
-    beforeEnter: (to, from, next)=> {
-      const userStore = useUserStore();
-      if (userStore.user.admin) {
-        next()
-      } else {
-        next('/login')
-      }
-    }
+    component: AdminDashboard
   },
   {
     path: '/admin/calendar',
@@ -90,6 +81,15 @@ const routes = [
     path: '/privacyandpolicy',
     name: 'privacyandpolicy',
     component: PrivacyAndPolicy
+  },
+  {
+    path: '/404',
+    name: 'NotFound',
+    component: NotFound,
+  },
+  {
+    path: '/:catchAll(.*)',
+    redirect: '/404'
   },
   // {
   //   path: '/about',

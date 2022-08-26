@@ -168,6 +168,7 @@ export default {
             return isAdmin
           })
           .then((isAdmin)=> {
+            this.userStore.handleAdmin(isAdmin);
             if (isAdmin) {
               this.$router.push('/admin/dashboard');
             } else {
