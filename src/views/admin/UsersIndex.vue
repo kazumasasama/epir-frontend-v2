@@ -1,12 +1,12 @@
 <template>
   <nav class="navbar navbar-light" style="background-color: #f5f6fe;">
     <div class="col-12 users-btn-container">
-      <button class="btn btn-outline-success btn-sm" @click="openNewUserDialog()">Add Customer</button>
+      <button class="btn btn-outline-success btn-sm" @click="openNewUserDialog()">{{ $t('Btn.addCustomer') }}</button>
       <div class="control-navbar-item">
-        <small>Sort by</small>
-        <button class="btn btn-outline-primary btn-sm" @click="sortById()">Customer ID</button>
-        <button class="btn btn-outline-primary btn-sm" @click="sortByFirstName()">Frist Name</button>
-        <button class="btn btn-outline-primary btn-sm" @click="sortByLastName()">Last Name</button>
+        <small>{{ $t('Customers.sortBy') }}</small>
+        <button class="btn btn-outline-primary btn-sm" @click="sortById()">{{ $t('Btn.customerId') }}</button>
+        <button class="btn btn-outline-primary btn-sm" @click="sortByFirstName()">{{ $t('Btn.firstName') }}</button>
+        <button class="btn btn-outline-primary btn-sm" @click="sortByLastName()">{{ $t('Btn.lastName') }}</button>
       </div>
     </div>
   </nav>
@@ -83,7 +83,7 @@
     </div>
 
     <div class="row">
-      <small>Click to see customer details</small>
+      <small>{{ $t('Customers.clickToSee') }}</small>
       <div class="col-md-4" v-for="user in users" :key="user.id">
         <div class="list-group" id="list-tab" @click="this.$router.push(`/admin/users/${user.id}`)">
           <a
@@ -113,26 +113,26 @@
       return {
         users: [],
         user: {},
-        sort: "id",
+        sort: 'id',
         newUser: {},
         genders: [
-          "Male",
-          "Female",
-          "Non Binary",
-          "Rather not to descrive",
-          "N/A"
+          'Male',
+          'Female',
+          'Non Binary',
+          'Rather not to descrive',
+          'N/A'
         ],
         states: [
-          "AL", "AK", "AZ", "AR", "CA",
-          "CO", "CT", "DE", "FL", "GA",
-          "HI", "ID", "IL", "IN", "IA",
-          "KS", "KY", "LA", "ME", "MD",
-          "MA", "MI", "MN", "MS", "MO",
-          "MT", "NE", "NV", "NH", "NJ",
-          "NM", "NY", "NC", "ND", "OH",
-          "OK", "OR", "PA", "RI", "SC",
-          "SD", "TN", "TX", "UT", "VT",
-          "VA", "WA", "WV", "WI", "WY"
+          'AL', 'AK', 'AZ', 'AR', 'CA',
+          'CO', 'CT', 'DE', 'FL', 'GA',
+          'HI', 'ID', 'IL', 'IN', 'IA',
+          'KS', 'KY', 'LA', 'ME', 'MD',
+          'MA', 'MI', 'MN', 'MS', 'MO',
+          'MT', 'NE', 'NV', 'NH', 'NJ',
+          'NM', 'NY', 'NC', 'ND', 'OH',
+          'OK', 'OR', 'PA', 'RI', 'SC',
+          'SD', 'TN', 'TX', 'UT', 'VT',
+          'VA', 'WA', 'WV', 'WI', 'WY'
         ],
         newUserDialog: null,
       }

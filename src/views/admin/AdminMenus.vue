@@ -5,10 +5,10 @@
         <!-- Tabs -->
         <ul class="nav nav-tabs active-nav-tabs">
           <li class="nav-item" id="tab-active-menu" @click="selectActiveTab()">
-            <a class="nav-link active-nav-link">Active</a>
+            <a class="nav-link active-nav-link">{{ $t('Btn.active') }}</a>
           </li>
           <li class="nav-item" id="tab-inactive-menu" @click="selectInactiveTab()">
-            <a class="nav-link">Inactive</a>
+            <a class="nav-link">{{ $t('Btn.inactive') }}</a>
           </li>
         </ul>
         <!-- Active Menus -->
@@ -28,7 +28,7 @@
                   v-model="selectedMenu"
                 >
                 {{ menu.title }}
-                <li class="text-end"><small>{{ menu.duration }} min | ${{ menu.price }}~</small></li>
+                <li class="text-end"><small>{{ menu.duration }} {{ $t('DateTime.min') }} | {{ $t('Currency') }}{{ menu.price }}~</small></li>
                 <hr class="menu-hr-divider">
               </div>
             </ul>
@@ -50,7 +50,7 @@
                 v-model="selectedMenu"
               >
               {{ menu.title }}
-              <li class="text-end"><small>{{ menu.duration }} min | ${{ menu.price }}~</small></li>
+              <li class="text-end"><small>{{ menu.duration }} {{ $t('DateTime.min') }} | {{ $t('Currency') }}{{ menu.price }}~</small></li>
               <hr class="menu-hr-divider">
             </ul>
           </label>
@@ -61,37 +61,37 @@
         <div class="card">
           <div class="card-body">
             <form>
-              <small>Title</small>
+              <small>{{ $t('Forms.title') }}</small>
               <input type="text" v-model="updatingMenu.title" class="form-control">
-              <small>Price</small>
+              <small>{{ $t('Forms.price') }}</small>
               <input type="number" v-model="updatingMenu.price" class="form-control">
-              <small>Duration</small>
+              <small>{{ $t('Forms.duration') }}</small>
               <input type="number" v-model="updatingMenu.duration" class="form-control">
-              <small>Description</small>
+              <small>{{ $t('Forms.description') }}</small>
               <textarea type="text" v-model="updatingMenu.description" class="form-control"></textarea>
               <div class="btn-container">
-                <button @click="createMenu()" class="btn-sm btn-outline-success btn">New Menu</button>
-                <button @click="updateMenu()" class="btn-sm btn-outline-primary btn">Update</button>
+                <button @click="createMenu()" class="btn-sm btn-outline-success btn">{{ $t('Btn.newMenu') }}</button>
+                <button @click="updateMenu()" class="btn-sm btn-outline-primary btn">{{ $t('Btn.update') }}</button>
                 <button
                   type="reset"
                   class="btn-sm btn-outline-secondary btn"
                   @click="clearForm()"
                 >
-                  Clear Form
+                  {{ $t('Btn.clearForm') }}
                 </button>
                 <button
                   class="btn-sm btn-outline-danger btn"
                   v-if="menuContent === 'active'"
                   @click="deactivateMenu()"
                 >
-                  Deactivate
+                  {{ $t('Btn.deactivate') }}
                 </button>
                 <button
                   class="btn-sm btn-outline-danger btn"
                   v-if="menuContent === 'inactive'"
                   @click="activateMenu()"
                 >
-                  Activate
+                  {{ $t('Btn.activate') }}
                 </button>
               </div>
             </form>

@@ -4,13 +4,13 @@
   </div>
   <div class="container">
     <div>
-      <h4>Login</h4>
+      <h4>{{ $t('Login.pageTitle') }}</h4>
     </div>
     <div class="row">
       <div class="col-sm-12 login-form-container">
         <div class="login-form-container">
           <form v-on:submit.prevent="login()" class="needs-validation" novalidate>
-            <small>Email:</small>
+            <small>{{ $t('Login.form.email') }}</small>
             <input
               v-model="user.email"
               id="login-input-email"
@@ -22,7 +22,7 @@
             <div v-if="emailInputError" class="invalid-feedback">
               {{ emailInputError }}
             </div>
-            <small>Password:</small>
+            <small>{{ $t('Login.form.password') }}</small>
             <input
               v-model="user.password"
               id="login-input-password"
@@ -37,22 +37,22 @@
                 class="btn btn-secondary"
                 @click="toHome()"
               >
-                Back to Home
+                {{ $t('Btn.backHome') }}
               </button>
-              <button type="submit" class="btn btn-primary" @click="login()">Login</button>
+              <button type="submit" class="btn btn-danger" @click="login()">{{ $t('Btn.login') }}</button>
             </div>
           </form>
         </div>
       </div>
       <div class="col-sm-6 login-hint">
-        <p class="login-hint-title">Login as Admin</p>
-        <p class="login-hint-item"><small>Email: test@test.com</small></p>
-        <p class="login-hint-item"><small>Password: password</small></p>
+        <p class="login-hint-title">{{ $t('Login.loginAdmin') }}</p>
+        <p class="login-hint-item"><small>{{ $t('Login.form.email') }}: test@test.com</small></p>
+        <p class="login-hint-item"><small>{{ $t('Login.form.password') }}: password</small></p>
       </div>
       <div class="col-sm-6 login-hint">
-        <p class="login-hint-title">Login as User</p>
-        <p class="login-hint-item"><small>Email: test@user.com</small></p>
-        <p class="login-hint-item"><small>Password: password</small></p>
+        <p class="login-hint-title">{{ $t('Login.loginUser') }}</p>
+        <p class="login-hint-item"><small>{{ $t('Login.form.email') }}: test@user.com</small></p>
+        <p class="login-hint-item"><small>{{ $t('Login.form.password') }}: password</small></p>
       </div>
     </div>
   </div>
@@ -211,9 +211,6 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  .container {
-    max-width: 400px;
   }
   .btn-container {
     margin-top: 20px;

@@ -19,18 +19,18 @@
       </div>
       <div class="col-sm-6 login-hint">
         <p class="login-hint-title">{{ $t('Home.loginAdmin') }}</p>
-        <p class="login-hint-item"><small>{{ $t('El.form.email') }}: test@test.com</small></p>
-        <p class="login-hint-item"><small>{{ $t('El.form.password') }}: password</small></p>
+        <p class="login-hint-item"><small>{{ $t('Home.email') }}: test@test.com</small></p>
+        <p class="login-hint-item"><small>{{ $t('Home.password') }}: password</small></p>
       </div>
       <div class="col-sm-6 login-hint">
         <p class="login-hint-title">{{ $t('Home.loginUser') }}</p>
-        <p class="login-hint-item"><small>{{ $t('El.form.email') }}: test@user.com</small></p>
-        <p class="login-hint-item"><small>{{ $t('El.form.password') }}: password</small></p>
+        <p class="login-hint-item"><small>{{ $t('Home.email') }}: test@user.com</small></p>
+        <p class="login-hint-item"><small>{{ $t('Home.password') }}: password</small></p>
       </div>
       <div class="col-12">
         <div class="btn-container"></div>
-          <button @click="this.$router.push('/login')" class="btn btn-primary">{{ $t('El.btn.login') }}</button>
-          <button @click="this.$router.push('/signup')" class="btn btn-primary">{{ $t('El.btn.signup') }}</button>
+          <button @click="this.$router.push('/login')" class="btn btn-primary">{{ $t('Btn.login') }}</button>
+          <button @click="this.$router.push('/signup')" class="btn btn-primary">{{ $t('Btn.signup') }}</button>
       </div>
     </div>
   </div>

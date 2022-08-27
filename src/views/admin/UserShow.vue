@@ -7,17 +7,17 @@
         v-if="showHistory"
         @click="showHistory = false"
       >
-        Customer Detail
+        {{ $t('Customers.customerDetail') }}
       </button>
       <button
         class="btn btn-sm btn-outline-success"
         v-if="!showHistory"
         @click="showHistory = true"
       >
-        History
+        {{ $t('Btn.history') }}
       </button>
       <div class="control-navbar-item">
-        <button class="btn btn-sm btn-outline-secondary" @click="$router.push('/admin/users')">Customer Index</button>
+        <button class="btn btn-sm btn-outline-secondary" @click="$router.push('/admin/users')">{{ $t('Btn.customerIndex') }}</button>
       </div>
     </div>
   </nav>
@@ -25,7 +25,7 @@
   <div class="container">
     <div class="row">
       <div class="col-12">
-        <h5>Customer Detail</h5>
+        <h5>{{ $t('Customers.customerDetail') }}</h5>
         <span class="notification">{{ message }}</span>
       </div>
 
@@ -77,8 +77,8 @@
               <small>Requirements/Note</small>
               <textarea rows="3" class="form-control" v-model="user.note"></textarea>
               <div class="control-navbar-item">
-                <button class="btn btn-sm btn-primary" @click.prevent="updateUser()">Update</button>
-                <button class="btn btn-sm btn-danger">Deactivate</button>
+                <button class="btn btn-sm btn-primary" @click.prevent="updateUser()">{{ $t('Btn.update') }}</button>
+                <button class="btn btn-sm btn-danger">{{ $t('Btn.deactivate') }}</button>
               </div>
             </div>
           </div>
@@ -88,10 +88,10 @@
 
     <div class="row" v-if="showHistory">
       <div class="col-12">
-        <h4>History</h4>
-        <small>Total appointments: {{ events.length }} | </small>
-        <small>Total Spent: ${{ totalSpent }} | </small>
-        <small>Last visit: {{ lastVisit }}</small>
+        <p class="userFullName">{{ `${user.first_name} ${user.last_name}` }}</p>
+        <small>{{ $t('Customers.statics.totalAppointments') }}: {{ events.length }} | </small>
+        <small>{{ $t('Customers.statics.totalSpent') }}: ${{ totalSpent }} | </small>
+        <small>{{ $t('Customers.statics.lastVisit') }}: {{ lastVisit }}</small>
       </div>
       <hr class="hr-user-statics">
       <div
@@ -260,5 +260,9 @@ import axios from 'axios'
   }
   .hr-user-statics {
     border-top: 1px;
+  }
+  .userFullName {
+    margin-top: 8px;
+    font-size: larger;
   }
 </style>
