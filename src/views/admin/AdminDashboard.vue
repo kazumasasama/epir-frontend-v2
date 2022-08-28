@@ -5,7 +5,13 @@
   <div class="container">
     <div class="row">
       <div class="col-12 text-end">
-        <button @click="staticDataKey++;" class="btn btn-info">{{ $t('Btn.reloadData') }}</button>
+        <button
+          @click="staticDataKey++;"
+          class="btn btn-info"
+        >
+          {{ $t('Btn.reloadData') }}
+          <font-awesome-icon icon="fa-solid fa-arrow-rotate-right" />
+        </button>
       </div>
       <div class="col-12">
         <div class="card-group">

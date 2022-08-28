@@ -8,6 +8,14 @@ import "bootstrap"
 import axios from "axios";
 import "@/css/custom-css-bootstrap-magic-2022-08-21.css"
 import { data } from '@/i18n/index'
+/* import the fontawesome core */
+import { library } from '@fortawesome/fontawesome-svg-core'
+/* import font awesome icon component */
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+/* import specific icons */
+import { faLanguage, faArrowRotateRight, faBars, faLock, faArrowRightFromBracket, faRepeat} from '@fortawesome/free-solid-svg-icons'
+/* add icons to the library */
+library.add(faLanguage, faArrowRotateRight, faBars, faLock, faArrowRightFromBracket, faRepeat)
 
 const i18n = createI18n({
   locale: 'en',
@@ -22,4 +30,4 @@ if (jwt) {
   axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
 }
 
-createApp(App).use(router).use(createPinia()).use(i18n).mount('#app')
+createApp(App).use(router).use(createPinia()).use(i18n).component('font-awesome-icon', FontAwesomeIcon).mount('#app')

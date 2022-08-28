@@ -25,7 +25,7 @@ export default {
       addCustomer: 'Add Customer',
       customerId: 'Customer ID',
       firstName: 'First Name',
-      lastname: 'Last Name',
+      lastName: 'Last Name',
       history: 'History',
       customerIndex: 'Customer Index',
       customerDetail: 'Customer Detail',
