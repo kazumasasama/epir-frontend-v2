@@ -9,8 +9,14 @@
   <div class="container">
     <div class="row">
       <div class="col-12 text-end">
-        <small>Don't see appointments?</small>
-        <button @click="calendarKey++;" class="btn btn-info">Reload Calendar</button>
+        <small>{{ $t('Calendar.dontSeeAppointments') }}</small>
+        <button
+          @click="calendarKey++;"
+          class="btn btn-info"
+        >
+          {{ $t('Btn.reloadData') }}
+          <font-awesome-icon icon="fa-solid fa-arrow-rotate-right" />
+        </button>
       </div>
       <div class="col-12">
         <div class="calendar-container card">

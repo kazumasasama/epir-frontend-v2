@@ -81,11 +81,11 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: rgb(44, 62, 80);
-  background-color: rgb(227, 229, 253);
+  background-color: rgb(241, 237, 254);
 }
 
 html {
-  background-color: rgb(227, 229, 253);
+  background-color: rgb(241, 237, 254);
 }
 
 nav a {

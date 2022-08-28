@@ -17,7 +17,7 @@
           aria-valuemin="0"
           aria-valuemax="25"
         >
-          Menu
+          {{ $t('Appointments.steps.menu') }}
         </div>
         <div
           id="progress-2"
@@ -28,7 +28,7 @@
           aria-valuemin="0"
           aria-valuemax="25"
         >
-          Date/Time
+          {{ $t('Appointments.steps.dateTime') }}
         </div>
         <div
           id="progress-3"
@@ -39,7 +39,7 @@
           aria-valuemin="0"
           aria-valuemax="25"
         >
-          Customer Info
+          {{ $t('Appointments.steps.customerInfo') }}
         </div>
         <div
           id="progress-4"
@@ -50,7 +50,7 @@
           aria-valuemin="0"
           aria-valuemax="25"
         >
-          Confirmation
+          {{ $t('Appointments.steps.confirmation') }}
         </div>
       </div>
     </nav>
@@ -58,7 +58,7 @@
     <div class="pick-menus" v-if="currentStep === 1">
       <div class="row">
         <div class="text-start">
-          <h5>Pick menus</h5>
+          <h5>{{ $t('Appointments.title.pickMenu') }}</h5>
         </div>
       </div>
       <div class="row">
@@ -77,8 +77,8 @@
                   v-model="selectedMenus"  
                 >
                 <li>{{ menu.title }}</li>
-                <li class="text-end"><small>{{ menu.duration }} min</small></li>
-                <li class="text-end"><small>${{ menu.price }}~</small></li>
+                <li class="text-end"><small>{{ menu.duration }} {{ $t('DateTime.min') }}</small></li>
+                <li class="text-end"><small>{{ $t('Currency') }}{{ menu.price }}~</small></li>
               </ul>
             </label>
           </div>
@@ -92,7 +92,7 @@
             <label
               class="list-group-item"
             >
-            <p>Total duration</p>
+            <p>{{ $t('Appointments.totalDuration') }}</p>
               <p class="text-end">
                 {{ durationSumInString }}
               </p>
@@ -106,7 +106,7 @@
               class="btn btn-primary"
               @click="nextStep()"
             >
-              Date/Time >>
+              {{ $t('Btn.dateTime') }}
             </button>
           </div>
         </div>
@@ -115,7 +115,7 @@
 
     <div class="pick-date" v-if="currentStep === 2">
       <div class="text-start">
-        <h5>Pick a date and time</h5>
+        <h5>{{ $t('Appointments.title.pickTime') }}</h5>
       </div>
       <form>
         <div class="row">
@@ -162,14 +162,14 @@
                 class="btn btn-secondary"
                 @click="prevStep()"
               >
-                Go Back
+                {{ $t('Btn.goBack') }}
               </button>
               <button
                 type="submit"
                 class="btn btn-primary"
                 @click="nextStep()"
               >
-                Customer Info >>
+                {{ $t('Btn.customerInfo') }}
               </button>
             </div>
           </div>
@@ -179,20 +179,20 @@
 
     <div class="user-info" v-if="currentStep === 3">
       <div class="text-start">
-        <h5>Customer Info</h5>
+        <h5>{{ $t('Appointments.title.customerInfo') }}</h5>
       </div>
       <form>
         <div class="row">
           <div class="col-sm-4">
-            <small>First name</small>
+            <small>{{ $t('Forms.firstName') }}</small>
             <input type="text" v-model="user.first_name" class="booking-checkbox form-control">
-            <small>Last name</small>
+            <small>{{ $t('Forms.lastName') }}</small>
             <input type="text" v-model="user.last_name" class="form-control">
-            <small>Email</small>
+            <small>{{ $t('Forms.email') }}</small>
             <input type="email" v-model="user.email" class="form-control">
-            <small>Phone</small>
+            <small>{{ $t('Forms.phone') }}</small>
             <input type="tel" v-model="user.phone" class="form-control">
-            <small>Gender</small>
+            <small>{{ $t('Forms.gender') }}</small>
             <select v-model="user.gender" class="form-select">
               <option
                 v-for="gender in genders"
@@ -204,9 +204,9 @@
             </select>
           </div>
           <div class="col-sm-4">
-            <small>Zip</small>
+            <small>{{ $t('Forms.zip') }}</small>
             <input type="text" v-model="user.zip" class="form-control">
-            <small>State</small>
+            <small>{{ $t('Forms.state') }}</small>
             <select
               v-model="user.state"
               class="form-select"
@@ -220,13 +220,13 @@
                 {{ state }}
               </option>
             </select>
-            <small>City</small>
+            <small>{{ $t('Forms.city') }}</small>
             <input type="text" v-model="user.city" class="form-control">
-            <small>Address</small>
+            <small>{{ $t('Forms.address') }}</small>
             <input type="text" v-model="user.address" class="form-control">
           </div>
           <div class="col-sm-4">
-            <small>If you have requeasts</small>
+            <small>{{ $t('Forms.requestsAndNote') }}</small>
             <textarea v-model="user.note" col-sm-6s="30" rows="3" class="user-note form-control"></textarea>
           </div>
           <div class="col-12">
@@ -236,14 +236,14 @@
                 class="btn btn-secondary"
                 @click="prevStep()"
               >
-                Go Back
+                {{ $t('Btn.goBack') }}
               </button>
               <button
                 type="submit"
                 class="btn btn-primary"
                 @click="nextStep()"
               >
-                Confirm >>
+                {{ $t('Btn.confirm') }}
               </button>
             </div>
           </div>
@@ -255,24 +255,24 @@
       <form v-on:submit.prevent="createAppointment()">
         <div class="row">
           <div class="text-start">
-            <h5>Confirmation</h5>
+            <h5>{{ $t('Appointments.title.confirmation') }}</h5>
           </div>
           <div class="col-sm-4">
             <div class="card confirmation-detail-card">
               <div class="card-body">
                 <h6 class="body-title text-center">Personal Info</h6>
-                <small class="confirm-item-tag">Name:</small>
+                <small class="confirm-item-tag">{{ $t('Forms.name') }}:</small>
                 <p>{{ fullName }}</p>
-                <small class="confirm-item-tag">Email:</small>
+                <small class="confirm-item-tag">{{ $t('Forms.email') }}:</small>
                 <p>{{ user.email }}</p>
-                <small class="confirm-item-tag">Phone:</small>
+                <small class="confirm-item-tag">{{ $t('Forms.phone') }}:</small>
                 <p>{{ user.phone }}</p>
-                <small class="confirm-item-tag">Address:</small>
+                <small class="confirm-item-tag">{{ $t('Forms.address') }}:</small>
                 <p>{{ user.address }}</p>
                 <p>{{ user.city }}, {{ user.state }} {{ user.zip }}</p>
-                <small class="confirm-item-tag">Gender:</small>
+                <small class="confirm-item-tag">{{ $t('Forms.gender') }}:</small>
                 <p>{{ user.gender }}</p>
-                <small class="confirm-item-tag">Requests:</small>
+                <small class="confirm-item-tag">{{ $t('Forms.requestsAndNote') }}:</small>
                 <p>{{ user.note }}</p>
               </div>
             </div>
@@ -281,9 +281,9 @@
             <div class="card confirmation-detail-card">
               <div class="card-body">
                 <h6 class="card-title text-center">Date/Time</h6>
-                <small class="confirm-item-tag">Appointment Date:</small>
+                <small class="confirm-item-tag">{{ $t('Forms.appointmentDate') }}:</small>
                 <p>{{ USformattedPicked }}</p>
-                <small class="confirm-item-tag">Time:</small>
+                <small class="confirm-item-tag">{{ $t('Forms.time') }}:</small>
                 <p>{{ USformattedTime }} - {{ endTime }}</p>
               </div>
             </div>
@@ -292,36 +292,36 @@
             <section>
               <div class="card confirmation-detail-card">
                 <div class="card-body">
-                  <h6 class="card-title text-center">Price</h6>
+                  <h6 class="card-title text-center">{{ $t('Forms.price') }}</h6>
                   <ul class="payment-item">
-                    <small class="confirm-item-tag">Menu:</small>
+                    <small class="confirm-item-tag">{{ $t('Menus.menu') }}:</small>
                     <div v-for="menu in selectedMenus" :key="menu.id" class="d-flex justify-content-between">
                       <li>
                         {{ menu.title }}
                       </li>
-                      <span>${{ menu.price }}</span>
+                      <span>{{ $t('Currency') }}{{ menu.price }}</span>
                     </div>
                   </ul>
                   <hr>
                   <div class="payment-item d-flex justify-content-between">
-                    <h6 class="text-end">Subtotal</h6>
-                    <span>${{ subTotal }}</span>
+                    <h6 class="text-end">{{ $t('Forms.subtotal') }}</h6>
+                    <span>{{ $t('Currency') }}{{ subTotal }}</span>
                   </div>
                   <div class="payment-item d-flex justify-content-between">
-                    <span class="text-end">Tax (NY)</span>
-                    <span>${{ serviceTax }}</span>
+                    <span class="text-end">{{ $t('Forms.tax') }} {{ $t('Locale.tax') }}</span>
+                    <span>{{ $t('Currency') }}{{ serviceTax }}</span>
                   </div>
                     <hr>
                   <div class="payment-item d-flex justify-content-between">
-                    <h6 class="text-end">TOTAL</h6>
-                    <span>${{ subTotal + serviceTax }}</span>
+                    <h6 class="text-end">{{ $t('Forms.total') }}</h6>
+                    <span>{{ $t('Currency') }}{{ subTotal + serviceTax }}</span>
                   </div>
                   <hr>
                   <p>
-                    <small>Bring your coupon and plesent at the salon before treatment starts.</small>
+                    <small>{{ $t('Messages.couponNotice') }}</small>
                   </p>
                   <p>
-                    <small>Price may vary according to body condition.</small>
+                    <small>{{ $t('Messages.priceNotice') }}</small>
                   </p>
                   <div>
                     <label class="form-check-label" for="flexCheckDefault">
@@ -339,7 +339,7 @@
                             href="#"
                             rel="noopener noreferrer"
                           >
-                            Teams and Condition
+                            Terms and Condition
                           </a>
                         </span>
                         and
@@ -369,21 +369,21 @@
             class="btn btn-secondary"
             @click="prevStep()"
           >
-            Go Back
+            {{ $t(Btn.goBack) }}
           </button>
           <button
             type="button"
             class="btn btn-danger"
             @click="clearAppointment()"
           >
-            Start Again
+            {{ $t(Btn.startOver) }}
           </button>
           <button
             type="submit"
             class="btn btn-primary"
             :disabled="!confirmCheckbox"
           >
-            Book Appointment
+            {{ $t(Btn.bookAppointment) }}
           </button>
           <!-- <button
             v-if="currentStep === 4"
@@ -433,23 +433,23 @@ export default {
       selectedTime: null,
       user: {},
       genders: [
-        "Male",
-        "Female",
-        "Non Binary",
-        "Rather not to descrive",
-        "N/A"
+        this.$t('Gender.male'),
+        this.$t('Gender.female'),
+        this.$t('Gender.nonBinary'),
+        this.$t('Gender.ratherNot'),
+        this.$t('Gender.NA')
       ],
       states: [
-        "AL", "AK", "AZ", "AR", "CA",
-        "CO", "CT", "DE", "FL", "GA",
-        "HI", "ID", "IL", "IN", "IA",
-        "KS", "KY", "LA", "ME", "MD",
-        "MA", "MI", "MN", "MS", "MO",
-        "MT", "NE", "NV", "NH", "NJ",
-        "NM", "NY", "NC", "ND", "OH",
-        "OK", "OR", "PA", "RI", "SC",
-        "SD", "TN", "TX", "UT", "VT",
-        "VA", "WA", "WV", "WI", "WY"
+        'AL', 'AK', 'AZ', 'AR', 'CA',
+        'CO', 'CT', 'DE', 'FL', 'GA',
+        'HI', 'ID', 'IL', 'IN', 'IA',
+        'KS', 'KY', 'LA', 'ME', 'MD',
+        'MA', 'MI', 'MN', 'MS', 'MO',
+        'MT', 'NE', 'NV', 'NH', 'NJ',
+        'NM', 'NY', 'NC', 'ND', 'OH',
+        'OK', 'OR', 'PA', 'RI', 'SC',
+        'SD', 'TN', 'TX', 'UT', 'VT',
+        'VA', 'WA', 'WV', 'WI', 'WY'
       ],
       // NYC service tax rate
       taxRate: 0.045,

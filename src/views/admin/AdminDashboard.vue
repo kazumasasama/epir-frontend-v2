@@ -5,18 +5,24 @@
   <div class="container">
     <div class="row">
       <div class="col-12 text-end">
-        <button @click="staticDataKey++;" class="btn btn-info">Reload Data</button>
+        <button
+          @click="staticDataKey++;"
+          class="btn btn-info"
+        >
+          {{ $t('Btn.reloadData') }}
+          <font-awesome-icon icon="fa-solid fa-arrow-rotate-right" />
+        </button>
       </div>
       <div class="col-12">
         <div class="card-group">
           <div class="card text-bg-light mb-3">
-            <div class="card-header">Users</div>
+            <div class="card-header">{{ $t('Dashboard.Charts.users') }}</div>
             <div class="card-body">
               <p class="card-text">{{ usersTotal }}</p>
             </div>
           </div>
           <div class="card text-bg-light mb-3">
-            <div class="card-header">Avarage spent</div>
+            <div class="card-header">{{ $t('Dashboard.Charts.avarageSpent') }}</div>
             <div class="card-body">
               <p class="card-text">{{ usersTotal }}</p>
             </div>
@@ -141,6 +147,7 @@ import DoughnutChart from '@/components/charts/DoughnutChart.vue'
 import moment from 'moment';
 import axios from 'axios';
 import { useSystemStore } from '@/store/systemStore';
+// import Vue from 'vue';
 // import { getCurrentInstance } from 'vue';
 
 export default {
@@ -180,18 +187,18 @@ export default {
       currentYear: moment().format('YYYY'),
       barChartData: {
         labels: [
-          'Jan', 'Feb', 'Mar', 'Apr',
-          'May', 'Jun', 'Jul', 'Aug',
-          'Sep', 'Oct', 'Nov', 'Dec',
+          this.$t('DateTime.jan'), this.$t('DateTime.feb'), this.$t('DateTime.mar'), this.$t('DateTime.apr'),
+          this.$t('DateTime.may'), this.$t('DateTime.jun'), this.$t('DateTime.jul'), this.$t('DateTime.aug'),
+          this.$t('DateTime.sep'), this.$t('DateTime.oct'), this.$t('DateTime.nov'), this.$t('DateTime.dec'),
         ],
         datasets: [
           {
-            label: 'This year',
+            label: this.$t('Dashboard.Charts.thisYear'),
             data: [], //ここにデータを入れる (Array of numbers)
             backgroundColor: 'rgb(255, 99, 132)',
           },
           {
-            label: 'Last year',
+            label: this.$t('Dashboard.Charts.prevYear'),
             data: [], //ここにデータを入れる (Array of numbers)
             backgroundColor: 'rgb(54, 162, 235)',
             borderColor: 'rgb(54, 162, 235)',
@@ -207,7 +214,7 @@ export default {
           },
           title: {
             display: true,
-            text: 'Appointments'
+            text: this.$t('Dashboard.Charts.appointments')
           }
         },
         animation: {
@@ -231,12 +238,12 @@ export default {
         ],
         datasets: [
           {
-            label: 'This year',
+            label: this.$t('Dashboard.Charts.thisYear'),
             data: [], //ここにデータを入れる (Array of numbers)
             backgroundColor: 'rgb(255, 99, 132)',
           },
           {
-            label: 'Last year',
+            label: this.$t('Dashboard.Charts.prevYear'),
             data: [], //ここにデータを入れる (Array of numbers)
             backgroundColor: 'rgb(54, 162, 235)',
           },
@@ -258,7 +265,7 @@ export default {
           },
           title: {
             display: true,
-            text: 'Sales'
+            text: this.$t('Dashboard.Charts.sales')
           }
         },
         animation: {
@@ -300,7 +307,7 @@ export default {
           },
           title: {
             display: true,
-            text: 'Appointments by Menu'
+            text: this.$t('Dashboard.appointmentsByMenu')
           }
         },
         animation: {
@@ -342,7 +349,7 @@ export default {
           },
           title: {
             display: true,
-            text: 'Sales by Menu ($)'
+            text: this.$t('Dashboard.salesByMenu')
           }
         },
         animation: {

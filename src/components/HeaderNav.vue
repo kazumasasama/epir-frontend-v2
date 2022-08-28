@@ -28,15 +28,44 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           </ul>
           <ul class="navbar-nav mb-2 mb-lg-0">
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown dropstart">
               <a
-                class="nav-link dropdown-toggle"
+                class="nav-link"
                 id="navbar-link-admin"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Menu
+                <font-awesome-icon
+                  icon="fa-solid fa-language"
+                  size="xl"
+                  color="white"
+                  />
+              </a>
+              <ul
+                class="dropdown-menu"
+              >
+                <li @click="this.$i18n.locale = 'en'">
+                  <a class="dropdown-item admin-dropdown-item" href="#">ENG</a>
+                </li>
+                <li @click="this.$i18n.locale = 'ja'">
+                  <a class="dropdown-item" href="#">JPN</a>
+                </li>
+              </ul>
+            </li>
+            <li v-if="isAdmin" class="nav-item dropdown dropstart">
+              <a
+                class="nav-link"
+                id="navbar-link-admin"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <font-awesome-icon
+                  icon="fa-solid fa-bars"
+                  size="xl"
+                  color="white"
+                />
               </a>
               <ul
                 class="dropdown-menu"
@@ -49,15 +78,19 @@
                 </li>
               </ul>
             </li>
-            <li class="nav-item dropdown" v-if="isAdmin">
+            <li class="nav-item dropdown dropstart" v-if="isAdmin">
               <a
-                class="nav-link dropdown-toggle"
+                class="nav-link"
                 id="navbar-link-admin"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Admin Menu
+                <font-awesome-icon
+                  icon="fa-solid fa-lock"
+                  size="xl"
+                  color="white"
+                />
               </a>
               <ul
                 class="dropdown-menu"
@@ -77,7 +110,13 @@
               </ul>
             </li>
             <li class="nav-item" @click="logout()" v-if="isLoggedin">
-              <a class="nav-link">Logout</a>
+              <a class="nav-link">
+                <font-awesome-icon
+                  icon="fa-solid fa-arrow-right-from-bracket"
+                  size="xl"
+                  color="white"
+                />
+              </a>
             </li>
           </ul>
         </div>
