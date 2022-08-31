@@ -1,9 +1,11 @@
 <template>
   <div class="container">
-    <div v-if="errors">
-      <div v-for="error in errors" :key="error" class="alert alert-warning" role="alert">
-        {{ error }}
-      </div>
+    <div
+      v-if="error"
+      class="alert alert-warning"
+      role="alert"
+    >
+      {{ error }}
     </div>
 
     <nav aria-label="breadcrumb" class="pg-bar">
@@ -354,6 +356,15 @@
                         </span>
                       </small>
                     </label>
+                    <p class="test-mode-payment">Test mode payment. You will be NOT charged.</p>
+                    <button
+                      v-if="currentStep === 4"
+                      type="button"
+                      class="btn btn-primary"
+                      @click="checkout()"
+                    >
+                      Checkout
+                    </button>
                   </div>
                 </div>
               </div>
@@ -375,21 +386,13 @@
           >
             {{ $t('Btn.startOver') }}
           </button>
-          <button
+          <!-- <button
             type="submit"
             class="btn btn-primary"
             :disabled="!confirmCheckbox"
           >
             {{ $t('Btn.bookAppointment') }}
-          </button>
-          <button
-            v-if="currentStep === 4"
-            type="button"
-            class="btn btn-primary"
-            @click="checkout()"
-          >
-            Checkout
-          </button>
+          </button> -->
         </div>
       </form>
     </div>
@@ -419,7 +422,7 @@ export default {
   },
   data() {
     return {
-      errors: null,
+      error: null,
       event: {},
       currentStep: 1,
       menus: [],
@@ -469,7 +472,7 @@ export default {
   watch: {
     selectedMenus() {
       if (this.selectedMenus.length !== 0) {
-        this.errors = null;
+        this.error = null;
       }
     },
   },
@@ -567,12 +570,12 @@ export default {
     },
     nextStep() {
       if (this.currentStep === 1 && this.selectedMenus.length === 0) {
-        this.errors = ["Please pick at least one menu."];
+        this.error = ["Please pick at least one menu."];
       } else if (this.currentStep === 1 && this.selectedMenus.length !== 0) {
         this.currentStep++;
       // } else if (this.currentStep === 2 && !this.selectedTime) {
       //   console.log('in error 2')
-      //   this.errors = ["Please pick a time."];
+      //   this.error = ["Please pick a time."];
       } else if (this.currentStep === 2 && this.selectedTime) {
         this.currentStep++;
         let targetElement = document.querySelector('#progress-2')
@@ -628,7 +631,7 @@ export default {
         this.systemStore.endLoading();
       })
       .catch((error)=> {
-        this.errors = error.response;
+        this.error = error.response;
       })
     },
     clearAppointment() {
@@ -643,6 +646,10 @@ export default {
       document.querySelector('#progress-4').classList.add('bg-secondary');
     },
     checkout() {
+      if (!this.confirmCheckbox) {
+        this.error = "Please agree to Terms and Condition and Privacy Policy."
+        return
+      }
       const menuIds = this.selectedMenus.map((menu) => menu.id)
       const line_item = {
         id: menuIds,
@@ -725,6 +732,9 @@ export default {
   }
   .booking-checkbox:checked {
     background-color: rgb(54, 162, 235);
+  }
+  .test-mode-payment {
+    color: rgb(255, 99, 132);
   }
   ul {
     margin-bottom: 0px;
