@@ -169,12 +169,12 @@ export default {
           })
           .then((isAdmin)=> {
             this.userStore.handleAdmin(isAdmin);
-            if (isAdmin) {
-              this.$router.push('/admin/dashboard');
-            } else {
+            // if (isAdmin) {
+            //   this.$router.push('/admin/dashboard');
+            // } else {
               this.$router.push('/appointments');
-            }
-            this.systemStore.endLoading();
+            // }
+            // this.systemStore.endLoading();
             return
           })
           .catch((error)=> {

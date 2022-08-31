@@ -357,9 +357,6 @@
                   </div>
                 </div>
               </div>
-              <!-- <form action="http://localhost:4242/create-checkout-session" method="POST">
-                <button type="submit" id="checkout-button">Checkout</button>
-              </form> -->
             </section>
           </div>
         </div>
@@ -369,30 +366,30 @@
             class="btn btn-secondary"
             @click="prevStep()"
           >
-            {{ $t(Btn.goBack) }}
+            {{ $t('Btn.goBack') }}
           </button>
           <button
             type="button"
             class="btn btn-danger"
             @click="clearAppointment()"
           >
-            {{ $t(Btn.startOver) }}
+            {{ $t('Btn.startOver') }}
           </button>
           <button
             type="submit"
             class="btn btn-primary"
             :disabled="!confirmCheckbox"
           >
-            {{ $t(Btn.bookAppointment) }}
+            {{ $t('Btn.bookAppointment') }}
           </button>
-          <!-- <button
+          <button
             v-if="currentStep === 4"
             type="button"
             class="btn btn-primary"
             @click="checkout()"
           >
-            checkout
-          </button> -->
+            Checkout
+          </button>
         </div>
       </form>
     </div>
@@ -646,15 +643,15 @@ export default {
       document.querySelector('#progress-4').classList.add('bg-secondary');
     },
     checkout() {
-      let total = this.subTotal + this.serviceTax;
-      let checkoutDetail = {
-        line_items: [{
-          price: total,
-          quantity: 1,
-        }]
-      };
-      axios
-      .post('/create-checkout-session', checkoutDetail)
+      const menuIds = this.selectedMenus.map((menu) => menu.id)
+      const line_item = {
+        id: menuIds,
+        quantity: 1,
+      }
+      axios.post('/checkout.json', line_item)
+      .then((res)=> {
+        window.location = res.data.url
+      })
     },
   }
 }
