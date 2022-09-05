@@ -438,7 +438,7 @@ export default {
     this.indexMenus();
     this.indexBusinessTimes();
     
-    this.stripe = window.Stripe(process.env.VUE_APP_STRIPE_PUBLIC_KEY);
+    this.stripe = window.Stripe(`${process.env.VUE_APP_STRIPE_PUBLIC_KEY}`);
   },
   mounted() {
     this.$nextTick(function() {
