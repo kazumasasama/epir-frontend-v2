@@ -138,13 +138,6 @@ const routes = [
     path: '/:catchAll(.*)',
     redirect: '/404'
   },
-  {
-    path: '/checkout',
-    name: 'checkout',
-    beforeEnter() {
-      window.location = ':url'
-    }
-  },
   // {
   //   path: '/about',
   //   name: 'about',

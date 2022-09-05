@@ -43,7 +43,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .card-img-home {
   max-width: 430px;
 }

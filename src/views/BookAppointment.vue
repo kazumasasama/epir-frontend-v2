@@ -259,7 +259,7 @@
           <div class="text-start">
             <h5>{{ $t('Appointments.title.confirmation') }}</h5>
           </div>
-          <div class="col-sm-4">
+          <!-- <div class="col-sm-4">
             <div class="card confirmation-detail-card">
               <div class="card-body">
                 <h6 class="body-title text-center">Personal Info</h6>
@@ -278,8 +278,8 @@
                 <p>{{ user.note }}</p>
               </div>
             </div>
-          </div>
-          <div class="col-sm-4">
+          </div> -->
+          <!-- <div class="col-sm-4">
             <div class="card confirmation-detail-card">
               <div class="card-body">
                 <h6 class="card-title text-center">Date/Time</h6>
@@ -289,14 +289,16 @@
                 <p>{{ USformattedTime }} - {{ endTime }}</p>
               </div>
             </div>
-          </div>
-          <div class="col-sm-4">
+          </div> -->
+          <div class="col-md-6">
             <section>
               <div class="card confirmation-detail-card">
-                <div class="card-body">
-                  <h6 class="card-title text-center">{{ $t('Forms.price') }}</h6>
+                <div class="card-body text-start">
                   <ul class="payment-item">
-                    <small class="confirm-item-tag">{{ $t('Menus.menu') }}:</small>
+                    <h6 class="card-title">Date/Time</h6>
+                    <p>{{ USformattedPicked }}</p>
+                    <p>{{ USformattedTime }} - {{ endTime }}</p>
+                    <h6 class="confirm-item-tag">{{ $t('Menus.menu') }}:</h6>
                     <div v-for="menu in selectedMenus" :key="menu.id" class="d-flex justify-content-between">
                       <li>
                         {{ menu.title }}
@@ -325,50 +327,17 @@
                   <p>
                     <small>{{ $t('Messages.priceNotice') }}</small>
                   </p>
-                  <div>
-                    <label class="form-check-label" for="flexCheckDefault">
-                      <input
-                        class="form-check-input booking-checkbox"
-                        type="checkbox"
-                        v-model="confirmCheckbox"
-                        id="flexCheckDefault"
-                      >
-                      <small class="terms-and-conditions">
-                        Agree to our 
-                        <span @click="this.$router.push('/termsandconditions')">
-                          <a
-                            class="link-primary"
-                            href="#"
-                            rel="noopener noreferrer"
-                          >
-                            Terms and Condition
-                          </a>
-                        </span>
-                        and
-                        <span @click="this.$router.push('/privacyandpolicy')">
-                          <a 
-                            class="link-primary"
-                            href="#"
-                            rel="noopener noreferrer"
-                          >
-                            Privacy Policy
-                          </a>
-                        </span>
-                      </small>
-                    </label>
-                    <p class="test-mode-payment">Test mode payment. You will be NOT charged.</p>
-                    <button
-                      v-if="currentStep === 4"
-                      type="button"
-                      class="btn btn-primary"
-                      @click="checkout()"
-                    >
-                      Checkout
-                    </button>
-                  </div>
                 </div>
               </div>
             </section>
+          </div>
+          <div class="col-md-6">
+            <CheckoutView
+              @checkout="checkout()"
+              :stripe="stripe"
+              :elements="elements"
+              :checkBoxError="checkBoxError"
+            />
           </div>
         </div>
         <div class="btn-container">
@@ -382,7 +351,7 @@
           <button
             type="button"
             class="btn btn-danger"
-            @click="clearAppointment()"
+            @click.prevent="clearAppointment()"
           >
             {{ $t('Btn.startOver') }}
           </button>
@@ -407,6 +376,7 @@ import axios from "axios";
 import * as moment from 'moment-timezone';
 import { useSystemStore } from '@/store/systemStore'
 import { useUserStore } from '@/store/userStore'
+import CheckoutView from '@/components/CheckoutView.vue';
 
 export default {
   setup() {
@@ -419,9 +389,12 @@ export default {
   },
   components: {
     Datepicker,
-  },
+    CheckoutView,
+},
   data() {
     return {
+      stripe: null,
+      elements: null,
       error: null,
       event: {},
       currentStep: 1,
@@ -454,6 +427,7 @@ export default {
       // NYC service tax rate
       taxRate: 0.045,
       confirmCheckbox: false,
+      checkBoxError: null,
       picked: ref(new Date),
     }
   },
@@ -463,6 +437,8 @@ export default {
     this.user = this.userStore.user;
     this.indexMenus();
     this.indexBusinessTimes();
+    
+    this.stripe = window.Stripe(process.env.VUE_APP_STRIPE_PUBLIC_KEY);
   },
   mounted() {
     this.$nextTick(function() {
@@ -568,6 +544,25 @@ export default {
         this.businessTimes = res.data;
       })
     },
+    getClientSecret() {
+      const payment = {
+        "menuIds": this.selectedMenuIds,
+        "tax": this.serviceTax 
+      };
+      axios.post('/secret.json', payment)
+      .then((res)=> {
+        const clientSecret = res.data
+        const options = {
+          clientSecret: clientSecret,
+          appearance: {
+            theme: 'flat'
+          },
+        }
+        this.elements = this.stripe.elements(options);
+        const paymentElement = this.elements.create('payment');
+        paymentElement.mount('#payment-element');
+      })
+    },
     nextStep() {
       if (this.currentStep === 1 && this.selectedMenus.length === 0) {
         this.error = ["Please pick at least one menu."];
@@ -582,6 +577,7 @@ export default {
         targetElement.classList.remove('bg-secondary');
         targetElement.classList.add('bg-success');
       } else if (this.currentStep === 3) {
+        this.getClientSecret()
         this.currentStep++;
         let targetElement = document.querySelector('#progress-3')
         targetElement.classList.remove('bg-secondary');
@@ -609,7 +605,7 @@ export default {
       }
     },
     createAppointment() {
-      this.spinnerMessage = "Processing"
+      this.spinnerMessage = "Createing your appointment"
       this.systemStore.startLoading();
       let bookingInfo = {
         "date": this.bookingDate,
@@ -624,7 +620,6 @@ export default {
       axios.post("/events.json", bookingInfo)
       .then((res)=> {
         this.event = res.data;
-        this.isLoading = false;
       })
       .then(()=> {
         this.$router.push("/complete");
@@ -646,19 +641,40 @@ export default {
       document.querySelector('#progress-4').classList.add('bg-secondary');
     },
     checkout() {
-      if (!this.confirmCheckbox) {
-        this.error = "Please agree to Terms and Condition and Privacy Policy."
-        return
-      }
-      const menuIds = this.selectedMenus.map((menu) => menu.id)
-      const line_item = {
-        id: menuIds,
-        quantity: 1,
-      }
-      axios.post('/checkout.json', line_item)
-      .then((res)=> {
-        window.location = res.data.url
-      })
+      // this.spinnerMessage = "Confirming"
+      // this.systemStore.startLoading();
+      const form = document.getElementById('payment-form');
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const confirmRes = await this.stripe.confirmPayment({
+          elements: this.elements,
+          redirect: 'if_required'
+        });
+        if (confirmRes.paymentIntent) {
+          if (confirmRes.paymentIntent.status === 'succeeded') {
+            alert('Payment Accepted')
+            this.createAppointment();
+          }
+        } else if (confirmRes.error) {
+          if (confirmRes.error.type === 'card_error') {
+            if (confirmRes.error.code === 'card_declined') {
+              const errorMessage = confirmRes.error.decline_code.split('_').map( s => s[0].toUpperCase() + s.slice(1)).join(' ')
+              alert(errorMessage)
+              this.systemStore.endLoading();
+            }
+          }
+        } else {
+          alert('Something went wronng. Please try Again.')
+        }
+        // } else if (confirmRes.paymentIntent.status === 'processing') {
+        //   this.error = "Payment processing. We'll update you when payment is received."
+        // } else if (confirmRes.paymentIntent.status === 'requires_payment_method') {
+        //   this.error = 'Payment failed. Please try another payment method.'
+        // } else {
+        //   this.error = 'Something went wrong.'
+        // }
+      });
     },
   }
 }
@@ -707,15 +723,8 @@ export default {
     --dp-icon-color: #959595;
     --dp-danger-color: #ff6f60;
   }
-  .confirm-item-tag {
-    font-weight: bold;
-  }
   .btn-container {
     margin-top: 20px;
-  }
-  .confirmation-detail-card {
-    border-width: 0px;
-    box-shadow: 0 5px 15px 0 rgba(0, 0, 0, .3);
   }
   .payment-item {
     padding-left: 8px;
@@ -724,17 +733,11 @@ export default {
     padding-left: 0px;
     padding-right: 0px;
   }
-  .terms-and-conditions {
-    font-weight: bold;
-  }
   .progress {
     margin-bottom: 23px;
   }
   .booking-checkbox:checked {
     background-color: rgb(54, 162, 235);
-  }
-  .test-mode-payment {
-    color: rgb(255, 99, 132);
   }
   ul {
     margin-bottom: 0px;

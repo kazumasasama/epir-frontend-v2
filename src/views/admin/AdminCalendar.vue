@@ -195,7 +195,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .calendar-container {
     height: 100%;
   }

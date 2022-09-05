@@ -117,6 +117,10 @@ hr {
   margin-bottom: 25px;
 }
 
+.btn {
+  margin: 5px 8px;
+}
+
 #bisiness-name-logo {
   /* font-family: Helvetica;
   font-weight: bold;
