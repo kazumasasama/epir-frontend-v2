@@ -106,7 +106,7 @@
             <button
               type="submit"
               class="btn btn-primary"
-              @click="nextStep()"
+              @click.prevent.prevent.prevent="nextStep()"
             >
               {{ $t('Btn.dateTime') }}
             </button>
@@ -133,28 +133,31 @@
             </div>
           </div>
           <div class="col-sm-6">
-            <div
-              class="list-group"
-              id="list-tab"
-              role="tablist"
-              v-for="timeSlot in filteredBusinessTimes"
-              :key="timeSlot.id"
-            >
-              <label
-                class="list-group-item"
-              >
-                <ul>
-                  <input
-                    class="form-check-input me-1 booking-checkbox"
-                    type="radio"
-                    :value="timeSlot.time"
-                    v-model="selectedTime"
+            <div class="row">
+              <div class="time-slot-col col-lg-4 col-sm-6" v-for="timeSlot in filteredBusinessTimes"
+                  :key="timeSlot.id">
+                <div
+                  class="list-group"
+                  id="list-tab"
+                  role="tablist"
+                >
+                  <label
+                    class="list-group-item"
                   >
-                  <li>
-                    {{ timeSlot.time.slice(11, -13) }}
-                  </li>
-                </ul>
-              </label>
+                    <ul>
+                      <input
+                        class="form-check-input me-1 booking-checkbox"
+                        type="radio"
+                        :value="timeSlot.time"
+                        v-model="selectedTime"
+                      >
+                      <li>
+                        {{ timeSlot.time.slice(11, -13) }}
+                      </li>
+                    </ul>
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-12">
@@ -169,7 +172,7 @@
               <button
                 type="submit"
                 class="btn btn-primary"
-                @click="nextStep()"
+                @click.prevent.prevent="nextStep()"
               >
                 {{ $t('Btn.customerInfo') }}
               </button>
@@ -243,7 +246,7 @@
               <button
                 type="submit"
                 class="btn btn-primary"
-                @click="nextStep()"
+                @click.prevent="nextStep()"
               >
                 {{ $t('Btn.confirm') }}
               </button>
@@ -344,7 +347,7 @@
           <button
             type="button"
             class="btn btn-secondary"
-            @click="prevStep()"
+            @click.prevent="prevStep()"
           >
             {{ $t('Btn.goBack') }}
           </button>
@@ -564,44 +567,46 @@ export default {
       })
     },
     nextStep() {
+      var targetElement
       if (this.currentStep === 1 && this.selectedMenus.length === 0) {
-        this.error = ["Please pick at least one menu."];
+        this.error = "Please pick at least one menu.";
       } else if (this.currentStep === 1 && this.selectedMenus.length !== 0) {
+        targetElement = document.querySelector('#progress-2')
+        targetElement.classList.remove('bg-secondary');
+        targetElement.classList.add('bg-success');
         this.currentStep++;
-      // } else if (this.currentStep === 2 && !this.selectedTime) {
-      //   console.log('in error 2')
-      //   this.error = ["Please pick a time."];
+      } else if (this.currentStep === 2 && !this.selectedTime) {
+        this.error = "Please pick a date and a time.";
       } else if (this.currentStep === 2 && this.selectedTime) {
         this.currentStep++;
-        let targetElement = document.querySelector('#progress-2')
+        targetElement = document.querySelector('#progress-3')
         targetElement.classList.remove('bg-secondary');
         targetElement.classList.add('bg-success');
       } else if (this.currentStep === 3) {
         this.getClientSecret()
         this.currentStep++;
-        let targetElement = document.querySelector('#progress-3')
-        targetElement.classList.remove('bg-secondary');
-        targetElement.classList.add('bg-success');
-      } else if (this.currentStep === 4) {
-        this.currentStep++;
-        let targetElement = document.querySelector('#progress-4')
+        targetElement = document.querySelector('#progress-4')
         targetElement.classList.remove('bg-secondary');
         targetElement.classList.add('bg-success');
       }
     },
     prevStep() {
+      var targetElement
+      if (this.currentStep === 2) {
+        targetElement = document.querySelector('#progress-2')
+        targetElement.classList.remove('bg-success');
+        targetElement.classList.add('bg-secondary');
+      } else if (this.currentStep === 3) {
+        targetElement = document.querySelector('#progress-3')
+        targetElement.classList.remove('bg-success');
+        targetElement.classList.add('bg-secondary');
+      } else if (this.currentStep === 4) {
+        targetElement = document.querySelector('#progress-4')
+        targetElement.classList.remove('bg-success');
+        targetElement.classList.add('bg-secondary');
+      }
       if (this.currentStep > 1) {
         this.currentStep--;
-      }
-      if (this.currentStep === 1) {
-        document.querySelector('#progress-2').classList.remove('bg-success');
-        document.querySelector('#progress-2').classList.add('bg-secondary');
-      } else if (this.currentStep === 2) {
-        document.querySelector('#progress-3').classList.remove('bg-success');
-        document.querySelector('#progress-3').classList.add('bg-secondary');
-      } else if (this.currentStep === 3) {
-        document.querySelector('#progress-4').classList.remove('bg-success');
-        document.querySelector('#progress-4').classList.add('bg-secondary');
       }
     },
     createAppointment() {
@@ -738,6 +743,9 @@ export default {
   }
   .booking-checkbox:checked {
     background-color: rgb(54, 162, 235);
+  }
+  .time-slot-col {
+    padding: 8px;
   }
   ul {
     margin-bottom: 0px;
