@@ -35,31 +35,42 @@
 </template>
 
 <script>
+import { useSystemStore } from '@/store/systemStore';
 import mapboxgl from 'mapbox-gl';
-  export default {
-    data() {
-      return {
-      }
-    },
-    mounted() {
-      this.initMap();
-    },
-    methods: {
-      initMap() {
-        mapboxgl.accessToken = process.env.VUE_APP_MAPBOX;
-        const map = new mapboxgl.Map({
-          container: 'map', // container ID
-          style: 'mapbox://styles/mapbox/streets-v11', // style URL
-          center: [-73.99873361830024, 40.735854328717224], // starting position [lng, lat]
-          zoom: 14 // starting zoom
-        });
-        new mapboxgl.Marker()
-        .setLngLat([-73.99873361830024, 40.735854328717224])
-        .addTo(map);
-        // const language = event.target.id.substr('button-'.length);
-      },
+
+export default {
+  setup() {
+    const systemStore = useSystemStore();
+    return {
+      systemStore,
     }
+  },
+  data() {
+    return {
+    }
+  },
+  mounted() {
+    this.initMap();
+  },
+  updated() {
+    this.initMap();
+  },
+  methods: {
+    initMap() {
+      mapboxgl.accessToken = process.env.VUE_APP_MAPBOX;
+      const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        style: this.systemStore.mapboxURL, // style URL
+        center: [-73.99873361830024, 40.735854328717224], // starting position [lng, lat]
+        zoom: 14 // starting zoom
+      });
+      new mapboxgl.Marker()
+      .setLngLat([-73.99873361830024, 40.735854328717224])
+      .addTo(map);
+      // const language = event.target.id.substr('button-'.length);
+    },
   }
+}
 </script>
 
 <style scoped>

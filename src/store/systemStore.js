@@ -5,7 +5,8 @@ export const useSystemStore = defineStore("systemStore", {
     return {
       isLoading: false,
       LoadingMessage: 'Loading',
-      i18n: 'en',
+      mapboxURL: 'mapbox://styles/mapbox/streets-v11',
+      calendarLocale: 'en',
     };
   },
   actions: {
@@ -18,8 +19,13 @@ export const useSystemStore = defineStore("systemStore", {
     modifyLoadingMessage(message) {
       this.LoadingMessage = message
     },
-    changeI18n(lang) {
-      this.i18n = lang
-    }
+    changeAppLocale(lang) {
+      if (lang === 'en') {
+        this.mapboxURL = 'mapbox://styles/mapbox/streets-v11'
+      } else if (lang === 'ja') {
+        this.mapboxURL = 'mapbox://styles/kaznyc/cl3z0c148000i14qp3onp4x8e'
+      }
+      this.calendarLocale = lang;
+    },
   },
 });

@@ -232,9 +232,9 @@ export default {
       },
       salesBarChartData: {
         labels: [
-          'Jan', 'Feb', 'Mar', 'Apr',
-          'May', 'Jun', 'Jul', 'Aug',
-          'Sep', 'Oct', 'Nov', 'Dec',
+          this.$t('DateTime.jan'), this.$t('DateTime.feb'), this.$t('DateTime.mar'), this.$t('DateTime.apr'),
+          this.$t('DateTime.may'), this.$t('DateTime.jun'), this.$t('DateTime.jul'), this.$t('DateTime.aug'),
+          this.$t('DateTime.sep'), this.$t('DateTime.oct'), this.$t('DateTime.nov'), this.$t('DateTime.dec'),
         ],
         datasets: [
           {

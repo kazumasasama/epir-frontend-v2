@@ -45,10 +45,10 @@
               <ul
                 class="dropdown-menu"
               >
-                <li @click="this.$i18n.locale = 'en'">
+                <li @click.prevent="changeLocale('en')">
                   <a class="dropdown-item admin-dropdown-item" href="#">ENG</a>
                 </li>
-                <li @click="this.$i18n.locale = 'ja'">
+                <li @click="changeLocale('ja')">
                   <a class="dropdown-item" href="#">JPN</a>
                 </li>
               </ul>
@@ -125,7 +125,7 @@
 </template>
 
 <script>
-import { mapWritableState } from 'pinia'
+import { mapActions, mapWritableState } from 'pinia'
 import { useSystemStore } from '@/store/systemStore'
 import { useUserStore } from '@/store/userStore'
 
@@ -164,7 +164,12 @@ export default {
       return new Promise((resolve)=> {
         setTimeout(()=> { resolve(this.$router.push('/')) }, 3000)
       })
-    }
+    },
+    ...mapActions(useSystemStore, ['changeAppLocale']),
+    changeLocale(lang) {
+      this.$i18n.locale = lang;
+      this.changeAppLocale(lang);
+    },
   },
 }
 </script>

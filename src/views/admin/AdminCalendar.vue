@@ -35,7 +35,7 @@
             :max-date="maxDate"
             events-count-on-year-view
             hide-week-number
-            locale="en"
+            :locale="calendarLocale"
             :key="calendarKey"
           />
         </div>
@@ -99,6 +99,7 @@ import axios from 'axios'
 import * as moment from 'moment-timezone';
 import * as bootstrap from 'bootstrap'
 import { useSystemStore } from '@/store/systemStore';
+import { mapWritableState } from 'pinia'
 
 export default {
   setup() {
@@ -140,6 +141,7 @@ export default {
     })
   },
   computed: {
+    ...mapWritableState(useSystemStore, ['calendarLocale']),
     maxDate() {
       return moment().add(90, 'days').format('YYYY-MM-DD');
     },
