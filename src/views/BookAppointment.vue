@@ -152,7 +152,7 @@
                         v-model="selectedTime"
                       >
                       <li>
-                        {{ timeSlot.time.slice(11, -13) }}
+                        {{ timeSlot.time.slice(11, -8) }}
                       </li>
                     </ul>
                   </label>
@@ -287,9 +287,9 @@
               <div class="card-body">
                 <h6 class="card-title text-center">Date/Time</h6>
                 <small class="confirm-item-tag">{{ $t('Forms.appointmentDate') }}:</small>
-                <p>{{ USformattedPicked }}</p>
+                <p>{{ formatBookingDate }}</p>
                 <small class="confirm-item-tag">{{ $t('Forms.time') }}:</small>
-                <p>{{ USformattedTime }} - {{ endTime }}</p>
+                <p>{{ formattedBookingTime }} - {{ endTime }}</p>
               </div>
             </div>
           </div> -->
@@ -299,8 +299,8 @@
                 <div class="card-body text-start">
                   <ul class="payment-item">
                     <h6 class="card-title">{{ $t('Appointments.steps.dateTime') }}</h6>
-                    <p>{{ USformattedPicked }}</p>
-                    <p>{{ USformattedTime }} - {{ endTime }}</p>
+                    <p>{{ formatBookingDate }}</p>
+                    <p>{{ formattedBookingTime }} - {{ endTime }}</p>
                     <h6 class="confirm-item-tag">{{ $t('Menus.menu') }}:</h6>
                     <div v-for="menu in selectedMenus" :key="menu.id" class="d-flex justify-content-between">
                       <li>
@@ -465,31 +465,26 @@ export default {
       return `${this.user.first_name} ${this.user.last_name}`;
     },
     bookingDate() {
-      return moment(this.picked).format('YYYY-MM-DD');
+      return moment.utc(this.picked).format('YYYY-MM-DD');
     },
-    formattedPicked() {
-      return moment(this.picked).format('YYYY-MM-DD');
+    formatBookingDate() {
+      return moment.utc(this.picked).format('MM-DD-YYYY');
+    },
+    formattedBookingTime() {
+      return moment.utc(this.selectedTime).format('hh:mm A');
+    },
+    endTime() {
+      var endTime = moment.utc(this.selectedTime).add(this.totalDuration,'minute').format('hh:mm A');
+      return endTime;
     },
     totalDuration() {
       let durationSum = 0;
       this.selectedMenus.forEach((menu) => {durationSum += menu.duration});
       return durationSum;
     },
-    endTime() {
-      var endTime = moment(this.selectedTime).add(this.totalDuration,'minute').format('hh:mm A');
-      return endTime;
-    },
     endTimeParams() {
-      var endTime = moment(this.selectedTime).add(this.totalDuration,'minute').format();
+      var endTime = moment.utc(this.selectedTime).add(this.totalDuration,'minute').format();
       return endTime;
-    },
-    durationSum() {
-      let durationSumHour = 0;
-      let durationSumMin = 0;
-      this.selectedMenus.forEach((menu) => {durationSumHour += menu.duration});
-      durationSumMin = durationSumHour % 60;
-      durationSumHour = (durationSumHour - (durationSumHour % 60)) / 60;
-      return `${durationSumHour}:${durationSumMin}:00`;
     },
     durationSumInString() {
       let durationSumHour = 0;
@@ -497,18 +492,11 @@ export default {
       this.selectedMenus.forEach((menu) => {durationSumHour += menu.duration});
       durationSumMin = durationSumHour % 60;
       durationSumHour = (durationSumHour - (durationSumHour % 60)) / 60;
-      return `${durationSumHour} hour ${durationSumMin} min`;
-    },
-    USformattedPicked() {
-      return moment(this.picked).format('MM-DD-YYYY');
-    },
-    USformattedTime() {
-      var time = moment(this.selectedTime);
-      return time.format('hh:mm A');
+      return `${durationSumHour} ${this.$t('DateTime.hour')} ${durationSumMin} ${this.$t('DateTime.min')}`;
     },
     filteredBusinessTimes() {
       // 指定日の時間の呼び出し
-      var openTimes = this.businessTimes.filter(timeSlots => timeSlots.date === this.formattedPicked).sort((a, b)=> {
+      var openTimes = this.businessTimes.filter(timeSlots => timeSlots.date === this.bookingDate).sort((a, b)=> {
         return a.id - b.id;
       }).filter((time)=> time.available === true);
       // 必要時間が最低スロット時間の場合全てのopenTimesを返す
