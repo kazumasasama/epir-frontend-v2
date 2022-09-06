@@ -1,8 +1,9 @@
 <template>
-  <div class="container home-container">
+  <div class="container">
+    <div class="row">
       <div class="card home-card">
         <div class="row">
-          <h4 class="card-title top-card-title">{{ $t('Home.greeting') }}</h4>
+          <h1 class="card-title top-card-title">{{ $t('Home.greeting') }}</h1>
           <div class="col-md-6">
             <div class="card-body home" id="card-home">
               <img src="@/assets/people-top-image.jpg" class="card-img-home">
@@ -39,6 +40,20 @@
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="card release-card text-start">
+        <h2 class="release-card-title">Releases</h2>
+        <ul class="">
+          <li><small>09-05-2022: Cashless payment</small></li>
+          <li><small>08-26-2022: Multiple language i18n</small></li>
+          <li><small>08-26-2022: State</small></li>
+          <li><small>08-22-2022: Improve error handling</small></li>
+          <li><small>08-20-2022: Admin Dashboard (Statics)</small></li>
+          <li><small>05-19-2022: Launch Biznesu</small></li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -54,14 +69,14 @@ export default {
 }
 .top-card-title {
   margin-top: 8px;
+  font-size: x-large;
+}
+.release-card-title {
+  margin-top: 8px;
+  font-size: large;
 }
 .btn {
   margin: 5px 8px;
-}
-.home-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 .login-hint {
   margin-top: 20px;
@@ -76,6 +91,13 @@ export default {
 .home-card {
   background-color: rgb(253,239,224);
   padding-top: 20px;
+  border-color: rgb(255, 200, 140);
+  border-width: 3px;
+}
+.release-card {
+  background-color: rgb(253,239,224);
+  padding-top: 20px;
+  margin-top: 20px;
   border-color: rgb(255, 200, 140);
   border-width: 3px;
 }
