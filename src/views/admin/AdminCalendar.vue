@@ -140,6 +140,9 @@ export default {
       this.systemStore.endLoading();
     })
   },
+  updated() {
+    this.indexEvents();
+  },
   computed: {
     ...mapWritableState(useSystemStore, ['calendarLocale']),
     maxDate() {
