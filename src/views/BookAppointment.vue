@@ -405,7 +405,7 @@ export default {
       menu: {},
       businessTimes: [],
       selectedMenus: [],
-      selectedDate: moment().format('YYYY-MM-DD'),
+      selectedDate: moment.utc().format('YYYY-MM-DD'),
       selectedTime: null,
       user: {},
       genders: [
