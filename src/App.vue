@@ -120,7 +120,7 @@ hr {
   color: white;
   font-size: 20pt;
   margin-bottom: 0px; */
-  max-width: 200px;
+  max-width: 150px;
 }
 
 .spinner-after {
