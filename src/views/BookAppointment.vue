@@ -268,37 +268,6 @@
           <div class="text-start">
             <h5>{{ $t('Appointments.title.confirmation') }}</h5>
           </div>
-          <!-- <div class="col-sm-4">
-            <div class="card confirmation-detail-card">
-              <div class="card-body">
-                <h6 class="body-title text-center">Personal Info</h6>
-                <small class="confirm-item-tag">{{ $t('Forms.name') }}:</small>
-                <p>{{ fullName }}</p>
-                <small class="confirm-item-tag">{{ $t('Forms.email') }}:</small>
-                <p>{{ user.email }}</p>
-                <small class="confirm-item-tag">{{ $t('Forms.phone') }}:</small>
-                <p>{{ user.phone }}</p>
-                <small class="confirm-item-tag">{{ $t('Forms.address') }}:</small>
-                <p>{{ user.address }}</p>
-                <p>{{ user.city }}, {{ user.state }} {{ user.zip }}</p>
-                <small class="confirm-item-tag">{{ $t('Forms.gender') }}:</small>
-                <p>{{ user.gender }}</p>
-                <small class="confirm-item-tag">{{ $t('Forms.requestsAndNote') }}:</small>
-                <p>{{ user.note }}</p>
-              </div>
-            </div>
-          </div> -->
-          <!-- <div class="col-sm-4">
-            <div class="card confirmation-detail-card">
-              <div class="card-body">
-                <h6 class="card-title text-center">Date/Time</h6>
-                <small class="confirm-item-tag">{{ $t('Forms.appointmentDate') }}:</small>
-                <p>{{ formatBookingDate }}</p>
-                <small class="confirm-item-tag">{{ $t('Forms.time') }}:</small>
-                <p>{{ formattedBookingTime }} - {{ endTime }}</p>
-              </div>
-            </div>
-          </div> -->
           <div class="col-md-6">
             <section>
               <div class="card confirmation-detail-card">

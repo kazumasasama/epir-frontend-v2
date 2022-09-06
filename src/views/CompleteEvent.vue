@@ -67,7 +67,6 @@ export default {
       new mapboxgl.Marker()
       .setLngLat([-73.99873361830024, 40.735854328717224])
       .addTo(map);
-      // const language = event.target.id.substr('button-'.length);
     },
   }
 }

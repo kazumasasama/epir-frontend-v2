@@ -1,11 +1,4 @@
 <template>
-
-  <!-- <nav class="navbar navbar-light" style="background-color: #f5f6fe;">
-    <div class="col-12 users-btn-container">
-      <button class="btn btn-outline-success btn-sm">New appointment</button>
-    </div>
-  </nav> -->
-
   <div class="container">
     <div class="row">
       <div class="col-12 text-end">
@@ -140,9 +133,6 @@ export default {
       this.systemStore.endLoading();
     })
   },
-  // updated() {
-  //   this.indexEvents();
-  // },
   computed: {
     ...mapWritableState(useSystemStore, ['calendarLocale']),
     maxDate() {

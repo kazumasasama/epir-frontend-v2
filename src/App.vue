@@ -51,13 +51,6 @@ export default {
     Loading,
     HeaderNav,
   },
-  // mounted() {
-  //   console.log(localStorage.user_id)
-  //   console.log(this.userStore.isLoggedin)
-  //   if (this.userStore.isLoggedin === false && localStorage.user_id) {
-  //     this.reLogin();
-  //   }
-  // },
   computed: {
     ...mapWritableState(useSystemStore, ['isLoading'])
   },

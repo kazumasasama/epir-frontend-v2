@@ -247,14 +247,6 @@ export default {
             data: [], //ここにデータを入れる (Array of numbers)
             backgroundColor: 'rgb(54, 162, 235)',
           },
-          // {
-          //   type: 'line',
-          //   label: 'Last year',
-          //   data: [], //ここにデータを入れる (Array of numbers)
-          //   backgroundColor: 'rgb(54, 162, 235)',
-          //   borderColor: 'rgb(54, 162, 235)',
-          //   fill: false
-          // },
         ]
       },
       salesBarChartOptions: {
@@ -425,11 +417,6 @@ export default {
     })
   },
   methods: {
-    // reloadPage() {
-    //   const instance = getCurrentInstance()
-    //   console.log(instance)
-    //   this.$forceUpdate()
-    // },
     increaseYear() {
       this.currentYear++;
     },
