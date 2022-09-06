@@ -4,7 +4,7 @@ export const useSystemStore = defineStore("systemStore", {
   state() {
     return {
       isLoading: false,
-      LoadingMessage: 'Loading',
+      LoadingMessage: '',
       mapboxURL: 'mapbox://styles/mapbox/streets-v11',
       calendarLocale: 'en',
     };

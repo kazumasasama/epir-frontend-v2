@@ -440,7 +440,7 @@ export default {
     }
   },
   created() {
-    this.systemStore.modifyLoadingMessage("Loading");
+    this.systemStore.modifyLoadingMessage(this.$t('Spinner.loading'));
     this.systemStore.startLoading();
     this.user = this.userStore.user;
     this.indexMenus();
@@ -608,7 +608,7 @@ export default {
       }
     },
     createAppointment() {
-      this.spinnerMessage = "Createing your appointment"
+      this.systemStore.modifyLoadingMessage(this.$t('Spinner.createAppointment'))
       this.systemStore.startLoading();
       let bookingInfo = {
         "date": this.bookingDate,
@@ -642,8 +642,6 @@ export default {
       document.querySelector('#progress-4').classList.add('bg-secondary');
     },
     checkout() {
-      // this.spinnerMessage = "Confirming"
-      // this.systemStore.startLoading();
       const form = document.getElementById('payment-form');
 
       form.addEventListener('submit', async (event) => {
@@ -668,13 +666,6 @@ export default {
         } else {
           alert('Something went wronng. Please try Again.')
         }
-        // } else if (confirmRes.paymentIntent.status === 'processing') {
-        //   this.error = "Payment processing. We'll update you when payment is received."
-        // } else if (confirmRes.paymentIntent.status === 'requires_payment_method') {
-        //   this.error = 'Payment failed. Please try another payment method.'
-        // } else {
-        //   this.error = 'Something went wrong.'
-        // }
       });
     },
   }

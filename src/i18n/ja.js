@@ -116,6 +116,13 @@ export default {
         avarageSpent: '顧客売上平均',
       }
     },
+    Spinner: {
+      createAppointment: 'アカウント作成中',
+      createAndLogin: 'アカウント作成中',
+      loading: '読み込み中',
+      loggingIn: 'ログイン中',
+      collectingData: '読み込み中',
+    },
     Forms: {
       name: '姓名',
       firstName: '姓',

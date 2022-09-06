@@ -149,7 +149,7 @@ export default {
     },
     login() {
       if (this.validateEmptyRequiredForm()) {
-        this.systemStore.modifyLoadingMessage('Logging in')
+        this.systemStore.modifyLoadingMessage(this.$t('Spinner.loggingIn'))
         this.systemStore.startLoading()
         axios.post('/sessions', this.user)
         .then((res)=> {

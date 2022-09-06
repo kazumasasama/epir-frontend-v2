@@ -1,39 +1,44 @@
 <template>
   <div class="container home-container">
-    <div class="row">
-      <div class="col-sm-12">
-        <h4 class="card-title top-card-title">{{ $t('Home.greeting') }}</h4>
-        <div class="card-body home" id="card-home">
-          <img src="@/assets/people-top-image.jpg" class="card-img-home">
-          <p class="illust-credit">
-            <a
-              href="https://www.freepik.com/vectors/people-set"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              People set vector created by pikisuperstar - www.freepik.com
-            </a>
-          </p>
-          <p class="card-text" id="text-home">{{ $t('Home.message') }}</p>
+      <div class="card home-card">
+        <div class="row">
+          <h4 class="card-title top-card-title">{{ $t('Home.greeting') }}</h4>
+          <div class="col-md-6">
+            <div class="card-body home" id="card-home">
+              <img src="@/assets/people-top-image.jpg" class="card-img-home">
+              <p class="illust-credit">
+                <a
+                  href="https://www.freepik.com/vectors/people-set"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  People set vector created by pikisuperstar - www.freepik.com
+                </a>
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="login-hint row">
+              <p class="card-text" id="text-home">{{ $t('Home.message') }}</p>
+              <div class="col-md-6">
+                <p class="login-hint-title">{{ $t('Home.loginAdmin') }}</p>
+                <p class="login-hint-item"><small>{{ $t('Home.email') }}: test@test.com</small></p>
+                <p class="login-hint-item"><small>{{ $t('Home.password') }}: password</small></p>
+              </div>
+              <div class="col-md-6">
+                <p class="login-hint-title">{{ $t('Home.loginUser') }}</p>
+                <p class="login-hint-item"><small>{{ $t('Home.email') }}: test@user.com</small></p>
+                <p class="login-hint-item"><small>{{ $t('Home.password') }}: password</small></p>
+              </div>
+            </div>
+            <div class="btn-container">
+              <button @click="this.$router.push('/login')" class="btn btn-primary">{{ $t('Btn.login') }}</button>
+              <button @click="this.$router.push('/signup')" class="btn btn-primary">{{ $t('Btn.signup') }}</button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col-sm-6 login-hint">
-        <p class="login-hint-title">{{ $t('Home.loginAdmin') }}</p>
-        <p class="login-hint-item"><small>{{ $t('Home.email') }}: test@test.com</small></p>
-        <p class="login-hint-item"><small>{{ $t('Home.password') }}: password</small></p>
-      </div>
-      <div class="col-sm-6 login-hint">
-        <p class="login-hint-title">{{ $t('Home.loginUser') }}</p>
-        <p class="login-hint-item"><small>{{ $t('Home.email') }}: test@user.com</small></p>
-        <p class="login-hint-item"><small>{{ $t('Home.password') }}: password</small></p>
-      </div>
-      <div class="col-12">
-        <div class="btn-container"></div>
-          <button @click="this.$router.push('/login')" class="btn btn-primary">{{ $t('Btn.login') }}</button>
-          <button @click="this.$router.push('/signup')" class="btn btn-primary">{{ $t('Btn.signup') }}</button>
-      </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -45,7 +50,7 @@ export default {
 
 <style scoped>
 .card-img-home {
-  max-width: 430px;
+  max-width: 100%;
 }
 .top-card-title {
   margin-top: 8px;
@@ -60,12 +65,16 @@ export default {
 }
 .login-hint {
   margin-top: 20px;
-  text-align: center;
+  vertical-align: middle;
 }
 .login-hint-title {
   font-weight: bold;
 }
 .illust-credit {
   font-size: 7pt;
+}
+.home-card {
+  background-color: rgb(253,239,224);
+  padding-top: 20px;
 }
 </style>

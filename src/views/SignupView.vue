@@ -147,7 +147,6 @@ export default {
   data() {
     return {
       error: null,
-      spinnerMessage: "Creating your account and logging in...",
       passwordConfirm: null,
       user: {
         first_name: "",
@@ -283,7 +282,7 @@ export default {
         return
       }
       if (this.user.password === this.passwordConfirm) {
-        this.systemStore.modifyLoadingMessage('Creating and logging in');
+        this.systemStore.modifyLoadingMessage(this.$t('Spinner.createAndLogin'));
         this.systemStore.startLoading();
         axios.post('/users', this.user)
         .then((res)=> {

@@ -128,7 +128,7 @@ export default {
     }
   },
   created() {
-    this.systemStore.modifyLoadingMessage('Collecting Data')
+    this.systemStore.modifyLoadingMessage(this.$t('Spinner.loading'))
     this.systemStore.startLoading();
     this.indexEvents();
     this.indexUsers();

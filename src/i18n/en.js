@@ -116,6 +116,13 @@ export default {
         avarageSpent: 'Avarage Spent',
       }
     },
+    Spinner: {
+      createAppointment: 'Createing your appointment',
+      createAndLogin: 'Creating your account and logging in...',
+      loading: 'Loading',
+      loggingIn: 'Logging in',
+      collectingData: 'Collecting Data',
+    },
     Forms: {
       name: 'Name',
       firstName: 'First Name',
@@ -138,7 +145,7 @@ export default {
       price: 'Price',
       duration: 'Duration',
       description: 'Description',
-      country: '国',
+      country: 'Country',
       cardNumber: 'Card No',
       exp: 'Exp',
       cvc: 'CVC',

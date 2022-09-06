@@ -437,7 +437,7 @@ export default {
       this.currentYear--;
     },
     getYearlyStatics() {
-      this.systemStore.modifyLoadingMessage('Collecting Data');
+      this.systemStore.modifyLoadingMessage(this.$t('Spinner.collectingData'));
       this.systemStore.startLoading();
       axios.post('/monthly-report.json', {"year": this.currentYear})
       .then((res)=> {
