@@ -129,7 +129,13 @@
                 height="25"
                 class="datepicker-item datepicker-icon"
               >
-              <Datepicker v-model="picked" class="datepicker-item" inline  autoApply />
+              <Datepicker
+                v-model="picked"
+                class="datepicker-item"
+                inline
+                autoApply
+                utc="true"
+              />
             </div>
           </div>
           <div class="col-sm-6">
