@@ -474,7 +474,7 @@ export default {
       return moment.utc(this.picked).format('YYYY-MM-DD');
     },
     formatBookingDate() {
-      return moment.utc(this.picked).format('MM-DD-YYYY');
+      return moment(this.picked).format('MM-DD-YYYY');
     },
     formattedBookingTime() {
       return moment.utc(this.selectedTime).format('hh:mm A');
