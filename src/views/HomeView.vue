@@ -76,5 +76,7 @@ export default {
 .home-card {
   background-color: rgb(253,239,224);
   padding-top: 20px;
+  border-color: rgb(255, 200, 140);
+  border-width: 3px;
 }
 </style>
