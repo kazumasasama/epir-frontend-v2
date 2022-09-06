@@ -42,15 +42,29 @@
     </div>
     <div class="row">
       <div class="card release-card text-start">
-        <h2 class="release-card-title">Releases</h2>
-        <ul class="">
-          <li><small>09-05-2022: Cashless payment</small></li>
-          <li><small>08-26-2022: Multiple language i18n</small></li>
-          <li><small>08-26-2022: State</small></li>
-          <li><small>08-22-2022: Improve error handling</small></li>
-          <li><small>08-20-2022: Admin Dashboard (Statics)</small></li>
-          <li><small>05-19-2022: Launch Biznesu</small></li>
-        </ul>
+        <div class="row">
+          <div class="col-sm-6">
+            <h2 class="release-card-title">Releases</h2>
+            <ul>
+              <li><small>09-05-2022: Cashless payment</small></li>
+              <li><small>08-26-2022: Multiple language i18n</small></li>
+              <li><small>08-26-2022: State</small></li>
+              <li><small>08-22-2022: Improve error handling</small></li>
+              <li><small>08-20-2022: Admin Dashboard (Statics)</small></li>
+              <li><small>05-19-2022: Launch Biznesu</small></li>
+            </ul>
+          </div>
+          <div class="col-sm-6">
+            <h2 class="release-card-title">Bug Fix</h2>
+            <ul>
+              <li><small>09-06-2022: Calendar locale</small></li>
+              <li><small>09-06-2022: Translation</small></li>
+              <li><small>09-05-2022: Progress bar</small></li>
+              <li><small>08-26-2022: Reloading problem at links and buttons</small></li>
+              <li><small>08-26-2022: Responsive layout fix</small></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
