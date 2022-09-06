@@ -106,7 +106,7 @@
             <button
               type="submit"
               class="btn btn-primary"
-              @click.prevent.prevent.prevent="nextStep()"
+              @click.prevent="nextStep()"
             >
               {{ $t('Btn.dateTime') }}
             </button>
@@ -165,14 +165,14 @@
               <button
                 type="button"
                 class="btn btn-secondary"
-                @click="prevStep()"
+                @click.prevent="prevStep()"
               >
                 {{ $t('Btn.goBack') }}
               </button>
               <button
                 type="submit"
                 class="btn btn-primary"
-                @click.prevent.prevent="nextStep()"
+                @click.prevent="nextStep()"
               >
                 {{ $t('Btn.customerInfo') }}
               </button>
@@ -239,7 +239,7 @@
               <button
                 type="button"
                 class="btn btn-secondary"
-                @click="prevStep()"
+                @click.prevent="prevStep()"
               >
                 {{ $t('Btn.goBack') }}
               </button>
@@ -298,7 +298,7 @@
               <div class="card confirmation-detail-card">
                 <div class="card-body text-start">
                   <ul class="payment-item">
-                    <h6 class="card-title">Date/Time</h6>
+                    <h6 class="card-title">{{ $t('Appointments.steps.dateTime') }}</h6>
                     <p>{{ USformattedPicked }}</p>
                     <p>{{ USformattedTime }} - {{ endTime }}</p>
                     <h6 class="confirm-item-tag">{{ $t('Menus.menu') }}:</h6>
@@ -454,6 +454,11 @@ export default {
         this.error = null;
       }
     },
+    selectedTime() {
+      if (this.selectedTime) {
+        this.error = null;
+      }
+    },
   },
   computed: {
     fullName() {
@@ -569,14 +574,14 @@ export default {
     nextStep() {
       var targetElement
       if (this.currentStep === 1 && this.selectedMenus.length === 0) {
-        this.error = "Please pick at least one menu.";
+        this.error = this.$t('Appointments.errors.selectMenus');
       } else if (this.currentStep === 1 && this.selectedMenus.length !== 0) {
         targetElement = document.querySelector('#progress-2')
         targetElement.classList.remove('bg-secondary');
         targetElement.classList.add('bg-success');
         this.currentStep++;
       } else if (this.currentStep === 2 && !this.selectedTime) {
-        this.error = "Please pick a date and a time.";
+        this.error = this.$t('Appointments.errors.selectDateTime');
       } else if (this.currentStep === 2 && this.selectedTime) {
         this.currentStep++;
         targetElement = document.querySelector('#progress-3')
@@ -636,8 +641,6 @@ export default {
     },
     clearAppointment() {
       this.currentStep = 1;
-      this.selectedMenus = [];
-      this.selectedTime = null;
       document.querySelector('#progress-2').classList.remove('bg-success')
       document.querySelector('#progress-2').classList.add('bg-secondary');
       document.querySelector('#progress-3').classList.remove('bg-success')

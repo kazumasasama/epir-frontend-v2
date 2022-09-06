@@ -31,6 +31,7 @@ export default {
       customerDetail: 'Customer Detail',
       startOver: 'Start Over',
       bookAppointment: 'Book Appointment',
+      checkout: 'Checkout',
     },
     Currency: '$',
     DateTime: {
@@ -73,6 +74,8 @@ export default {
     },
     Appointments: {
       totalDuration: 'Total Duration',
+      hour: 'hour',
+      min: 'min',
       title: {
         pickMenu: 'Pick Menu',
         pickTime: 'Pick a Date and Time',
@@ -86,8 +89,17 @@ export default {
         confirmation: 'Confirmation',
       },
       errors: {
-        selectMenus: 'Please pick at least one menu.'
+        selectMenus: 'Please pick at least one menu.',
+        selectDateTime: 'Please pick a date and a time.',
       }
+    },
+    Complete: {
+      thankYou: "Thank You!",
+      linkNotice: "Clink on the link below to see your appointment on the calendar in the admin page. (Admin only)",
+      bookedNotice: "We just made your appointment.",
+      rescheduleNotice: "If you wish to reschedule/cancel your appintment, please give us a call.",
+      cancelationNotice: "Please note that we might charge cancelation fee for appointments start within 24 hours.",
+      anyCountry: 'Any Country',
     },
     Calendar: {
       dontSeeAppointments: "Don't see appointments?",
@@ -126,6 +138,10 @@ export default {
       price: 'Price',
       duration: 'Duration',
       description: 'Description',
+      country: '国',
+      cardNumber: 'Card No',
+      exp: 'Exp',
+      cvc: 'CVC',
     },
     Messages: {
       couponNotice: 'Bring your coupon and plesent at the salon before the treatment starts.',
@@ -133,7 +149,10 @@ export default {
       tearmsAndCondition: 'Tearms and Condition',
       privacyPolicy: 'Privacy Policy',
       agree: 'Agree to our',
-      and: 'and'
+      and: 'and',
+      tos: 'Term of Service',
+      term: 'I accept xxx {0}.',
+      testModeNotice: 'Use this test card to checkout.',
     },
     Menus: {
       menu: 'Menu',

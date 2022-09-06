@@ -4,18 +4,18 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-6">
-            <strong>Clink on the link below to see your appointment on the calendar in the admin page.(You should be logged in as admin)</strong>
+            <p></p>
+            <h4>{{ $t('Complete.thankYou') }}</h4>
+            <p></p>
+            <p>{{ $t('Complete.bookedNotice') }}</p>
+            <p>{{ $t('Complete.rescheduleNotice') }}</p>
+            <p>
+              {{ $t('Complete.cancelationNotice') }}
+            </p>
+            <strong>{{ $t('Complete.linkNotice') }}</strong>
             <p></p>
             <p @click="this.$router.push('/admin/calendar')">
               <a class="link-primary" href="#">https://biznesu.netlify.app/admin/calendar</a>
-            </p>
-            <p></p>
-            <h4>Thank you!</h4>
-            <p></p>
-            <p>We just made your appointment.</p>
-            <p>If you wish to reschedule/cancel your appintment, please give us a call.</p>
-            <p>
-              Please note that we might charge cancelation fee for appointments start within 24 hours.
             </p>
             <ul class="store-info-complete">
               <h5>Biznesu</h5>

@@ -35,7 +35,7 @@
               <button
                 type="button"
                 class="btn btn-secondary"
-                @click="toHome()"
+                @click.prevent="this.$router.push('/')"
               >
                 {{ $t('Btn.backHome') }}
               </button>

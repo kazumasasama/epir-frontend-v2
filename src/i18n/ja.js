@@ -29,8 +29,9 @@ export default {
       history: '履歴',
       customerIndex: '顧客一覧',
       customerDetail: '顧客詳細',
-      startOver: 'クリア(初めに戻る)',
+      startOver: '初めに戻る',
       bookAppointment: '予約する',
+      checkout: '支払う',
     },
     Currency: '¥',
     DateTime: {
@@ -52,7 +53,7 @@ export default {
     },
     Locale: {
       locale: 'JPN',
-      tax: '消費税'
+      tax: '(NY)'
     },
     Home: {
       greeting: 'Welcome to Booking App Biznesu',
@@ -73,6 +74,8 @@ export default {
     },
     Appointments: {
       totalDuration: '合計時間',
+      hour: '時間',
+      min: '分',
       title: {
         pickMenu: 'メニュー選択',
         pickTime: '日時選択',
@@ -82,12 +85,21 @@ export default {
       steps: {
         menu: 'メニュー',
         dateTime: '日時',
-        customerInfo: 'Customer お客様情報',
+        customerInfo: 'お客様情報',
         confirmation: '確認',
       },
       errors: {
-        selectMenus: 'メニューを選択してください。'
+        selectMenus: 'メニューを選択してください',
+        selectDateTime: '日時を選択してください',
       }
+    },
+    Complete: {
+      thankYou: "ご利用ありがとうございます。",
+      linkNotice: "下記のリンクでご予約の確認ができます。(管理者のみ)",
+      bookedNotice: "予約が完了しました。",
+      rescheduleNotice: "ご予約の変更、キャンセルがありましたら下記連絡先にお知らせください。",
+      cancelationNotice: "ご予約開始時間の24時間前以降はキャンセル料がかかる場合がございます。",
+      anyCountry: 'どの国でも',
     },
     Calendar: {
       dontSeeAppointments: "",
@@ -126,6 +138,10 @@ export default {
       price: '金額',
       duration: '施術時間',
       description: '説明',
+      country: '国',
+      cardNumber: 'カード番号',
+      exp: '有効期限',
+      cvc: 'セキュリティ',
     },
     Messages: {
       couponNotice: 'クーポンをお持ちのお客様は施術開始前にスタッフにお知らせください。店頭での割引となります。',
@@ -133,7 +149,10 @@ export default {
       tearmsAndCondition: '利用規約',
       privacyPolicy: 'プラーバシー・ポリシー',
       agree: '同意する',
-      and: 'と'
+      and: 'と',
+      tos: '利用規約',
+      term: '私は xxx の{0}に同意します。',
+      testModeNotice: 'テスト用のカードをお使いください',
     },
     Menus: {
       menu: 'メニュー',

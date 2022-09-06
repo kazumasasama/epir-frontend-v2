@@ -7,6 +7,11 @@
         </div>
         <div>
           <p></p>
+
+          <!-- <i18n-t :keypath="appointments" tag="label" for="Messages.tos">
+            <a href="#" target="_blank">{{ $t('Messages.tos') }}</a>
+          </i18n-t> -->
+
           <label class="form-check-label" for="flexCheckDefault">
             <input
               class="form-check-input booking-checkbox"
@@ -38,13 +43,14 @@
             </small>
           </label>
           <hr>
-          <div class="container text-start">
-            <p class="test-mode-payment">Test mode payment. You will be NOT charged.</p>
-            <p>Use this test card to checkout</p>
+          <div class="container text-start card">
+            <p class="test-mode-payment">{{ $t('Messages.testModeNotice') }}</p>
             <ul>
-              <li>Card No: 4242 4242 4242 4242</li>
-              <li>Exp: 01/{{ nextYear }}</li>
-              <li>CVC: 111</li>
+              <li>{{ $t('Forms.cardNumber') }}: 4242 4242 4242 4242</li>
+              <li>{{ $t('Forms.exp') }}: 01/{{ nextYear }}</li>
+              <li>{{ $t('Forms.cvc') }}: 111</li>
+              <li>{{ $t('Forms.country') }}: {{ $t('Complete.anyCountry') }}</li>
+              <li>{{ $t('Forms.zip') }}: 11111</li>
             </ul>
           </div>
         </div>
@@ -54,7 +60,7 @@
           @click="handleCheckout()"
           :disabled="!confirmCheckbox"
         >
-          Checkout
+        {{ $t('Btn.checkout') }}
         </button>
         <p v-if="checkBoxError">{{ checkBoxError }}</p>
         <div id="error-message">
