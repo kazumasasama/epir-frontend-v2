@@ -26,7 +26,7 @@
             class="vuecal--blue-theme"
             :selected-date="selectedDate"
             :time-from="9.5 * 60"
-            :time-to="20.5 * 60"
+            :time-to="20 * 60"
             :time-step="30"
             :events="events"
             :disable-views="['years', 'year']"
