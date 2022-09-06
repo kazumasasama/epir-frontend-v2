@@ -21,7 +21,7 @@ export default {
       update: '更新',
       clearForm: 'フォームクリア',
       activate: '使用中にする',
-      deactivate: '非使用にする',
+      deactivate: 'アカウント凍結',
       addCustomer: '新規顧客',
       customerId: '顧客ID',
       firstName: '姓',
