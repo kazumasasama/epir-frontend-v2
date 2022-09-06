@@ -72,7 +72,6 @@ export default {
   font-size: x-large;
 }
 .release-card-title {
-  margin-top: 8px;
   font-size: large;
 }
 .btn {
