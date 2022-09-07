@@ -29,6 +29,15 @@ const routes = [
     path: '/admin/config',
     name: 'adminConfig',
     component: AdminConfig,
+    beforeEnter: (to, from, next)=> {
+      const userStore = useUserStore();
+      if (!userStore.isAdmin) {
+        window.alert("You don't have permission to access this page.")
+        next('/login')
+      } else {
+        next()
+      }
+    }
   },
   {
     path: '/admin/dashboard',
