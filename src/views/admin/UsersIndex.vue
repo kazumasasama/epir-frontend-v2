@@ -2,11 +2,16 @@
   <nav class="navbar navbar-light" style="background-color: #f5f6fe;">
     <div class="col-12 users-btn-container">
       <button class="btn btn-outline-success btn-sm" @click="openNewUserDialog()">{{ $t('Btn.addCustomer') }}</button>
-      <div class="control-navbar-item">
-        <small>{{ $t('Customers.sortBy') }}</small>
-        <button class="btn btn-outline-primary btn-sm" @click="sortById()">{{ $t('Btn.customerId') }}</button>
-        <button class="btn btn-outline-primary btn-sm" @click="sortByFirstName()">{{ $t('Btn.firstName') }}</button>
-        <button class="btn btn-outline-primary btn-sm" @click="sortByLastName()">{{ $t('Btn.lastName') }}</button>
+      <div class="control-navbar-items">
+        <div class="control-navbar-item">
+          <input v-model="keyword" type="text" class="form-control" placeholder="Search Users">
+        </div>
+        <div class="control-navbar-item">
+          <small>{{ $t('Customers.sortBy') }}</small>
+          <button class="btn btn-outline-primary btn-sm control-navbar-item" @click="sortById()">{{ $t('Btn.customerId') }}</button>
+          <button class="btn btn-outline-primary btn-sm control-navbar-item" @click="sortByFirstName()">{{ $t('Btn.firstName') }}</button>
+          <button class="btn btn-outline-primary btn-sm control-navbar-item" @click="sortByLastName()">{{ $t('Btn.lastName') }}</button>
+        </div>
       </div>
     </div>
   </nav>
@@ -84,7 +89,7 @@
 
     <div class="row">
       <small>{{ $t('Customers.clickToSee') }}</small>
-      <div class="col-md-4" v-for="user in users" :key="user.id">
+      <div class="col-md-4" v-for="user in filteredUsers" :key="user.id">
         <div class="list-group" id="list-tab" @click="this.$router.push(`/admin/users/${user.id}`)">
           <a
             class="list-group-item list-group-item-action"
@@ -106,172 +111,169 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import * as bootstrap from 'bootstrap'
-  export default {
-    data() {
-      return {
-        users: [],
-        user: {},
-        sort: 'id',
-        newUser: {},
-        genders: [
-          'Male',
-          'Female',
-          'Non Binary',
-          'Rather not to descrive',
-          'N/A'
-        ],
-        states: [
-          'AL', 'AK', 'AZ', 'AR', 'CA',
-          'CO', 'CT', 'DE', 'FL', 'GA',
-          'HI', 'ID', 'IL', 'IN', 'IA',
-          'KS', 'KY', 'LA', 'ME', 'MD',
-          'MA', 'MI', 'MN', 'MS', 'MO',
-          'MT', 'NE', 'NV', 'NH', 'NJ',
-          'NM', 'NY', 'NC', 'ND', 'OH',
-          'OK', 'OR', 'PA', 'RI', 'SC',
-          'SD', 'TN', 'TX', 'UT', 'VT',
-          'VA', 'WA', 'WV', 'WI', 'WY'
-        ],
-        newUserDialog: null,
-      }
-    },
-    created() {
-      this.indexUsers();
-    },
-    mounted() {
-      this.newUserDialog = new bootstrap.Modal(document.getElementById('new-user-dialog'))
-    },
-    methods: {
-      indexUsers() {
-        axios.get('/users.json')
-        .then((res)=> {
-          let users = res.data.sort((a, b)=> {
-            let idA = a.id;
-            let idB = b.id;
-            if (idA < idB) {
-              return -1;
-            }
-            if (idA > idB) {
-              return 1;
-            }
-          });
-          this.users = users;
-        })
-      },
-      showUser(user) {
-        this.user = user;
-      },
-      sortById() {
-        let users = this.users.sort((a, b)=> {
-            let idA = a.id;
-            let idB = b.id;
-            if (idA < idB) {
-              return -1;
-            }
-            if (idA > idB) {
-              return 1;
-            }
-          });
-          this.users = users;
-      },
-      sortByFirstName() {
-        let sorted = [];
-        let unsorted = this.users
-        sorted = unsorted.sort((a, b)=> {
-          let nameA = a.first_name.toUpperCase();
-          let nameB = b.first_name.toUpperCase();
-          if (nameA < nameB) {
-            return -1;
-          }
-          if (nameA > nameB) {
-            return 1;
-          }
-          // names must be equal
-          return 0;
-        });
-        this.sortedByFirstName = sorted;
-      },
-      sortByLastName() {
-        let sorted = [];
-        let unsorted = this.users
-        sorted = unsorted.sort((a, b)=> {
-          let nameA = a.last_name.toUpperCase();
-          let nameB = b.last_name.toUpperCase();
-          if (nameA < nameB) {
-            return -1;
-          }
-          if (nameA > nameB) {
-            return 1;
-          }
-          // names must be equal
-          return 0;
-        });
-        this.sortedByFirstName = sorted;
-      },
-      createUser() {
-        let password_base = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        function genPassword(length = 10)
-        {
-          let password = '';
-          for (let i = 0; i < length; i++) {
-            password += password_base.charAt(Math.floor(Math.random() * password_base.length));
-          }
-          return password
+import axios from 'axios'
+import * as bootstrap from 'bootstrap'
+export default {
+  data() {
+    return {
+      users: [],
+      user: {},
+      displayUsers: [],
+      keyword: "",
+      sort: 'id',
+      newUser: {},
+      genders: [
+        'Male',
+        'Female',
+        'Non Binary',
+        'Rather not to descrive',
+        'N/A'
+      ],
+      states: [
+        'AL', 'AK', 'AZ', 'AR', 'CA',
+        'CO', 'CT', 'DE', 'FL', 'GA',
+        'HI', 'ID', 'IL', 'IN', 'IA',
+        'KS', 'KY', 'LA', 'ME', 'MD',
+        'MA', 'MI', 'MN', 'MS', 'MO',
+        'MT', 'NE', 'NV', 'NH', 'NJ',
+        'NM', 'NY', 'NC', 'ND', 'OH',
+        'OK', 'OR', 'PA', 'RI', 'SC',
+        'SD', 'TN', 'TX', 'UT', 'VT',
+        'VA', 'WA', 'WV', 'WI', 'WY'
+      ],
+      newUserDialog: null,
+    }
+  },
+  created() {
+    this.indexUsers();
+  },
+  mounted() {
+    this.sortById();
+    this.newUserDialog = new bootstrap.Modal(document.getElementById('new-user-dialog'))
+  },
+  computed: {
+    filteredUsers() {
+      let keyword = this.keyword.toLowerCase()
+      let users = [];
+      for (let i in this.users) {
+        let user = this.users[i];
+        if (user.first_name.toLowerCase().indexOf(keyword) !== -1 || user.last_name.toLowerCase().indexOf(keyword) !== -1 || user.email.indexOf(keyword) !== -1) {
+          users.push(user)
         }
-        let pw = genPassword()
-        console.log(pw);
-        this.newUser.password = pw
-        axios
-        .post('/users', this.newUser)
-        .then((res)=> {
-          this.users.push(res.data);
-        })
-        .then(()=> {
-          this.users = this.users.sort((a, b)=> {
-            let idA = a.id;
-            let idB = b.id;
-            if (idA < idB) {
-              return -1;
-            }
-            if (idA > idB) {
-              return 1;
-            }
-          });
-        })
-        .then(()=> {
-          this.closeNewUserDialog()
-        })
-      },
-      openNewUserDialog() {
-        this.newUserDialog.show();
-      },
-      closeNewUserDialog() {
-        this.newUserDialog.hide();
       }
+      return users;
     },
-  }
+  },
+  methods: {
+    indexUsers() {
+      axios.get('/users.json')
+      .then((res)=> {
+        this.users = res.data;
+      })
+    },
+    showUser(user) {
+      this.user = user;
+    },
+    sortById() {
+      let users = this.users.sort((a, b)=> {
+          let idA = a.id;
+          let idB = b.id;
+          if (idA < idB) {
+            return -1;
+          }
+          if (idA > idB) {
+            return 1;
+          }
+        });
+        this.displayUsers = users;
+    },
+    sortByFirstName() {
+      let sorted = [];
+      let unsorted = this.users
+      sorted = unsorted.sort((a, b)=> {
+        let nameA = a.first_name.toUpperCase();
+        let nameB = b.first_name.toUpperCase();
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        // names must be equal
+        return 0;
+      });
+      this.displayUsers = sorted;
+    },
+    sortByLastName() {
+      let sorted = [];
+      let unsorted = this.users
+      sorted = unsorted.sort((a, b)=> {
+        let nameA = a.last_name.toUpperCase();
+        let nameB = b.last_name.toUpperCase();
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        // names must be equal
+        return 0;
+      });
+      this.displayUsers = sorted;
+    },
+    createUser() {
+      let password_base = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      function genPassword(length = 10)
+      {
+        let password = '';
+        for (let i = 0; i < length; i++) {
+          password += password_base.charAt(Math.floor(Math.random() * password_base.length));
+        }
+        return password
+      }
+      let pw = genPassword()
+      console.log(pw);
+      this.newUser.password = pw
+      axios
+      .post('/users', this.newUser)
+      .then((res)=> {
+        this.users.push(res.data);
+      })
+      .then(()=> {
+        this.closeNewUserDialog()
+      })
+    },
+    openNewUserDialog() {
+      this.newUserDialog.show();
+    },
+    closeNewUserDialog() {
+      this.newUserDialog.hide();
+    }
+  },
+}
 </script>
 
 <style scoped>
-  #list-home {
-    text-align: left;
-  }
-  .list-group-item {
-    text-align: left;
-  }
-  .users-btn-container {
-    text-align: left;
-    overflow: hidden;
-  }
-  .control-navbar-item {
-    float: right;
-  }
-  .smaller-text {
-    font-size: x-small;
-  }
-  .modal-footer {
-    margin-top: 10px;
-  }
+#list-home {
+  text-align: left;
+}
+.list-group-item {
+  text-align: left;
+}
+.users-btn-container {
+  text-align: left;
+  overflow: hidden;
+}
+.control-navbar-items {
+  float: right;
+}
+.control-navbar-item {
+  float: right;
+}
+.smaller-text {
+  font-size: x-small;
+}
+.modal-footer {
+  margin-top: 10px;
+}
 </style>

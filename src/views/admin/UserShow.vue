@@ -20,6 +20,7 @@
         <button class="btn btn-sm btn-outline-secondary" @click="$router.push('/admin/users')">{{ $t('Btn.customerIndex') }}</button>
       </div>
     </div>
+    
   </nav>
 
   <div class="container">
