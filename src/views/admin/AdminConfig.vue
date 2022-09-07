@@ -136,7 +136,7 @@
           <div class="row">
             <h1 class="card-title">Settings</h1>
             <div class="col-sm-6 card-body">
-              <small>Lanuage*</small>
+              <small>Lanuage</small>
               <select
                 v-model="config.lang"
                 class="form-select"
@@ -151,7 +151,7 @@
                   {{ lang }}
                 </option>
               </select>
-              <small>Tax Rate*</small>
+              <small>Tax Rate (%)</small>
               <input
                 autocomplete="off"
                 type="text"
@@ -160,7 +160,7 @@
                 required
               >
               <small class="release-notice">Release soon! </small>
-              <small>Business Closing Days*</small>
+              <small>Business Closing Days</small>
               <input
                 autocomplete="off"
                 type="text"
@@ -169,7 +169,7 @@
                 required
                 disabled
               >
-              <small>Start Time*</small>
+              <small>Calendar Start Time (Ex: 9:30AM = 9.5)</small>
               <input
                 autocomplete="off"
                 type="text"
@@ -177,7 +177,7 @@
                 class="form-control"
                 required
               >
-              <small>End Time*</small>
+              <small>Calendar End Time (Ex: 08:30PM = 20.5)</small>
               <input
                 autocomplete="off"
                 type="text"
@@ -185,7 +185,7 @@
                 class="form-control"
                 required
               >
-              <small>Interval Time*</small>
+              <small>Interval Time</small>
               <input
                 autocomplete="off"
                 type="number"
