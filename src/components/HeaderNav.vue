@@ -107,6 +107,9 @@
                 <li @click="this.$router.push('/admin/users')">
                   <a class="dropdown-item" href="#">Customers</a>
                 </li>
+                <li @click="this.$router.push('/admin/config')">
+                  <a class="dropdown-item" href="#">Settings</a>
+                </li>
               </ul>
             </li>
             <li class="nav-item" @click="logout()" v-if="isLoggedin">

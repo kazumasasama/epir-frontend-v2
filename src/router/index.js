@@ -12,6 +12,7 @@ import AdminCalendar from '@/views/admin/AdminCalendar.vue'
 import AdminMenus from '@/views/admin/AdminMenus.vue'
 import UsersIndex from '@/views/admin/UsersIndex.vue'
 import UserShow from '@/views/admin/UserShow.vue'
+import AdminConfig from '@/views/admin/AdminConfig.vue'
 
 import TermsAndConditions from '@/views/TermsAndConditions.vue'
 import PrivacyAndPolicy from '@/views/PrivacyAndPolicy.vue'
@@ -23,6 +24,11 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView,
+  },
+  {
+    path: '/admin/config',
+    name: 'adminConfig',
+    component: AdminConfig,
   },
   {
     path: '/admin/dashboard',
