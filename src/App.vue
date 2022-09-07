@@ -37,6 +37,7 @@ import { useUserStore } from '@/store/userStore'
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import HeaderNav from '@/components/HeaderNav.vue'
+import axios from 'axios'
 
 export default {
   setup() {
@@ -51,6 +52,10 @@ export default {
     Loading,
     HeaderNav,
   },
+  created() {
+    this.getBusiness();
+    this.getConfig();
+  },
   computed: {
     ...mapWritableState(useSystemStore, ['isLoading'])
   },
@@ -62,7 +67,25 @@ export default {
   methods: {
     getMessage(message) {
       this.message = message
-    }
+    },
+    getBusiness() {
+      axios.get(`/businesses/1.json`)
+      .then((res)=> {
+        this.systemStore.initBusiness(res.data);
+      })
+      .catch((error)=> {
+        this.error = error.data;
+      })
+    },
+    getConfig() {
+      axios.get(`/configs/1.json`)
+      .then((res)=> {
+        this.systemStore.initConfig(res.data);
+      })
+      .catch((error)=> {
+        this.error = error.data;
+      })
+    },
   },
 }
 </script>

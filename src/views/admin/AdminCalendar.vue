@@ -18,8 +18,8 @@
             today-button
             class="vuecal--blue-theme"
             :selected-date="selectedDate"
-            :time-from="9.5 * 60"
-            :time-to="20 * 60"
+            :time-from="config.start * 60"
+            :time-to="config.end * 60"
             :time-step="30"
             :events="events"
             :disable-views="['years', 'year']"
@@ -28,7 +28,7 @@
             :max-date="maxDate"
             events-count-on-year-view
             hide-week-number
-            :locale="calendarLocale"
+            :locale="config.lang"
             :key="calendarKey"
           />
         </div>
@@ -135,6 +135,7 @@ export default {
   },
   computed: {
     ...mapWritableState(useSystemStore, ['calendarLocale']),
+    ...mapWritableState(useSystemStore, ['config']),
     maxDate() {
       return moment().add(90, 'days').format('YYYY-MM-DD');
     },

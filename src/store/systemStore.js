@@ -7,9 +7,18 @@ export const useSystemStore = defineStore("systemStore", {
       LoadingMessage: '',
       mapboxURL: 'mapbox://styles/mapbox/streets-v11',
       calendarLocale: 'en',
+      business: null,
+      config: null,
     };
   },
   actions: {
+    initBusiness(business) {
+      this.business = business;
+    },
+    initConfig(config) {
+      this.config = config;
+      // this.calendarLocale = config.lang;
+    },
     startLoading() {
       this.isLoading = true;
     },
