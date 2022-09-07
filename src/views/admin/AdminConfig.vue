@@ -134,7 +134,7 @@
             novalidate
           >
           <div class="row">
-            <h1 class="card-title">Config</h1>
+            <h1 class="card-title">Settings</h1>
             <div class="col-sm-6 card-body">
               <small>Lanuage*</small>
               <select
@@ -144,9 +144,9 @@
                 required
               >
                 <option
-                  v-for="lang in languages"
+                  v-for="lang in Object.keys(languages)"
                   :key="lang"
-                  :value="lang"
+                  :value="languages[lang]"
                 >
                   {{ lang }}
                 </option>
@@ -159,6 +159,7 @@
                 class="form-control"
                 required
               >
+              <small class="release-notice">Release soon! </small>
               <small>Business Closing Days*</small>
               <input
                 autocomplete="off"
@@ -166,6 +167,7 @@
                 v-model="config.closingDays"
                 class="form-control"
                 required
+                disabled
               >
               <small>Start Time*</small>
               <input
@@ -218,10 +220,11 @@ export default {
     return {
       error: null,
       business: {},
-      config: {},
+      config: {
+        lang: 'en'
+      },
       currentPage: 'profile',
-      switchBtn: 'Config',
-      languages: ['English', 'Japanese'],
+      switchBtn: 'Settings',
       states: [
         'AL', 'AK', 'AZ', 'AR', 'CA',
         'CO', 'CT', 'DE', 'FL', 'GA',
@@ -234,36 +237,50 @@ export default {
         'SD', 'TN', 'TX', 'UT', 'VT',
         'VA', 'WA', 'WV', 'WI', 'WY'
       ],
+      languages: {
+        English: 'en',
+        Japanese: 'ja'
+      }
     }
   },
   mounted() {
     this.getBusiness();
+    this.getConfig();
   },
   methods: {
     getBusiness() {
-      const id = 1
-      axios.get(`/businesses/${id}.json`)
+      axios.get(`/businesses/1.json`)
       .then((res)=> {
         this.business = res.data;
+      })
+      .catch((error)=> {
+        this.error = error.data;
+      })
+    },
+    getConfig() {
+      axios.get(`/configs/1.json`)
+      .then((res)=> {
+        this.config = res.data;
       })
       .catch((error)=> {
         this.error = error.data;
       })
     },
     updateProfile() {
-      const id = 1
-      axios.patch(`/businesses/${id}.json`, this.business)
+      axios.patch(`/businesses/1.json`, this.business)
       .then((res)=> {
         this.business = res.data;
+        alert('Updated');
       })
       .catch((error)=> {
         this.error = error.data;
       })
     },
     updateConfig() {
-      axios.patch('/businesses', this.business)
+      axios.patch('/configs/1', this.config)
       .then((res)=> {
-        this.business = res.data;
+        this.config = res.data;
+        alert('Updated');
       })
       .catch((error)=> {
         this.error = error.data;
@@ -275,7 +292,7 @@ export default {
         this.switchBtn = 'Profile'
       } else if (this.currentPage === 'config') {
         this.currentPage = 'profile'
-        this.switchBtn = 'Config'
+        this.switchBtn = 'Settings'
       }
     },
   },
@@ -283,4 +300,7 @@ export default {
 </script>
 
 <style scoped>
+.release-notice {
+  color: red;
+}
 </style>
