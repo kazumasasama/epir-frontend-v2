@@ -352,6 +352,7 @@ import Datepicker from 'vue3-datepicker';
 import { ref } from 'vue'
 import axios from "axios";
 import * as moment from 'moment-timezone';
+import { mapWritableState } from 'pinia'
 import { useSystemStore } from '@/store/systemStore'
 import { useUserStore } from '@/store/userStore'
 import CheckoutView from '@/components/CheckoutView.vue';
@@ -435,6 +436,7 @@ export default {
     },
   },
   computed: {
+    ...mapWritableState(useSystemStore, ['config']),
     fullName() {
       return `${this.user.first_name} ${this.user.last_name}`;
     },
@@ -473,8 +475,9 @@ export default {
       var openTimes = this.businessTimes.filter(timeSlots => timeSlots.date === this.bookingDate).sort((a, b)=> {
         return a.id - b.id;
       }).filter((time)=> time.available === true);
+      const interval = Number(this.config.interval);
+      var keepingTime = (this.totalDuration + interval) / 30;
       // 必要時間が最低スロット時間の場合全てのopenTimesを返す
-      var keepingTime = this.totalDuration / 30;
       if (keepingTime === 1) {
         return openTimes;
       }
@@ -579,10 +582,11 @@ export default {
     createAppointment() {
       this.systemStore.modifyLoadingMessage(this.$t('Spinner.createAppointment'))
       this.systemStore.startLoading();
-      let bookingInfo = {
+      const interval = Number(this.config.interval)
+      const bookingInfo = {
         "date": this.bookingDate,
         "start": this.selectedTime,
-        "end": this.endTimeParams,
+        "end": moment.utc(this.endTimeParams).add(interval,'minute'),
         "user_id": this.user.id,
         "duration_total": this.totalDuration,
         "menus": this.selectedMenus.map((menu)=> menu.id),
@@ -592,8 +596,6 @@ export default {
       axios.post("/events.json", bookingInfo)
       .then((res)=> {
         this.event = res.data;
-      })
-      .then(()=> {
         this.$router.push("/complete");
         this.systemStore.endLoading();
       })

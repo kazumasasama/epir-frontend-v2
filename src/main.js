@@ -13,9 +13,23 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 /* import specific icons */
-import { faLanguage, faArrowRotateRight, faBars, faLock, faArrowRightFromBracket, faRepeat} from '@fortawesome/free-solid-svg-icons'
+import {
+  faLanguage,
+  faArrowRotateRight,
+  faBars,
+  faLock,
+  faArrowRightFromBracket,
+  faRepeat,
+  faPhone
+} from '@fortawesome/free-solid-svg-icons'
+
+import {
+  faTwitter,
+  faFacebook,
+  faInstagram
+} from '@fortawesome/free-brands-svg-icons'
 /* add icons to the library */
-library.add(faLanguage, faArrowRotateRight, faBars, faLock, faArrowRightFromBracket, faRepeat)
+library.add(faLanguage, faArrowRotateRight, faBars, faLock, faArrowRightFromBracket, faRepeat, faPhone, faTwitter, faFacebook, faInstagram)
 
 const i18n = createI18n({
   locale: 'en',

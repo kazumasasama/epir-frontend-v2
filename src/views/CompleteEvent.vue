@@ -18,11 +18,14 @@
               <a class="link-primary" href="#">https://biznesu.netlify.app/admin/calendar</a>
             </p>
             <ul class="store-info-complete">
-              <h5>Biznesu</h5>
-              <li>111 W 11th Street</li>
-              <li>New York, NY 10001</li>
+              <h5>{{ business.name }}</h5>
+              <li>{{ business.address }}</li>
+              <li>{{ business.city }}, {{ business.state }} {{ business.zip }}</li>
               <p></p>
-              <li>Phone: 111-111-1111</li>
+              <li><font-awesome-icon icon="fa-solid fa-phone" /> {{ business.phone }}</li>
+              <li v-if="business.facebook"><font-awesome-icon icon="fa-brands fa-facebook" /> {{ business.facebook }}</li>
+              <li v-if="business.twitter"><font-awesome-icon icon="fa-brands fa-twitter" /> {{ business.twitter }}</li>
+              <li v-if="business.insta"><font-awesome-icon icon="fa-brands fa-instagram" /> {{ business.insta }}</li>
             </ul>
           </div>
           <div class="col-sm-6">
@@ -35,6 +38,7 @@
 </template>
 
 <script>
+  import { mapWritableState } from 'pinia'
 import { useSystemStore } from '@/store/systemStore';
 import mapboxgl from 'mapbox-gl';
 
@@ -54,6 +58,9 @@ export default {
   },
   updated() {
     this.initMap();
+  },
+  computed: {
+    ...mapWritableState(useSystemStore, ['business']),
   },
   methods: {
     initMap() {
