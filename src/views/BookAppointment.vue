@@ -79,8 +79,12 @@
                   v-model="selectedMenus"  
                 >
                 <li>{{ menu.title }}</li>
-                <li class="text-end"><small>{{ menu.duration }} {{ $t('DateTime.min') }}</small></li>
-                <li class="text-end"><small>{{ $t('Currency') }}{{ menu.price }}~</small></li>
+                <li class="text-end">
+                  <small>{{ menu.duration }} {{ $t('DateTime.min') }}</small>
+                </li>
+                <li class="text-end">
+                  <small>{{ $t('Currency') }}{{ menu.price }}~</small>
+                </li>
               </ul>
             </label>
           </div>

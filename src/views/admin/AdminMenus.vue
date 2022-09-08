@@ -4,10 +4,10 @@
       <div class="col-sm-6 menu-nav-tab-container">
         <!-- Tabs -->
         <ul class="nav nav-tabs active-nav-tabs">
-          <li class="nav-item" id="tab-active-menu" @click="selectActiveTab()">
+          <li class="nav-item" id="tab-active-menu" @click.prevent="selectActiveTab()">
             <a class="nav-link active-nav-link">{{ $t('Btn.active') }}</a>
           </li>
-          <li class="nav-item" id="tab-inactive-menu" @click="selectInactiveTab()">
+          <li class="nav-item" id="tab-inactive-menu" @click.prevent="selectInactiveTab()">
             <a class="nav-link">{{ $t('Btn.inactive') }}</a>
           </li>
         </ul>
@@ -18,9 +18,12 @@
           id="list-tab"
           role="tablist"
         >
-          <label class="form-check-label">
-            <ul v-for="menu in menus" :key="menu.id">
-              <div>
+            <label
+              v-for="menu in menus"
+              :key="menu.id"
+              class="form-check-label"
+            >
+              <ul>
                 <input
                   class="form-check-input me-1 menu-checkbox"
                   type="radio"
@@ -29,10 +32,9 @@
                 >
                 {{ menu.title }}
                 <li class="text-end"><small>{{ menu.duration }} {{ $t('DateTime.min') }} | {{ $t('Currency') }}{{ menu.price }}~</small></li>
-                <hr class="menu-hr-divider">
-              </div>
-            </ul>
-          </label>
+              </ul>
+              <hr class="menu-hr-divider">
+            </label>
         </div>
         <!-- Inactive Menus -->
         <div
@@ -41,8 +43,12 @@
           id="list-tab"
           role="tablist"
         >
-          <label class="form-check-label">
-            <ul v-for="menu in inactiveMenus" :key="menu.id">
+          <label
+            v-for="menu in inactiveMenus"
+            :key="menu.id"
+            class="form-check-label"
+          >
+            <ul>
               <input
                 class="form-check-input me-1 menu-checkbox"
                 type="radio"
@@ -51,8 +57,8 @@
               >
               {{ menu.title }}
               <li class="text-end"><small>{{ menu.duration }} {{ $t('DateTime.min') }} | {{ $t('Currency') }}{{ menu.price }}~</small></li>
-              <hr class="menu-hr-divider">
             </ul>
+            <hr class="menu-hr-divider">
           </label>
         </div>
       </div>
@@ -70,26 +76,26 @@
               <small>{{ $t('Forms.description') }}</small>
               <textarea type="text" v-model="updatingMenu.description" class="form-control"></textarea>
               <div class="btn-container">
-                <button @click="createMenu()" class="btn-sm btn-outline-success btn">{{ $t('Btn.newMenu') }}</button>
-                <button @click="updateMenu()" class="btn-sm btn-outline-primary btn">{{ $t('Btn.update') }}</button>
+                <button @click.prevent="createMenu()" class="btn-sm btn-outline-success btn">{{ $t('Btn.newMenu') }}</button>
+                <button @click.prevent="updateMenu()" class="btn-sm btn-outline-primary btn">{{ $t('Btn.update') }}</button>
                 <button
                   type="reset"
                   class="btn-sm btn-outline-secondary btn"
-                  @click="clearForm()"
+                  @click.prevent="clearForm()"
                 >
                   {{ $t('Btn.clearForm') }}
                 </button>
                 <button
                   class="btn-sm btn-outline-danger btn"
                   v-if="menuContent === 'active'"
-                  @click="deactivateMenu()"
+                  @click.prevent="deactivateMenu()"
                 >
                   {{ $t('Btn.deactivate') }}
                 </button>
                 <button
                   class="btn-sm btn-outline-danger btn"
                   v-if="menuContent === 'inactive'"
-                  @click="activateMenu()"
+                  @click.prevent="activateMenu()"
                 >
                   {{ $t('Btn.activate') }}
                 </button>
@@ -163,7 +169,8 @@
           this.selectedMenu = {};
           let menu = this.menus.find(menu => menu.id === id);
           let i = this.menus.indexOf(menu);
-          this.menus[i] = res.data;
+          this.menus.splice(i, 1);
+          this.inactiveMenus.push(res.data);
         })
       },
       activateMenu() {
@@ -175,7 +182,8 @@
           this.selectedMenu = {};
           let menu = this.menus.find(menu => menu.id === id);
           let i = this.menus.indexOf(menu);
-          this.menus[i] = res.data;
+          this.inactiveMenus.splice(i, 1);
+          this.menus.push(res.data);
         })
       },
       clearForm() {
