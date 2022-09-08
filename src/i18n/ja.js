@@ -4,6 +4,8 @@ export default {
       input: '私はただのインプット',
       p: '私はただのパラグラフ',
     },
+    BusinessProfile: 'プロファイル',
+    Settings: 'サイト設定',
     Btn: {
       login: 'ログイン',
       signup: '登録',
@@ -32,6 +34,11 @@ export default {
       startOver: '初めに戻る',
       bookAppointment: '予約する',
       checkout: '支払う',
+      profile: 'プロファイル',
+      settings: 'サイト設定',
+      updateProfile: 'プロファイル更新',
+      updateSettings: 'サイト設定更新',
+      cancel: 'キャンセル',
     },
     Currency: '¥',
     DateTime: {
@@ -149,6 +156,16 @@ export default {
       cardNumber: 'カード番号',
       exp: '有効期限',
       cvc: 'セキュリティ',
+      businessName: '店舗名/屋号',
+      website: 'ウェブサイト URL',
+      instagram: 'Instagram URL',
+      twitter: 'Twitter URL',
+      facebook: 'Facebook URL',
+      language: '言語',
+      taxRate: '消費税率',
+      calendarStartTime: 'カレンダーの開始時間',
+      calendarEndTime: 'カレンダーの終了時間',
+      intervalTime: '予約後の準備時間など (分)'
     },
     Messages: {
       couponNotice: 'クーポンをお持ちのお客様は施術開始前にスタッフにお知らせください。店頭での割引となります。',

@@ -21,9 +21,9 @@
             novalidate
           >
           <div class="row">
-            <h1 class="card-title">Business Profile</h1>
+            <h1 class="card-title">{{ $t('BusinessProfile') }}</h1>
             <div class="col-sm-6 card-body">
-              <small>Business Name*</small>
+              <small>{{ $t('Forms.businessName') }}*</small>
               <input
                 id="input-validation-firstname"
                 autocomplete="organization"
@@ -32,7 +32,7 @@
                 class="form-control"
                 required
               >
-              <small>Email*</small>
+              <small>{{ $t('Forms.email') }}*</small>
               <input
                 id="input-validation-email"
                 autocomplete="email"
@@ -41,14 +41,14 @@
                 class="form-control"
                 required
               >
-              <small>Phone</small>
+              <small>{{ $t('Forms.phone') }}</small>
               <input
                 autocomplete="tel-national"
                 type="text"
                 v-model="business.phone"
                 class="form-control"
               >
-              <small>State</small>
+              <small>{{ $t('Forms.state') }}</small>
               <select
                 v-model="business.state"
                 class="form-select"
@@ -62,21 +62,21 @@
                   {{ state }}
                 </option>
               </select>
-              <small>City</small>
+              <small>{{ $t('Forms.city') }}</small>
               <input
                 autocomplete="address-level2"
                 type="text"
                 v-model="business.city"
                 class="form-control"
               >
-              <small>Address</small>
+              <small>{{ $t('Forms.address') }}</small>
               <input
                 autocomplete="street-address"
                 type="text"
                 v-model="business.address"
                 class="form-control"
               >
-              <small>Zip</small>
+              <small>{{ $t('Forms.zip') }}</small>
               <input
                 autocomplete="postal-code"
                 type="text"
@@ -85,28 +85,28 @@
               >
             </div>
             <div class="col-sm-6 card-body">
-              <small>Website</small>
+              <small>{{ $t('Forms.website') }}</small>
               <input
                 autocomplete="url"
                 type="text"
                 v-model="business.url"
                 class="form-control"
               >
-              <small>Instagram</small>
+              <small>{{ $t('Forms.instagram') }}</small>
               <input
                 autocomplete="off"
                 type="text"
                 v-model="business.insta"
                 class="form-control"
               >
-              <small>Twitter</small>
+              <small>{{ $t('Forms.twitter') }}</small>
               <input
                 autocomplete="off"
                 type="text"
                 v-model="business.twitter"
                 class="form-control"
               >
-              <small>Facebook</small>
+              <small>{{ $t('Forms.facebook') }}</small>
               <input
                 autocomplete="off"
                 type="text"
@@ -120,9 +120,9 @@
                 class="btn btn-secondary"
                 @click="cancelSignup()"
               >
-                Cancel
+              {{ $t('Btn.cancel') }}
               </button>
-              <button type="submit" class="btn btn-primary">Update Profile</button>
+              <button type="submit" class="btn btn-primary">{{ $t('Btn.updateProfile') }}</button>
             </div>
           </div>
         </form>
@@ -134,9 +134,9 @@
             novalidate
           >
           <div class="row">
-            <h1 class="card-title">Settings</h1>
+            <h1 class="card-title">{{ $t('Settings') }}</h1>
             <div class="col-sm-6 card-body">
-              <small>Lanuage</small>
+              <small>{{ $t('Forms.language') }}</small>
               <select
                 v-model="config.lang"
                 class="form-select"
@@ -151,7 +151,7 @@
                   {{ lang }}
                 </option>
               </select>
-              <small>Tax Rate (%)</small>
+              <small>{{ $t('Forms.taxRate') }} (%)</small>
               <input
                 autocomplete="off"
                 type="text"
@@ -169,7 +169,7 @@
                 required
                 disabled
               >
-              <small>Calendar Start Time (Ex: 9:30AM = 9.5)</small>
+              <small>{{ $t('Forms.calendarStartTime') }} (9:30AM = 9.5)</small>
               <input
                 autocomplete="off"
                 type="text"
@@ -177,7 +177,7 @@
                 class="form-control"
                 required
               >
-              <small>Calendar End Time (Ex: 08:30PM = 20.5)</small>
+              <small>{{ $t('Forms.calendarEndTime') }} (08:30PM = 20.5)</small>
               <input
                 autocomplete="off"
                 type="text"
@@ -185,7 +185,7 @@
                 class="form-control"
                 required
               >
-              <small>Interval Time</small>
+              <small>{{ $t('Forms.intervalTime') }}</small>
               <input
                 autocomplete="off"
                 type="number"
@@ -202,9 +202,9 @@
                 class="btn btn-secondary"
                 @click="cancelSignup()"
               >
-                Cancel
+                {{ $t('Btn.cancel') }}
               </button>
-              <button type="submit" class="btn btn-primary">Update Settings</button>
+              <button type="submit" class="btn btn-primary">{{ $t('Btn.updateSettings') }}</button>
             </div>
           </div>
         </form>
@@ -224,7 +224,6 @@ export default {
         lang: 'en'
       },
       currentPage: 'profile',
-      switchBtn: 'Settings',
       states: [
         'AL', 'AK', 'AZ', 'AR', 'CA',
         'CO', 'CT', 'DE', 'FL', 'GA',
@@ -246,6 +245,16 @@ export default {
   mounted() {
     this.getBusiness();
     this.getConfig();
+  },
+  computed: {
+    switchBtn() {
+      if (this.currentPage === 'profile') {
+        return this.$t('Btn.settings')
+      } else if (this.currentPage === 'config') {
+        return this.$t('Btn.profile')
+      }
+      return this.$t('Btn.settings')
+    }
   },
   methods: {
     getBusiness() {
@@ -289,10 +298,8 @@ export default {
     switchPage() {
       if (this.currentPage === 'profile') {
         this.currentPage = 'config'
-        this.switchBtn = 'Profile'
       } else if (this.currentPage === 'config') {
         this.currentPage = 'profile'
-        this.switchBtn = 'Settings'
       }
     },
   },
