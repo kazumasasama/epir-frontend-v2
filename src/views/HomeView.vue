@@ -58,6 +58,7 @@
           <div class="col-sm-6">
             <h2 class="release-card-title">Bug Fix</h2>
             <ul>
+              <li><small>09-08-2022: Reloading problem at Admin Menu</small></li>
               <li><small>09-06-2022: Calendar locale</small></li>
               <li><small>09-06-2022: Translation</small></li>
               <li><small>09-05-2022: Progress bar</small></li>
