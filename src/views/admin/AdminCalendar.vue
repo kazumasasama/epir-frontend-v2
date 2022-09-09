@@ -40,6 +40,9 @@
         <div class="modal-content">
           <div class="modal-header">
             <h6 class="modal-title">{{ eventStartEndDateTime }}</h6>
+            <div class="text-end">
+              <p>{{ selectedEvent.user.status }}</p>
+            </div>
           </div>
           <div class="modal-body event-detail-modal-body">
             <form>

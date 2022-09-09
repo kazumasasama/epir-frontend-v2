@@ -1,7 +1,24 @@
 <template>
   <nav class="navbar navbar-light text-start" style="background-color: #f5f6fe;">
     <div class="col-12 users-btn-container">
-      <button class="btn btn-outline-success btn-sm" @click.prevent="switchPage()">{{ switchBtn }}</button>
+      <button
+        @click.prevent="this.currentPage = 'profile'"
+        class="btn btn-outline-success btn-sm"
+      >
+        Profile
+      </button>
+      <button
+        @click.prevent="this.currentPage = 'config'"
+        class="btn btn-outline-success btn-sm"
+      >
+        Settings
+      </button>
+      <button
+        @click.prevent="this.currentPage = 'userStatus'"
+        class="btn btn-outline-success btn-sm"
+      >
+        User Status
+      </button>
     </div>
   </nav>
   <div
@@ -128,14 +145,14 @@
         </form>
       </div>
       <div v-if="currentPage === 'config'" class="col-12">
-        <form
-            v-on:submit.prevent="updateConfig()"
-            class="col-12 needs-validation text-start"
-            novalidate
-          >
-          <div class="row">
-            <h1 class="card-title">{{ $t('Settings') }}</h1>
-            <div class="col-sm-6 card-body">
+        <div class="row">
+          <h1 class="card-title">{{ $t('Settings') }}</h1>
+          <div class="col-sm-6 card-body">
+            <form
+              v-on:submit.prevent="updateConfig()"
+              class="col-12 needs-validation text-start"
+              novalidate
+            >
               <small>{{ $t('Forms.language') }}</small>
               <select
                 v-model="config.lang"
@@ -193,29 +210,93 @@
                 class="form-control"
                 required
               >
-            </div>
-            <div class="col-sm-6 card-body">
-            </div>
-            <div class="btn-container col-12 text-end">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                @click="cancelSignup()"
+            </form>
+          </div>
+          <div class="btn-container col-12 text-end">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="cancelSignup()"
+            >
+              {{ $t('Btn.cancel') }}
+            </button>
+            <button type="submit" class="btn btn-primary">{{ $t('Btn.updateSettings') }}</button>
+          </div>
+        </div>
+      </div>
+      <div v-if="currentPage === 'userStatus'" class="col-12">
+        <div class="row">
+          <h1 class="card-title text-start">User Status</h1>
+          <div class="col-sm-6 card-body">
+            <form
+              v-on:submit.prevent="createUserStatus()"
+              class="col-12 needs-validation text-start"
+              novalidate
+            >
+            <div class="form-items input-group">
+              <input
+                autocomplete="off"
+                type="text"
+                class="form-control"
+                v-model="newUserStatus.title"
+                placeholder="Create new status"
               >
-                {{ $t('Btn.cancel') }}
+              <button
+                class="btn btn-primary"
+                type="submit"
+              >
+                Create
               </button>
-              <button type="submit" class="btn btn-primary">{{ $t('Btn.updateSettings') }}</button>
+            </div>
+            </form>
+            <div v-for="status in systemStore.statuses" :key="status.id">
+              <form
+                v-on:submit.prevent="updateStatus(status)"
+                class="col-12 needs-validation text-start"
+                novalidate
+              >
+              <div class="form-items input-group">
+                <input
+                  autocomplete="off"
+                  type="text"
+                  class="form-control"
+                  v-model="status.title"
+                  required
+                >
+                <button
+                  class="btn btn-primary update-btn"
+                  type="submit"
+                >
+                  Update
+                </button>
+                <button
+                  class="btn btn-danger"
+                  type="button"
+                  @click.prevent="destroyStatus(status)"
+                >
+                  Delete
+                </button>
+              </div>
+              </form>
             </div>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapWritableState } from 'pinia'
+import { useSystemStore } from '@/store/systemStore'
 import axios from 'axios'
 export default {
+  setup() {
+    const systemStore = useSystemStore();
+    return {
+      systemStore,
+    }
+  },
   data() {
     return {
       error: null,
@@ -239,7 +320,8 @@ export default {
       languages: {
         English: 'en',
         Japanese: 'ja'
-      }
+      },
+      newUserStatus: {},
     }
   },
   mounted() {
@@ -247,6 +329,7 @@ export default {
     this.getConfig();
   },
   computed: {
+    ...mapWritableState(useSystemStore, ['statuses']),
     switchBtn() {
       if (this.currentPage === 'profile') {
         return this.$t('Btn.settings')
@@ -275,6 +358,17 @@ export default {
         this.error = error.data;
       })
     },
+    createUserStatus() {
+      axios.post('/statuses.json', this.newUserStatus)
+      .then((res)=> {
+        this.statuses.push(res.data);
+        this.newUserStatus = {};
+        alert('Updated');
+      })
+      .catch((error)=> {
+        this.error = error.data;
+      })
+    },
     updateProfile() {
       axios.patch(`/businesses/1.json`, this.business)
       .then((res)=> {
@@ -286,7 +380,7 @@ export default {
       })
     },
     updateConfig() {
-      axios.patch('/configs/1', this.config)
+      axios.patch('/configs/1.json', this.config)
       .then((res)=> {
         this.config = res.data;
         alert('Updated');
@@ -295,12 +389,28 @@ export default {
         this.error = error.data;
       })
     },
-    switchPage() {
-      if (this.currentPage === 'profile') {
-        this.currentPage = 'config'
-      } else if (this.currentPage === 'config') {
-        this.currentPage = 'profile'
-      }
+    updateStatus(status) {
+      const id = status.id
+      axios.patch(`/statuses/${id}.json`, status)
+      .then(()=> {
+        alert('Updated');
+      })
+      .catch((error)=> {
+        this.error = error.data;
+      })
+    },
+    destroyStatus(status) {
+      const i = this.statuses.indexOf(status);
+      const id = status.id
+      status.status = false;
+      axios.patch(`/statuses/${id}.json`, status)
+      .then(()=> {
+        this.statuses.splice(i, 1);
+        alert('Deleted');
+      })
+      .catch((error)=> {
+        this.error = error.data;
+      })
     },
   },
 }
@@ -309,5 +419,13 @@ export default {
 <style scoped>
 .release-notice {
   color: red;
+}
+.form-items {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.update-btn {
+  margin-right: 0px;
 }
 </style>

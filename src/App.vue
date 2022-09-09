@@ -55,6 +55,7 @@ export default {
   created() {
     this.getBusiness();
     this.getConfig();
+    this.getStatuses();
   },
   computed: {
     ...mapWritableState(useSystemStore, ['isLoading'])
@@ -81,6 +82,15 @@ export default {
       axios.get(`/configs/1.json`)
       .then((res)=> {
         this.systemStore.initConfig(res.data);
+      })
+      .catch((error)=> {
+        this.error = error.data;
+      })
+    },
+    getStatuses() {
+      axios.get('/statuses.json')
+      .then((res)=> {
+        this.systemStore.initStatuses(res.data);
       })
       .catch((error)=> {
         this.error = error.data;

@@ -89,7 +89,7 @@
 
     <div class="row">
       <small>{{ $t('Customers.clickToSee') }}</small>
-      <div class="col-md-4" v-for="user in filteredUsers" :key="user.id">
+      <div class="col-lg-4 col-sm-6" v-for="user in filteredUsers" :key="user.id">
         <div class="list-group" id="list-tab" @click="this.$router.push(`/admin/users/${user.id}`)">
           <a
             class="list-group-item list-group-item-action"
