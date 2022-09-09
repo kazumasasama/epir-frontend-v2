@@ -9,6 +9,7 @@ export const useSystemStore = defineStore("systemStore", {
       calendarLocale: 'en',
       business: null,
       config: null,
+      statuses: null,
     };
   },
   actions: {
@@ -18,6 +19,9 @@ export const useSystemStore = defineStore("systemStore", {
     initConfig(config) {
       this.config = config;
       // this.calendarLocale = config.lang;
+    },
+    initStatuses(statuses) {
+      this.statuses = statuses;
     },
     startLoading() {
       this.isLoading = true;

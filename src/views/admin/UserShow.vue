@@ -55,7 +55,15 @@
               <small>Birthday</small>
               <input class="form-control" type="text" v-model="user.birthday">
               <small>Status</small>
-              <input class="form-control" type="text" v-model="user.status">
+              <select v-model="user.status" class="form-select">
+                <option
+                  v-for="status in statuses"
+                  :key="status.id"
+                  :value="status.title"
+                >
+                  {{ status.title }}
+                </option>
+              </select>
             </div>
     
             <div class="col-sm-6">
@@ -120,6 +128,8 @@
 </template>
 
 <script>
+import { mapWritableState } from 'pinia'
+import { useSystemStore } from '@/store/systemStore'
 import axios from 'axios'
   export default {
     data() {
@@ -154,6 +164,7 @@ import axios from 'axios'
       this.showUser();
     },
     computed: {
+      ...mapWritableState(useSystemStore, ['statuses']),
       events() {
         let events = this.user.events;
         let sortedEvents = events.sort((a, b)=> {

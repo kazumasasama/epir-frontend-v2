@@ -249,9 +249,9 @@
               </button>
             </div>
             </form>
-            <div v-for="status in statuses" :key="status.id">
+            <div v-for="status in systemStore.statuses" :key="status.id">
               <form
-                v-on:submit.prevent="updateUserStatus(status)"
+                v-on:submit.prevent="updateStatus(status)"
                 class="col-12 needs-validation text-start"
                 novalidate
               >
@@ -272,7 +272,7 @@
                 <button
                   class="btn btn-danger"
                   type="button"
-                  @click.prevent="destroyUserStatus(status)"
+                  @click.prevent="destroyStatus(status)"
                 >
                   Delete
                 </button>
@@ -287,8 +287,16 @@
 </template>
 
 <script>
+import { mapWritableState } from 'pinia'
+import { useSystemStore } from '@/store/systemStore'
 import axios from 'axios'
 export default {
+  setup() {
+    const systemStore = useSystemStore();
+    return {
+      systemStore,
+    }
+  },
   data() {
     return {
       error: null,
@@ -313,16 +321,15 @@ export default {
         English: 'en',
         Japanese: 'ja'
       },
-      statuses: {},
       newUserStatus: {},
     }
   },
   mounted() {
     this.getBusiness();
     this.getConfig();
-    this.getUserStatuses();
   },
   computed: {
+    ...mapWritableState(useSystemStore, ['statuses']),
     switchBtn() {
       if (this.currentPage === 'profile') {
         return this.$t('Btn.settings')
@@ -333,15 +340,6 @@ export default {
     }
   },
   methods: {
-    getUserStatuses() {
-      axios.get('/statuses.json')
-      .then((res)=> {
-        this.statuses = res.data;
-      })
-      .catch((error)=> {
-        this.error = error.data;
-      })
-    },
     getBusiness() {
       axios.get(`/businesses/1.json`)
       .then((res)=> {
@@ -391,21 +389,17 @@ export default {
         this.error = error.data;
       })
     },
-    updateUserStatus(status) {
+    updateStatus(status) {
       const id = status.id
       axios.patch(`/statuses/${id}.json`, status)
-      .then((res)=> {
-        const status = this.statuses.find(status => status.id === id);
-        const i = this.statuses.indexOf(status);
-        this.statuses.splice(i, 1);
-        this.statuses.push(res.data);
+      .then(()=> {
         alert('Updated');
       })
       .catch((error)=> {
         this.error = error.data;
       })
     },
-    destroyUserStatus(status) {
+    destroyStatus(status) {
       const i = this.statuses.indexOf(status);
       const id = status.id
       status.status = false;
