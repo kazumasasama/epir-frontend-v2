@@ -56,16 +56,42 @@ export default {
     this.getBusiness();
     this.getConfig();
     this.getStatuses();
+    this.autoLogin();
   },
   computed: {
-    ...mapWritableState(useSystemStore, ['isLoading'])
+    ...mapWritableState(useSystemStore, ['isLoading']),
+    ...mapWritableState(useUserStore, ['isLoggedin']),
+    ...mapWritableState(useUserStore, ['isAdmin']),
   },
   data() {
     return {
+      error: null,
       message: null,
     }
   },
   methods: {
+    autoLogin() {
+      if (!this.isLoggedin && localStorage.jwt) {
+        const userId = localStorage.getItem('user_id')
+        axios.get(`/users/${userId}.json`)
+        .then((res)=> {
+          const user = res.data;
+          this.userStore.switchLoggedin(true)
+          this.userStore.pushUser(user);
+          if (user.admin) {
+            this.isAdmin = user.admin;
+            this.$router.push('/admin/dashboard');
+          } else {
+            this.$router.push('/appointments');
+          }
+        })
+        .catch((error)=> {
+          this.error = error.data;
+        })
+      } else {
+        this.$router.push('/login');
+      }
+    },
     getMessage(message) {
       this.message = message
     },
