@@ -46,6 +46,7 @@
           <div class="col-sm-6">
             <h2 class="release-card-title">Releases</h2>
             <ul>
+              <li><small>09-07-2022: Auto login</small></li>
               <li><small>09-07-2022: Customer search by name and email (Admin)</small></li>
               <li><small>09-05-2022: Cashless payment</small></li>
               <li><small>08-26-2022: Multiple language i18n</small></li>
