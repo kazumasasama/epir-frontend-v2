@@ -156,6 +156,7 @@ export default {
     async logout() {
       localStorage.removeItem("jwt");
       localStorage.removeItem("user_id");
+      localStorage.removeItem("last_login");
       const message = "Successfully logged out. Redirecting to the top page.";
       this.$emit('getMessage', message)
       await this.resetData()

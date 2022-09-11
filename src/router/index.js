@@ -29,15 +29,14 @@ const routes = [
     path: '/admin/config',
     name: 'adminConfig',
     component: AdminConfig,
-    // beforeEnter: (to, from, next)=> {
-    //   const userStore = useUserStore();
-    //   if (!userStore.isAdmin) {
-    //     window.alert("You don't have permission to access this page.")
-    //     next('/login')
-    //   } else {
-    //     next()
-    //   }
-    // }
+    beforeEnter: (to, from, next)=> {
+      const userStore = useUserStore();
+      if (!userStore.isAdmin) {
+        next('/login')
+      } else {
+        next()
+      }
+    }
   },
   {
     path: '/admin/dashboard',
@@ -46,7 +45,6 @@ const routes = [
     beforeEnter: (to, from, next)=> {
       const userStore = useUserStore();
       if (!userStore.isAdmin) {
-        window.alert("You don't have permission to access this page.")
         next('/login')
       } else {
         next()
@@ -60,7 +58,6 @@ const routes = [
     beforeEnter: (to, from, next)=> {
       const userStore = useUserStore();
       if (!userStore.isAdmin) {
-        window.alert("You don't have permission to access this page.")
         next('/login')
       } else {
         next()
@@ -74,7 +71,6 @@ const routes = [
     beforeEnter: (to, from, next)=> {
       const userStore = useUserStore();
       if (!userStore.isAdmin) {
-        window.alert("You don't have permission to access this page.")
         next('/login')
       } else {
         next()
@@ -88,7 +84,6 @@ const routes = [
     beforeEnter: (to, from, next)=> {
       const userStore = useUserStore();
       if (!userStore.isAdmin) {
-        window.alert("You don't have permission to access this page.")
         next('/login')
       } else {
         next()
@@ -102,7 +97,6 @@ const routes = [
     beforeEnter: (to, from, next)=> {
       const userStore = useUserStore();
       if (!userStore.isAdmin) {
-        window.alert("You don't have permission to access this page.")
         next('/login')
       } else {
         next()
