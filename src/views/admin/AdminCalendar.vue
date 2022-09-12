@@ -35,14 +35,14 @@
       </div>
     </div>
 
-    <div class="modal fade" id="event-details">
+    <div class="modal fade calendar-modal" id="event-details">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
             <h6 class="modal-title">{{ eventStartEndDateTime }}</h6>
-            <div class="text-end">
-              <p>{{ selectedEvent.user.status }}</p>
-            </div>
+            <ul v-if="selectedEvent.user.statuses" class="text-end modal-user-statuses">
+              <li v-for="status in selectedEvent.user.statuses" :key="status.id">{{ status.title }}</li>
+            </ul>
           </div>
           <div class="modal-body event-detail-modal-body">
             <form>
@@ -194,11 +194,14 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+  .modal-user-statuses {
+    color: rgb(255, 99, 132);
+  }
   .calendar-container {
     height: 100%;
   }
-  .modal {
+  .calendar-modal {
     position: fixed;
   }
   .event-detail-modal-body {
@@ -210,12 +213,12 @@ export default {
   .event-detail-item {
     padding-left: 8px;
   }
-  .vuecal__event {
+  /* .vuecal__event {
     text-align: left;
     padding: 0px 8px 0px 8px;
     outline: 1px solid rgb(50, 126, 161);
     border-radius: 2%;
-  }
+  } */
   .vuecal__event-title {
     font-size: small;
     font-weight: bold;
@@ -223,5 +226,9 @@ export default {
   .vuecal__event-time {
     font-size: 10px;
     color: rgb(50, 126, 161);
+  }
+  .vuecal__event.danger {
+    background-color: rgba(255, 99, 132, 0.2);
+    border: 1px solid rgb(255, 99, 132);
   }
 </style>

@@ -75,7 +75,6 @@ export default {
       const lastLogin = moment.utc(localStorage.getItem('last_login'))
       const expire = lastLogin.clone().add(1, 'day')
       const now = moment.utc()
-      console.log([expire, now])
       if (expire < now) {
         localStorage.removeItem('user_id')
         localStorage.removeItem('jwt')
