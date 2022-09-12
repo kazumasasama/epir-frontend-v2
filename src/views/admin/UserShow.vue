@@ -65,15 +65,6 @@
                 :hideSelected="false"
                 :create-option="true"
               />
-              <select v-model="user.status" class="form-select">
-                <option
-                  v-for="status in statuses"
-                  :key="status.id"
-                  :value="status"
-                >
-                  {{ status.title }}
-                </option>
-              </select>
             </div>
     
             <div class="col-sm-6">
