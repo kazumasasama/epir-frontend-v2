@@ -55,11 +55,21 @@
               <small>Birthday</small>
               <input class="form-control" type="text" v-model="user.birthday">
               <small>Status</small>
+              <Multiselect
+                v-model="user.status_ids"
+                :placeholder="multipleselectPlaceholder"
+                :options="multiselectOptions"
+                mode="tags"
+                class="multiselect-tag-color"
+                :close-on-select="false"
+                :hideSelected="false"
+                :create-option="true"
+              />
               <select v-model="user.status" class="form-select">
                 <option
                   v-for="status in statuses"
                   :key="status.id"
-                  :value="status.title"
+                  :value="status"
                 >
                   {{ status.title }}
                 </option>
@@ -128,14 +138,19 @@
 </template>
 
 <script>
+import Multiselect from '@vueform/multiselect'
 import { mapWritableState } from 'pinia'
 import { useSystemStore } from '@/store/systemStore'
 import axios from 'axios'
   export default {
+    components: {
+      Multiselect,
+    },
     data() {
       return {
         user: {
           events: [],
+          status_ids: [],
         },
         genders: [
           "Male",
@@ -165,6 +180,34 @@ import axios from 'axios'
     },
     computed: {
       ...mapWritableState(useSystemStore, ['statuses']),
+      multiselectOptions() {
+        const statusIds = this.statuses.map(status => status.id)
+        const statusValues = this.statuses.map(status => status.title)
+        let options = []
+        for (let i in statusIds) {
+          options.push({value: Number(statusIds[i]), label: statusValues[i]})
+        }
+        return options
+      },
+      multipleselectPlaceholder() {
+        if (this.user.status_ids.length === 0) {
+          return 'Select Status'
+        }
+        const statusIds = this.user.status_ids;
+        let selectedStatuses = [];
+        for (let j in this.multiselectOptions) {
+          for (let i in statusIds) {
+            if (this.multiselectOptions[j].value === statusIds[i]) {
+              selectedStatuses.push(Number(j));
+            }
+          }
+        }
+        let result = [];
+        for (let k in selectedStatuses) {
+          result.push(this.multiselectOptions[selectedStatuses[k]]);
+        }
+        return result;
+      },
       events() {
         let events = this.user.events;
         let sortedEvents = events.sort((a, b)=> {
@@ -229,6 +272,7 @@ import axios from 'axios'
           city: this.user.city,
           zip: this.user.zip,
           status: this.user.status,
+          status_ids: this.user.status_ids,
           note: this.user.note
         }
         axios.patch(`/users/${id}.json`, user)
@@ -242,7 +286,10 @@ import axios from 'axios'
   }
 </script>
 
+<style src="@vueform/multiselect/themes/default.css"></style>
+
 <style scoped>
+  
   .row {
     text-align: left;
   }
@@ -276,5 +323,8 @@ import axios from 'axios'
   .userFullName {
     margin-top: 8px;
     font-size: larger;
+  }
+  .multiselect-tag-color {
+    --ms-tag-bg: rgb(75, 192, 192);
   }
 </style>

@@ -38,6 +38,7 @@ import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import HeaderNav from '@/components/HeaderNav.vue'
 import axios from 'axios'
+import * as moment from 'moment-timezone'
 
 export default {
   setup() {
@@ -71,6 +72,15 @@ export default {
   },
   methods: {
     autoLogin() {
+      const lastLogin = moment.utc(localStorage.getItem('last_login'))
+      const expire = lastLogin.clone().add(1, 'day')
+      const now = moment.utc()
+      if (expire < now) {
+        localStorage.removeItem('user_id')
+        localStorage.removeItem('jwt')
+        localStorage.removeItem('last_login')
+        return
+      }
       if (!this.isLoggedin && localStorage.jwt) {
         const userId = localStorage.getItem('user_id')
         axios.get(`/users/${userId}.json`)
@@ -88,8 +98,6 @@ export default {
         .catch((error)=> {
           this.error = error.data;
         })
-      } else {
-        this.$router.push('/login');
       }
     },
     getMessage(message) {

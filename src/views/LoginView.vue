@@ -153,11 +153,13 @@ export default {
         this.systemStore.startLoading()
         axios.post('/sessions', this.user)
         .then((res)=> {
+          const user = res.data;
           this.error = null;
-          axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.jwt;
-          localStorage.setItem("jwt", res.data.jwt);
-          localStorage.setItem("user_id", res.data.user_id);
-          return res.data.user_id
+          axios.defaults.headers.common["Authorization"] = "Bearer " + user.jwt;
+          localStorage.setItem("jwt", user.jwt);
+          localStorage.setItem("user_id", user.user_id);
+          localStorage.setItem("last_login", user.last_login);
+          return user.user_id
         })
         .then((userId)=> {
           axios.get(`/users/${userId}.json`)
