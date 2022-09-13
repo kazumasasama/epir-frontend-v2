@@ -590,7 +590,7 @@ export default {
       const bookingInfo = {
         "date": this.bookingDate,
         "start": this.selectedTime,
-        "end": moment.utc(this.endTimeParams).add(interval,'minute'),
+        "end": moment.utc(this.endTimeParams).add(interval,'minutes'),
         "user_id": this.user.id,
         "duration_total": this.totalDuration,
         "menus": this.selectedMenus.map((menu)=> menu.id),

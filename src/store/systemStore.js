@@ -9,11 +9,15 @@ export const useSystemStore = defineStore("systemStore", {
       calendarLocale: 'en',
       business: null,
       config: null,
+      businessTimes: null,
     };
   },
   actions: {
     initBusiness(business) {
       this.business = business;
+    },
+    initBusinessTimes(business) {
+      this.businessTimes = business;
     },
     initConfig(config) {
       this.config = config;

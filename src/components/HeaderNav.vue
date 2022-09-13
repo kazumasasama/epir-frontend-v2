@@ -36,11 +36,7 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <font-awesome-icon
-                  icon="fa-solid fa-language"
-                  size="xl"
-                  color="white"
-                  />
+                Languages
               </a>
               <ul
                 class="dropdown-menu"
@@ -61,11 +57,7 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <font-awesome-icon
-                  icon="fa-solid fa-bars"
-                  size="xl"
-                  color="white"
-                />
+                Menu
               </a>
               <ul
                 class="dropdown-menu"
@@ -86,11 +78,7 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <font-awesome-icon
-                  icon="fa-solid fa-lock"
-                  size="xl"
-                  color="white"
-                />
+                Admin
               </a>
               <ul
                 class="dropdown-menu"
@@ -114,11 +102,7 @@
             </li>
             <li class="nav-item" @click="logout()" v-if="isLoggedin">
               <a class="nav-link">
-                <font-awesome-icon
-                  icon="fa-solid fa-arrow-right-from-bracket"
-                  size="xl"
-                  color="white"
-                />
+                Logout
               </a>
             </li>
           </ul>

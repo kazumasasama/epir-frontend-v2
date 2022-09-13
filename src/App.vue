@@ -58,6 +58,7 @@ export default {
     this.getConfig();
     this.getStatuses();
     this.autoLogin();
+    this.indexBusinessTimes();
   },
   computed: {
     ...mapWritableState(useSystemStore, ['isLoading']),
@@ -88,12 +89,7 @@ export default {
           const user = res.data;
           this.userStore.switchLoggedin(true)
           this.userStore.pushUser(user);
-          if (user.admin) {
-            this.isAdmin = user.admin;
-            this.$router.push('/admin/dashboard');
-          } else {
-            this.$router.push('/appointments');
-          }
+          this.isAdmin = user.admin;
         })
         .catch((error)=> {
           this.error = error.data;
@@ -130,6 +126,12 @@ export default {
         this.error = error.data;
       })
     },
+    indexBusinessTimes() {
+      axios.get("/business_times.json")
+      .then((res)=> {
+        this.systemStore.businessTimes = res.data;
+      })
+    },
   },
 }
 </script>
@@ -141,16 +143,15 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: rgb(44, 62, 80);
-  background-color: rgb(241, 237, 254);
+  background-color: rgb(246, 243, 255);
 }
 
 html {
-  background-color: rgb(241, 237, 254);
+  background-color: rgb(246, 243, 255);
 }
 
 nav a {
   font-weight: bold;
-  color: rgb(44, 62, 80);
 }
 
 nav a.router-link-exact-active {

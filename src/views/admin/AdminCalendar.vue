@@ -38,16 +38,24 @@
     <div class="modal fade calendar-modal" id="event-details">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-          <div class="modal-header">
-            <h6 class="modal-title">{{ eventStartEndDateTime }}</h6>
-            <ul v-if="selectedEvent.user.statuses" class="text-end modal-user-statuses">
-              <li v-for="status in selectedEvent.user.statuses" :key="status.id">{{ status.title }}</li>
-            </ul>
-          </div>
-          <div class="modal-body event-detail-modal-body">
-            <form>
+          <form action="">
+            <div class="modal-header">
+              <h6 class="modal-title">{{ eventStartEndDateTime }}</h6>
+            </div>
+            <div class="modal-body event-detail-modal-body">
               <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-8">
+                  <ul
+                    v-if="selectedEvent.user.statuses"
+                    class="modal-user-statuses"
+                  >
+                    <li
+                      v-for="status in selectedEvent.user.statuses"
+                      :key="status.id"
+                    >
+                      {{ status.title }}
+                    </li>
+                  </ul>
                   <small class="event-details-tag">Name</small>
                   <p data-bs-toggle="modal" class="event-detail-item">
                     <a
@@ -62,8 +70,6 @@
                   </p>
                   <small class="event-details-tag">Note</small>
                   <p class="event-detail-item">{{ selectedEvent.user.note }}</p>
-                </div>
-                <div class="col-sm-6">
                   <small class="event-details-tag">Menus</small>
                   <div>
                     <ul class="event-detail-item">
@@ -71,15 +77,76 @@
                     </ul>
                   </div>
                 </div>
+                <div class="col-sm-4 text-end">
+                  <button
+                    v-if="!rescheduleBtn"
+                    class="btn btn-success"
+                    @click.prevent="rescheduleBtn = true"
+                  >
+                    Reschedule
+                  </button>
+                  <button
+                    v-if="rescheduleBtn"
+                    class="btn btn-outline-success"
+                    @click.prevent="rescheduleBtn = false"
+                  >
+                    Hide Scheduler
+                  </button>
+                  <button
+                    class="btn btn-primary"
+                    @click.prevent="updateEvent()"
+                  >
+                    Update
+                  </button>
+                  <button
+                    class="btn btn-danger"
+                    @click.prevent="destroyEvent()"
+                  >
+                    Delete
+                  </button>
+                  <button
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
               </div>
-            </form>
-          </div>
-          <div class="modal-footer btn-container">
-            <!-- <button class="btn btn-primary">Update</button> -->
-            <button class="btn btn-danger" @click="destroyEvent()">Delete</button>
-            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
+              <div v-if="rescheduleBtn" class="row">
+                <div class="col-12">
+                  <Datepicker
+                    v-model="picked"
+                    class="datepicker-item"
+                    inline
+                    autoApply
+                    utc="true"
+                  />
+                  <div v-if="availableTimeSlots.length" class="row">
+                    <div
+                      class="time-slot-col col-sm-3"
+                      v-for="timeSlot in availableTimeSlots"
+                      :key="timeSlot.id"
+                    >
+                      <div class="form-check">
+                        <label class="form-check-label">
+                          <ul>
+                            <input
+                              class="form-check-input me-1 booking-checkbox"
+                              type="radio"
+                              :value="timeSlot.time"
+                              v-model="selectedTime"
+                            >
+                            <li>{{ timeSlot.time.slice(11, -8) }}</li>
+                          </ul>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <small>To reschedule, delete the appointment then make a new appointment.</small>
+          </form>
         </div>
       </div>
     </div>
@@ -96,6 +163,8 @@ import * as moment from 'moment-timezone';
 import * as bootstrap from 'bootstrap'
 import { useSystemStore } from '@/store/systemStore';
 import { mapWritableState } from 'pinia'
+import Datepicker from 'vue3-datepicker';
+import { ref } from 'vue'
 
 export default {
   setup() {
@@ -106,6 +175,7 @@ export default {
   },
   components: { 
     VueCal,
+    Datepicker,
   },
   data() {
     return {
@@ -114,6 +184,7 @@ export default {
         user: {},
       },
       selectedDate: moment().format('YYYY-MM-DD'),
+      selectedTime: null,
       disableDays: [],
       newEvent: {},
       users: [],
@@ -121,6 +192,8 @@ export default {
       new_menus: [],
       eventDetailsModal: null,
       calendarKey: 0,
+      picked: ref(new Date),
+      rescheduleBtn: false,
     }
   },
   created() {
@@ -149,7 +222,31 @@ export default {
       let start = moment(this.selectedEvent.start).format('MM-DD-YYYY / HH:mm')
       let end = moment(this.selectedEvent.end).format('HH:mm')
       return `${start} - ${end}`
-    }
+    },
+    availableTimeSlots() {
+      // 指定日の時間の呼び出し
+      const picked = moment(this.picked).format('YYYY-MM-DD');
+      var openTimes = this.systemStore.businessTimes.filter(timeSlots => timeSlots.date === picked).sort((a, b)=> {
+        return a.id - b.id;
+      }).filter((time)=> time.available === true);
+      const totalDuration = this.selectedEvent.endTimeMinutes - this.selectedEvent.startTimeMinutes;
+      const keepingTime = totalDuration / 30;
+      // 必要時間が最低スロット時間の場合全てのopenTimesを返す
+      if (keepingTime === 1) {
+        return openTimes;
+      }
+      // 必要時間分の空きがあるスロットを取得
+      var i = 0;
+      var available = [];
+      var x = keepingTime;
+      while (i < openTimes.length - x + 1) {
+        if (openTimes[i].id === openTimes[i + x - 1].id - (x - 1)) {
+          available.push(openTimes[i]);
+        }
+        i++;
+      }
+      return available
+    },
   },
   methods: {
     indexEvents() {
@@ -179,10 +276,40 @@ export default {
     redirectToUser(id) {
       this.$router.push(`/admin/users/${id}`);
     },
+    updateEvent() {
+      const totalDuration = this.selectedEvent.endTimeMinutes - this.selectedEvent.startTimeMinutes;
+      const date = this.selectedDate;
+      let start = moment.utc(this.selectedTime).format();
+      const end = moment.utc(start).clone().add(totalDuration, 'minutes').format();
+      const userId = this.selectedEvent.user.id;
+      const menus = this.selectedEvent.menus.map((menu)=> menu.id)
+      let price = Number(this.selectedEvent.menus.reduce((sum, el)=> {return sum + el.price;},0));
+      const tax = price * (Number(this.systemStore.config.tax) / 100)
+      const bookingInfo = {
+        "date": date,
+        "start": start,
+        "end": end,
+        "user_id": userId,
+        "duration_total": totalDuration,
+        "menus": menus,
+        "price": price,
+        "tax": tax,
+      }
+      axios.post('/events', bookingInfo)
+      .then((res)=> {
+        const id = this.selectedEvent.id
+        let event = this.events.find(event => event.id === id);
+        let i = this.events.indexOf(event);
+        this.events.splice(i, 1);
+        this.events.push(res.data);
+      })
+      .then(()=> {
+        this.destroyEvent();
+      })
+    },
     destroyEvent() {
-      let id = this.selectedEvent.id
-      axios
-      .delete(`/events/${id}`)
+      const id = this.selectedEvent.id
+      axios.delete(`/events/${id}`)
       .then(()=> {
         let event = this.events.find(event => event.id === id);
         let i = this.events.indexOf(event);
@@ -197,6 +324,7 @@ export default {
 <style>
   .modal-user-statuses {
     color: rgb(255, 99, 132);
+    padding-left: 0px;
   }
   .calendar-container {
     height: 100%;
@@ -230,5 +358,8 @@ export default {
   .vuecal__event.danger {
     background-color: rgba(255, 99, 132, 0.2);
     border: 1px solid rgb(255, 99, 132);
+  }
+  .list-group-item ul {
+    margin-bottom: 0px;
   }
 </style>
