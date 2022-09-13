@@ -8,11 +8,15 @@ export const useUserStore = defineStore('userStore', {
       user: null,
       isAdmin: false,
       isLoggedin: false,
+      statuses: null,
     };
   },
   actions: {
     pushUser(user) {
       this.user = user;
+    },
+    initStatuses(statuses) {
+      this.statuses = statuses;
     },
     switchLoggedin(boolean) {
       this.isLoggedin = boolean;

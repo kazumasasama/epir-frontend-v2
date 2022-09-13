@@ -74,9 +74,20 @@
 </template>
 
 <script>
-
+import { useUserStore } from '@/store/userStore';
 export default {
-  name: 'HomeView',
+  setup() {
+    const userStore = useUserStore();
+    return {
+      userStore,
+    }
+  },
+  data() {
+    return {
+    }
+  },
+  created() {
+  }
 }
 </script>
 

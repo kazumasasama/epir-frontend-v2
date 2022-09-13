@@ -2,6 +2,7 @@
 
   <nav class="navbar navbar-light" style="background-color: #f5f6fe;">
     <div class="col-12 user-btn-container">
+      <button class="btn btn-sm btn-outline-secondary" @click="$router.push('/admin/users')">{{ $t('Btn.customerIndex') }}</button>
       <button
         class="btn btn-sm btn-outline-success"
         v-if="showHistory"
@@ -16,9 +17,6 @@
       >
         {{ $t('Btn.history') }}
       </button>
-      <div class="control-navbar-item">
-        <button class="btn btn-sm btn-outline-secondary" @click="$router.push('/admin/users')">{{ $t('Btn.customerIndex') }}</button>
-      </div>
     </div>
     
   </nav>
@@ -131,7 +129,7 @@
 <script>
 import Multiselect from '@vueform/multiselect'
 import { mapWritableState } from 'pinia'
-import { useSystemStore } from '@/store/systemStore'
+import { useUserStore } from '@/store/userStore'
 import axios from 'axios'
   export default {
     components: {
@@ -170,7 +168,7 @@ import axios from 'axios'
       this.showUser();
     },
     computed: {
-      ...mapWritableState(useSystemStore, ['statuses']),
+      ...mapWritableState(useUserStore, ['statuses']),
       multiselectOptions() {
         const statusIds = this.statuses.map(status => status.id)
         const statusValues = this.statuses.map(status => status.title)
@@ -290,9 +288,6 @@ import axios from 'axios'
   .user-btn-container {
     text-align: left;
     overflow: hidden;
-  }
-  .control-navbar-item {
-    float: right;
   }
   .history-event-container {
     text-align: left;

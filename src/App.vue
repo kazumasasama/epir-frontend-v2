@@ -124,7 +124,7 @@ export default {
     getStatuses() {
       axios.get('/statuses.json')
       .then((res)=> {
-        this.systemStore.initStatuses(res.data);
+        this.userStore.initStatuses(res.data);
       })
       .catch((error)=> {
         this.error = error.data;
