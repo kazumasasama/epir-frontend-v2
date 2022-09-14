@@ -252,7 +252,7 @@ export default {
   },
   methods: {
     reloadData() {
-      this.reloadKey++;
+      this.indexEvents();
     },
     indexEvents() {
       axios.get('/events.json')
