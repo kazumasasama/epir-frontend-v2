@@ -251,7 +251,6 @@ export default {
   methods: {
     reloadData() {
       this.systemStore.businessTimes.splice();
-      console.log('yes');
     },
     indexEvents() {
       axios.get('/events.json')
@@ -314,7 +313,6 @@ export default {
         this.systemStore.businessTimes.splice(index, 1, current)
         i++;
         id++;
-        console.log(current);
       }
       axios.post('/events.json', bookingInfo)
       .then((res)=> {
@@ -333,7 +331,6 @@ export default {
           this.systemStore.businessTimes.splice(index, 1, current);
           i++;
           id++;
-          console.log(current);
         }
         this.destroyEvent();
         this.systemStore.businessTimes.splice();
