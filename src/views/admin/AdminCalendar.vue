@@ -4,7 +4,7 @@
       <div class="col-12 text-end">
         <small>{{ $t('Calendar.dontSeeAppointments') }}</small>
         <button
-          @click="calendarKey++;"
+          @click="reloadData()"
           class="btn btn-info"
         >
           {{ $t('Btn.reloadData') }}
@@ -29,7 +29,6 @@
             events-count-on-year-view
             hide-week-number
             :locale="config.lang"
-            :key="calendarKey"
           />
         </div>
       </div>
@@ -106,7 +105,7 @@
                   </button>
                   <button
                     class="btn btn-secondary"
-                    data-bs-dismiss="modal"
+                    @click.prevent="this.eventDetailsModal.hide()"
                   >
                     Close
                   </button>
@@ -145,7 +144,6 @@
                 </div>
               </div>
             </div>
-            <small>To reschedule, delete the appointment then make a new appointment.</small>
           </form>
         </div>
       </div>
@@ -191,7 +189,6 @@ export default {
       menus: [],
       new_menus: [],
       eventDetailsModal: null,
-      calendarKey: 0,
       picked: ref(new Date),
       rescheduleBtn: false,
     }
@@ -212,6 +209,9 @@ export default {
   computed: {
     ...mapWritableState(useSystemStore, ['calendarLocale']),
     ...mapWritableState(useSystemStore, ['config']),
+    bookingDate() {
+      return moment(this.picked).format('YYYY-MM-DD');
+    },
     maxDate() {
       return moment().add(90, 'days').format('YYYY-MM-DD');
     },
@@ -249,6 +249,10 @@ export default {
     },
   },
   methods: {
+    reloadData() {
+      this.systemStore.businessTimes.splice();
+      console.log('yes');
+    },
     indexEvents() {
       axios.get('/events.json')
       .then((res)=> {
@@ -277,13 +281,14 @@ export default {
       this.$router.push(`/admin/users/${id}`);
     },
     updateEvent() {
-      const totalDuration = this.selectedEvent.endTimeMinutes - this.selectedEvent.startTimeMinutes;
-      const date = this.selectedDate;
+      let currentEvent = this.events.filter((event)=> event.id === this.selectedEvent.id)[0];
+      const date = this.bookingDate;
       let start = moment.utc(this.selectedTime).format();
+      const totalDuration = this.selectedEvent.endTimeMinutes - this.selectedEvent.startTimeMinutes;
       const end = moment.utc(start).clone().add(totalDuration, 'minutes').format();
-      const userId = this.selectedEvent.user.id;
-      const menus = this.selectedEvent.menus.map((menu)=> menu.id)
-      let price = Number(this.selectedEvent.menus.reduce((sum, el)=> {return sum + el.price;},0));
+      const userId = currentEvent.user.id;
+      const menus = currentEvent.menus.map((menu)=> menu.id)
+      let price = Number(currentEvent.menus.reduce((sum, el)=> {return sum + el.price;},0));
       const tax = price * (Number(this.systemStore.config.tax) / 100)
       const bookingInfo = {
         "date": date,
@@ -295,16 +300,43 @@ export default {
         "price": price,
         "tax": tax,
       }
-      axios.post('/events', bookingInfo)
+      
+      const currentBusinessTime = this.systemStore.businessTimes.filter((timeSlot)=> timeSlot.date === this.bookingDate && timeSlot.time === this.selectedTime)[0];
+      const timeSlots = totalDuration / 30;
+      let i = 0;
+      let current;
+      let id = currentBusinessTime.id;
+      let index;
+      while (i < timeSlots) {
+        current = this.systemStore.businessTimes.find(bt => bt.id === id);
+        index = this.systemStore.businessTimes.indexOf(current);
+        current.available = false;
+        this.systemStore.businessTimes.splice(index, 1, current)
+        i++;
+        id++;
+        console.log(current);
+      }
+      axios.post('/events.json', bookingInfo)
       .then((res)=> {
-        const id = this.selectedEvent.id
-        let event = this.events.find(event => event.id === id);
-        let i = this.events.indexOf(event);
-        this.events.splice(i, 1);
         this.events.push(res.data);
-      })
-      .then(()=> {
+        const currentBusinessTime = this.systemStore.businessTimes.filter((timeSlot)=> timeSlot.date === currentEvent.date && moment.utc(timeSlot.time).format('HH:mm') === 
+        moment(this.selectedEvent.start).format('HH:mm'))[0];
+        const timeSlots = totalDuration / 30;
+        let i = 0;
+        let current;
+        let id = currentBusinessTime.id;
+        let index;
+        while (i < timeSlots) {
+          current = this.systemStore.businessTimes.find(bt => bt.id === id);
+          index = this.systemStore.businessTimes.indexOf(current);
+          current.available = true;
+          this.systemStore.businessTimes.splice(index, 1, current);
+          i++;
+          id++;
+          console.log(current);
+        }
         this.destroyEvent();
+        this.systemStore.businessTimes.splice();
       })
     },
     destroyEvent() {
