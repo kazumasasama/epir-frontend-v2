@@ -1,4 +1,4 @@
-<template>
+<template :key="reloadKey">
   <div class="container">
     <div class="row">
       <div class="col-12 text-end">
@@ -29,6 +29,7 @@
             events-count-on-year-view
             hide-week-number
             :locale="config.lang"
+            :key="reloadKey"
           />
         </div>
       </div>
@@ -191,6 +192,7 @@ export default {
       eventDetailsModal: null,
       picked: ref(new Date),
       rescheduleBtn: false,
+      reloadKey: 0,
     }
   },
   created() {
@@ -250,7 +252,7 @@ export default {
   },
   methods: {
     reloadData() {
-      this.systemStore.businessTimes.splice();
+      this.reloadKey++;
     },
     indexEvents() {
       axios.get('/events.json')
