@@ -316,7 +316,7 @@ export default {
         i++;
         id++;
       }
-      axios.post('/events.json', bookingInfo)
+      axios.patch('/events.json', bookingInfo)
       .then((res)=> {
         this.events.push(res.data);
         const currentBusinessTime = this.systemStore.businessTimes.filter((timeSlot)=> timeSlot.date === currentEvent.date && moment.utc(timeSlot.time).format('HH:mm') === 
