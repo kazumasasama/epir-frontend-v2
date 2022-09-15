@@ -301,7 +301,7 @@ export default {
         "price": price,
         "tax": tax,
       }
-      
+      console.log(bookingInfo)
       const currentBusinessTime = this.systemStore.businessTimes.filter((timeSlot)=> timeSlot.date === this.bookingDate && timeSlot.time === this.selectedTime)[0];
       const timeSlots = totalDuration / 30;
       let i = 0;
