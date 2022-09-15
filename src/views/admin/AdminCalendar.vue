@@ -390,6 +390,10 @@ export default {
     background-color: rgba(255, 99, 132, 0.2);
     border: 1px solid rgb(255, 99, 132);
   }
+  .vuecal__event.success {
+    background-color: rgba(75, 192, 192, 0.2);
+    border: 1px solid rgb(75, 192, 192);
+  }
   .list-group-item ul {
     margin-bottom: 0px;
   }
