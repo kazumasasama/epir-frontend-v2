@@ -144,7 +144,7 @@
           </div>
           <div class="col-sm-6">
             <div class="row">
-              <div class="time-slot-col col-lg-4 col-sm-6" v-for="timeSlot in filteredBusinessTimes"
+              <div class="time-slot-col col-lg-4 col-sm-6" v-for="timeSlot in availableTimeSlots"
                   :key="timeSlot.id">
                 <div
                   class="list-group"
@@ -313,7 +313,7 @@
               </div>
             </section>
           </div>
-          <div class="col-md-6">
+          <div v-if="subTotal > 0" class="col-md-6">
             <CheckoutView
               @checkout="checkout()"
               :stripe="stripe"
@@ -383,7 +383,6 @@ export default {
       currentStep: 1,
       menus: [],
       menu: {},
-      businessTimes: [],
       selectedMenus: [],
       selectedTime: null,
       user: {},
@@ -418,8 +417,6 @@ export default {
     this.systemStore.startLoading();
     this.user = this.userStore.user;
     this.indexMenus();
-    this.indexBusinessTimes();
-    
     this.stripe = window.Stripe(`${process.env.VUE_APP_STRIPE_PUBLIC_KEY}`);
   },
   mounted() {
@@ -441,6 +438,7 @@ export default {
   },
   computed: {
     ...mapWritableState(useSystemStore, ['config']),
+    ...mapWritableState(useSystemStore, ['businessTimes']),
     fullName() {
       return `${this.user.first_name} ${this.user.last_name}`;
     },
@@ -474,13 +472,12 @@ export default {
       durationSumHour = (durationSumHour - (durationSumHour % 60)) / 60;
       return `${durationSumHour} ${this.$t('DateTime.hour')} ${durationSumMin} ${this.$t('DateTime.min')}`;
     },
-    filteredBusinessTimes() {
+    availableTimeSlots() {
       // 指定日の時間の呼び出し
-      var openTimes = this.businessTimes.filter(timeSlots => timeSlots.date === this.bookingDate).sort((a, b)=> {
+      var openTimes = this.systemStore.businessTimes.filter(timeSlots => timeSlots.date === this.bookingDate).sort((a, b)=> {
         return a.id - b.id;
       }).filter((time)=> time.available === true);
-      const interval = Number(this.config.interval);
-      var keepingTime = (this.totalDuration + interval) / 30;
+      const keepingTime = (this.totalDuration + this.config.interval) / 30;
       // 必要時間が最低スロット時間の場合全てのopenTimesを返す
       if (keepingTime === 1) {
         return openTimes;
@@ -496,6 +493,7 @@ export default {
         i++;
       }
       return available
+
     },
     selectedMenuIds() {
       return this.selectedMenus.map((menu)=> menu.id);
@@ -513,12 +511,6 @@ export default {
       axios.get("/menus.json")
       .then((res)=> {
         this.menus = res.data.active;
-      })
-    },
-    indexBusinessTimes() {
-      axios.get("/business_times.json")
-      .then((res)=> {
-        this.businessTimes = res.data;
       })
     },
     getClientSecret() {
@@ -557,7 +549,9 @@ export default {
         targetElement.classList.remove('bg-secondary');
         targetElement.classList.add('bg-success');
       } else if (this.currentStep === 3) {
-        this.getClientSecret()
+        if (this.subTotal > 0) {
+          this.getClientSecret()
+        }
         this.currentStep++;
         targetElement = document.querySelector('#progress-4')
         targetElement.classList.remove('bg-secondary');
