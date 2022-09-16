@@ -345,11 +345,9 @@ export default {
         return {"interval": interval, "index": intervalIndex, "event": res.data}
       })
       .then((intervalInfo)=> {
-        console.log(intervalInfo)
-        // modify interval from events
+        // modify interval of event
         intervalInfo.interval.start = intervalInfo.event.end
         intervalInfo.interval.end = moment.utc(intervalInfo.event.end).clone().add(this.systemStore.config.interval, 'minutes').format('YYYY-MM-DD HH:mm')
-        console.log(intervalInfo.interval)
         this.events.splice(intervalInfo.index, 1, intervalInfo.interval);
       })
       .then(()=> {
@@ -359,10 +357,34 @@ export default {
     destroyEvent() {
       const id = this.selectedEvent.id
       axios.delete(`/events/${id}.json`)
-      .then(()=> {
-        let event = this.events.find(event => event.id === id);
+      .then((res)=> {
+        // delete event from events
+        let event = this.events.find(event => event.id === res.data.id);
         let i = this.events.indexOf(event);
         this.events.splice(i, 1);
+        // delete interval from events
+        let interval = this.events.find(event => event.id === res.data.id + 1);
+        let intervalIndex = this.events.indexOf(interval);
+        this.events.splice(intervalIndex, 1);
+        // modify time slots
+        const currentBusinessTime = this.systemStore.businessTimes.filter((timeSlot)=> timeSlot.date === this.selectedEvent.date && moment.utc(timeSlot.time).format('HH:mm') === 
+        moment(this.selectedEvent.start).format('HH:mm'))[0];
+        const totalDuration = this.selectedEvent.endTimeMinutes - this.selectedEvent.startTimeMinutes;
+        const timeSlots = (totalDuration + this.systemStore.config.interval) / 30;
+        i = 0;
+        let current;
+        let id = currentBusinessTime.id;
+        let index;
+        while (i < timeSlots) {
+          current = this.systemStore.businessTimes.find(bt => bt.id === id);
+          index = this.systemStore.businessTimes.indexOf(current);
+          current.available = true;
+          this.systemStore.businessTimes.splice(index, 1, current);
+          i++;
+          id++;
+        }
+      })
+      .then(()=> {
         this.eventDetailsModal.hide();
       })
     }
