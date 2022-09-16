@@ -157,8 +157,14 @@ export default {
       let users = [];
       for (let i in this.users) {
         let user = this.users[i];
-        if (user.first_name.toLowerCase().indexOf(keyword) !== -1 || user.last_name.toLowerCase().indexOf(keyword) !== -1 || user.email.indexOf(keyword) !== -1) {
-          users.push(user)
+        if (user.last_name) {
+          if (user.first_name.toLowerCase().indexOf(keyword) !== -1 || user.last_name.toLowerCase().indexOf(keyword) !== -1 || user.email.indexOf(keyword) !== -1) {
+            users.push(user)
+          }
+        } else {
+          if (user.first_name.toLowerCase().indexOf(keyword) !== -1 || user.email.indexOf(keyword) !== -1) {
+            users.push(user)
+          }
         }
       }
       return users;
