@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-12 text-end">
         <button
-          @click="staticDataKey++;"
+          @click="reloadData()"
           class="btn btn-info"
         >
           {{ $t('Btn.reloadData') }}
@@ -76,7 +76,6 @@
                   :chartOptions="barChartOptions"
                   :height="barChartHeight"
                   type="bar"
-                  :key="staticDataKey"
                 />
               </div>
               <div class="col-md-4">
@@ -97,7 +96,6 @@
                 <DoughnutChart
                   :chartData="doughnutChartData"
                   :chartOptions="doughnutChartOptions"
-                  :key="staticDataKey"
                 />
               </div>
             </div>
@@ -109,7 +107,6 @@
                   :chartOptions="salesBarChartOptions"
                   :height="barChartHeight"
                   type="bar"
-                  :key="staticDataKey"
                 />
               </div>
               <div class="col-md-4">
@@ -130,7 +127,6 @@
                 <DoughnutChart
                   :chartData="salesByMenuDoughnutChartData"
                   :chartOptions="salesByMenuDoughnutChartOptions"
-                  :key="staticDataKey"
                 />
               </div>
             </div>
@@ -165,7 +161,6 @@ export default {
     return {
       error: null,
       // statics
-      staticDataKey: 0,
       usersTotal: 0,
       currentAppointmentTotal: 0,
       prevAppointmentTotal: 0,
@@ -417,6 +412,9 @@ export default {
     })
   },
   methods: {
+    reloadData() {
+      this.getYearlyStatics();
+    },
     increaseYear() {
       this.currentYear++;
     },

@@ -29,7 +29,6 @@
             events-count-on-year-view
             hide-week-number
             :locale="config.lang"
-            :key="reloadKey"
           />
         </div>
       </div>
@@ -254,6 +253,7 @@ export default {
     reloadData() {
       this.indexEvents();
       this.indexBusinessTimes();
+      this.reloadKey++;
     },
     indexEvents() {
       axios.get('/events.json')
