@@ -253,11 +253,18 @@ export default {
   methods: {
     reloadData() {
       this.indexEvents();
+      this.indexBusinessTimes();
     },
     indexEvents() {
       axios.get('/events.json')
       .then((res)=> {
         this.events = res.data.filter((event)=> event.status === "booked")
+      })
+    },
+    indexBusinessTimes() {
+      axios.get("/business_times.json")
+      .then((res)=> {
+        this.systemStore.businessTimes = res.data;
       })
     },
     indexUsers() {
