@@ -231,7 +231,7 @@ export default {
       var openTimes = this.systemStore.businessTimes.filter(timeSlots => timeSlots.date === picked).sort((a, b)=> {
         return a.id - b.id;
       }).filter((time)=> time.available === true);
-      const totalDuration = this.selectedEvent.endTimeMinutes - this.selectedEvent.startTimeMinutes;
+      const totalDuration = this.selectedEvent.endTimeMinutes - this.selectedEvent.startTimeMinutes + this.systemStore.config.interval;
       const keepingTime = totalDuration / 30;
       // 必要時間が最低スロット時間の場合全てのopenTimesを返す
       if (keepingTime === 1) {
@@ -282,6 +282,7 @@ export default {
       this.$router.push(`/admin/users/${id}`);
     },
     updateEvent() {
+      // prepare update data
       let currentEvent = this.events.filter((event)=> event.id === this.selectedEvent.id)[0];
       const date = this.bookingDate;
       let start = moment.utc(this.selectedTime).format();
@@ -301,9 +302,9 @@ export default {
         "price": price,
         "tax": tax,
       }
-      console.log(bookingInfo)
+      // modify time slots for current event and interval
       const currentBusinessTime = this.systemStore.businessTimes.filter((timeSlot)=> timeSlot.date === this.bookingDate && timeSlot.time === this.selectedTime)[0];
-      const timeSlots = totalDuration / 30;
+      const timeSlots = (totalDuration + this.systemStore.config.interval) / 30;
       let i = 0;
       let current;
       let id = currentBusinessTime.id;
@@ -316,12 +317,16 @@ export default {
         i++;
         id++;
       }
-      axios.patch('/events.json', bookingInfo)
+      axios.patch(`/events/${this.selectedEvent.id}.json`, bookingInfo)
       .then((res)=> {
-        this.events.push(res.data);
+        // replace event with updated event
+        let event = this.events.find(event => event.id === res.data.id);
+        let eventIndex = this.events.indexOf(event);
+        this.events.splice(eventIndex, 1, res.data);
+        // modify time slots for prev event and interval
         const currentBusinessTime = this.systemStore.businessTimes.filter((timeSlot)=> timeSlot.date === currentEvent.date && moment.utc(timeSlot.time).format('HH:mm') === 
         moment(this.selectedEvent.start).format('HH:mm'))[0];
-        const timeSlots = totalDuration / 30;
+        const timeSlots = (totalDuration + this.systemStore.config.interval) / 30;
         let i = 0;
         let current;
         let id = currentBusinessTime.id;
@@ -334,13 +339,26 @@ export default {
           i++;
           id++;
         }
-        this.destroyEvent();
-        this.systemStore.businessTimes.splice();
+        // this.systemStore.businessTimes.splice();
+        let interval = this.events.find(event => event.id == res.data.id + 1)
+        let intervalIndex = this.events.indexOf(interval);
+        return {"interval": interval, "index": intervalIndex, "event": res.data}
+      })
+      .then((intervalInfo)=> {
+        console.log(intervalInfo)
+        // modify interval from events
+        intervalInfo.interval.start = intervalInfo.event.end
+        intervalInfo.interval.end = moment.utc(intervalInfo.event.end).clone().add(this.systemStore.config.interval, 'minutes').format('YYYY-MM-DD HH:mm')
+        console.log(intervalInfo.interval)
+        this.events.splice(intervalInfo.index, 1, intervalInfo.interval);
+      })
+      .then(()=> {
+        this.eventDetailsModal.hide();
       })
     },
     destroyEvent() {
       const id = this.selectedEvent.id
-      axios.delete(`/events/${id}`)
+      axios.delete(`/events/${id}.json`)
       .then(()=> {
         let event = this.events.find(event => event.id === id);
         let i = this.events.indexOf(event);
@@ -393,6 +411,14 @@ export default {
   .vuecal__event.success {
     background-color: rgba(75, 192, 192, 0.2);
     border: 1px solid rgb(75, 192, 192);
+  }
+  .vuecal__event.warning {
+    background-color: rgba(255, 159, 64, 0.2);
+    border: 1px solid rgb(255, 159, 64);
+  }
+  .vuecal__event.gray {
+    background-color: rgba(201, 203, 207, 0.2);
+    border: 1px solid rgb(201, 203, 207);
   }
   .list-group-item ul {
     margin-bottom: 0px;
