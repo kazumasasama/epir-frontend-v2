@@ -601,11 +601,8 @@ export default {
       .then((res)=> {
         const event = res.data;
         this.event = event;
-        console.log(moment.utc(event.start).format('HH:mm'))
         const currentBusinessTime = this.systemStore.businessTimes.filter((timeSlot)=> timeSlot.date === event.date && moment.utc(timeSlot.time).format('HH:mm') === moment.utc(event.start).format('HH:mm'))[0];
-        console.log(currentBusinessTime)
         const timeSlots = (event.duration_total + this.systemStore.config.interval) / 30;
-        console.log(timeSlots)
         let i = 0;
         let current;
         let id = currentBusinessTime.id;
@@ -617,7 +614,6 @@ export default {
           this.systemStore.businessTimes.splice(index, 1, current)
           i++;
           id++;
-          console.log(current)
         }
       })
       .then(()=> {

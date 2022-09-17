@@ -238,7 +238,6 @@ export default {
         return password
       }
       let pw = genPassword()
-      console.log(pw);
       this.newUser.password = pw
       axios
       .post('/users', this.newUser)
