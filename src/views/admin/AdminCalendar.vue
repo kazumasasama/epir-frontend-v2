@@ -16,7 +16,6 @@
           <vue-cal
             small
             today-button
-            class="vuecal--blue-theme"
             :selected-date="selectedDate"
             :time-from="config.start * 60"
             :time-to="config.end * 60"
@@ -419,12 +418,17 @@ export default {
   .event-detail-item {
     padding-left: 8px;
   }
-  /* .vuecal__event {
-    text-align: left;
-    padding: 0px 8px 0px 8px;
-    outline: 1px solid rgb(50, 126, 161);
-    border-radius: 2%;
-  } */
+  .vuecal__cell-date {
+    margin-top: 9px;
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+  }
+  .vuecal__menu {
+    background-color: rgba(75, 192, 192, 0.7);
+  }
+  .vuecal__title-bar{
+    background-color: rgba(75, 192, 192, 0.3);
+  }
   .vuecal__event-title {
     font-size: small;
     font-weight: bold;
@@ -433,21 +437,30 @@ export default {
     font-size: 10px;
     color: rgb(50, 126, 161);
   }
+  .vuecal__cell-events-count {
+    background-color: rgba(255, 205, 86);
+    min-width: 20px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 16px;
+    border-radius: 20px;
+    padding: 5px, 8px;
+  }
   .vuecal__event.danger {
     background-color: rgba(255, 99, 132, 0.2);
-    border: 1px solid rgb(255, 99, 132);
+    border: 2px solid rgba(255, 99, 132, 0.8);
   }
-  .vuecal__event.success {
-    background-color: rgba(75, 192, 192, 0.2);
-    border: 1px solid rgb(75, 192, 192);
+  .vuecal__event.primary {
+    background-color: rgba(140,146,232, 0.2);
+    border: 2px solid rgba(140,146,232, 0.8);
   }
   .vuecal__event.warning {
     background-color: rgba(255, 159, 64, 0.2);
-    border: 1px solid rgb(255, 159, 64);
+    border: 2px solid rgba(255, 159, 64, 0.8);
   }
   .vuecal__event.gray {
     background-color: rgba(201, 203, 207, 0.2);
-    border: 1px solid rgb(201, 203, 207);
+    border: 2px solid rgba(201, 203, 207, 0.8);
   }
   .list-group-item ul {
     margin-bottom: 0px;

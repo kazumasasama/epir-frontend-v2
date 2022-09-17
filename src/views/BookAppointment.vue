@@ -337,6 +337,14 @@
           >
             {{ $t('Btn.startOver') }}
           </button>
+          <button
+            v-if="subTotal === 0"
+            type="button"
+            class="btn btn-success"
+            @click.prevent="createAppointment()"
+          >
+            {{ $t('Btn.bookAppointment') }}
+          </button>
           <!-- <button
             type="submit"
             class="btn btn-primary"
@@ -385,7 +393,6 @@ export default {
       menu: {},
       selectedMenus: [],
       selectedTime: null,
-      user: {},
       genders: [
         this.$t('Gender.male'),
         this.$t('Gender.female'),
@@ -415,7 +422,6 @@ export default {
   created() {
     this.systemStore.modifyLoadingMessage(this.$t('Spinner.loading'));
     this.systemStore.startLoading();
-    this.user = this.userStore.user;
     this.indexMenus();
     this.stripe = window.Stripe(`${process.env.VUE_APP_STRIPE_PUBLIC_KEY}`);
   },
@@ -439,6 +445,7 @@ export default {
   computed: {
     ...mapWritableState(useSystemStore, ['config']),
     ...mapWritableState(useSystemStore, ['businessTimes']),
+    ...mapWritableState(useUserStore, ['user']),
     fullName() {
       return `${this.user.first_name} ${this.user.last_name}`;
     },
@@ -580,11 +587,10 @@ export default {
     createAppointment() {
       this.systemStore.modifyLoadingMessage(this.$t('Spinner.createAppointment'))
       this.systemStore.startLoading();
-      const interval = Number(this.config.interval)
       const bookingInfo = {
         "date": this.bookingDate,
         "start": this.selectedTime,
-        "end": moment.utc(this.endTimeParams).add(interval,'minutes'),
+        "end": this.endTimeParams,
         "user_id": this.user.id,
         "duration_total": this.totalDuration,
         "menus": this.selectedMenus.map((menu)=> menu.id),
@@ -593,7 +599,28 @@ export default {
       }
       axios.post("/events.json", bookingInfo)
       .then((res)=> {
-        this.event = res.data;
+        const event = res.data;
+        this.event = event;
+        console.log(moment.utc(event.start).format('HH:mm'))
+        const currentBusinessTime = this.systemStore.businessTimes.filter((timeSlot)=> timeSlot.date === event.date && moment.utc(timeSlot.time).format('HH:mm') === moment.utc(event.start).format('HH:mm'))[0];
+        console.log(currentBusinessTime)
+        const timeSlots = (event.duration_total + this.systemStore.config.interval) / 30;
+        console.log(timeSlots)
+        let i = 0;
+        let current;
+        let id = currentBusinessTime.id;
+        let index;
+        while (i < timeSlots) {
+          current = this.systemStore.businessTimes.find(bt => bt.id === id);
+          index = this.systemStore.businessTimes.indexOf(current);
+          current.available = false;
+          this.systemStore.businessTimes.splice(index, 1, current)
+          i++;
+          id++;
+          console.log(current)
+        }
+      })
+      .then(()=> {
         this.$router.push("/complete");
         this.systemStore.endLoading();
       })
