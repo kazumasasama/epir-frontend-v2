@@ -1,16 +1,16 @@
 <template>
   <nav class="navbar navbar-light" style="background-color: #f5f6fe;">
     <div class="col-12 users-btn-container">
-      <button class="btn btn-outline-success btn-sm" @click="openNewUserDialog()">{{ $t('Btn.addCustomer') }}</button>
+      <button class="btn btn-outline-success btn-sm" @click.prevent="openNewUserDialog()">{{ $t('Btn.addCustomer') }}</button>
       <div class="control-navbar-items">
         <div class="control-navbar-item">
           <input v-model="keyword" type="text" class="form-control" placeholder="Search Users">
         </div>
         <div class="control-navbar-item">
           <small>{{ $t('Customers.sortBy') }}</small>
-          <button class="btn btn-outline-primary btn-sm control-navbar-item" @click="sortById()">{{ $t('Btn.customerId') }}</button>
-          <button class="btn btn-outline-primary btn-sm control-navbar-item" @click="sortByFirstName()">{{ $t('Btn.firstName') }}</button>
-          <button class="btn btn-outline-primary btn-sm control-navbar-item" @click="sortByLastName()">{{ $t('Btn.lastName') }}</button>
+          <button class="btn btn-outline-primary btn-sm control-navbar-item" @click.prevent="sortById()">{{ $t('Btn.customerId') }}</button>
+          <button class="btn btn-outline-primary btn-sm control-navbar-item" @click.prevent="sortByFirstName()">{{ $t('Btn.firstName') }}</button>
+          <button class="btn btn-outline-primary btn-sm control-navbar-item" @click.prevent="sortByLastName()">{{ $t('Btn.lastName') }}</button>
         </div>
       </div>
     </div>

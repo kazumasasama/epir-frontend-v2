@@ -279,10 +279,12 @@ export default {
       })
     },
     onEventClick (event, e) {
-      this.selectedEvent = event;
-      // Prevent navigating to narrower view (default vue-cal behavior).
-      e.stopPropagation();
-      this.eventDetailsModal.show();
+      if (event.user.id !== 2) { // User ID for interval
+        this.selectedEvent = event;
+        // Prevent navigating to narrower view (default vue-cal behavior).
+        e.stopPropagation();
+        this.eventDetailsModal.show();
+      }
     },
     redirectToUser(id) {
       this.$router.push(`/admin/users/${id}`);
