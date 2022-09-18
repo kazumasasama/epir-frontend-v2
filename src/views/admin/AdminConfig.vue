@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-light text-start" style="background-color: #f5f6fe;">
+  <nav class="navbar navbar-light text-start config-nav">
     <div class="col-12 users-btn-container">
       <button
         @click.prevent="this.currentPage = 'profile'"
@@ -11,13 +11,19 @@
         @click.prevent="this.currentPage = 'config'"
         class="btn btn-outline-success btn-sm"
       >
-        Settings
+        Site Settings
       </button>
       <button
         @click.prevent="this.currentPage = 'userStatus'"
         class="btn btn-outline-success btn-sm"
       >
         User Status
+      </button>
+      <button
+        @click.prevent="this.currentPage = 'menuCategory'"
+        class="btn btn-outline-success btn-sm"
+      >
+        Menu Category
       </button>
     </div>
   </nav>
@@ -298,6 +304,68 @@
           </div>
         </div>
       </div>
+      <div v-if="currentPage === 'menuCategory'" class="col-12">
+        <div class="card shadow">
+          <div class="card-body">
+            <div class="row">
+              <h1 class="card-title text-start">Menu Category</h1>
+              <div class="col-12">
+                <form
+                  v-on:submit.prevent="createCategory()"
+                  class="col-12 needs-validation text-start"
+                  novalidate
+                >
+                  <div class="form-items input-group">
+                    <input
+                      autocomplete="off"
+                      type="text"
+                      class="form-control"
+                      v-model="newCategory.title"
+                      placeholder="Create new status"
+                    >
+                    <button
+                      class="btn btn-primary"
+                      type="submit"
+                    >
+                      Create
+                    </button>
+                  </div>
+                </form>
+                <div v-for="category in categories" :key="category.id">
+                  <form
+                    v-on:submit.prevent="updateCategory(category)"
+                    class="col-12 needs-validation text-start"
+                    novalidate
+                  >
+                  <div class="form-items input-group">
+                    <input
+                      autocomplete="off"
+                      type="text"
+                      class="form-control"
+                      v-model="category.title"
+                      required
+                    >
+                    <button
+                      class="btn btn-primary update-btn"
+                      type="submit"
+                    >
+                      Update
+                    </button>
+                    <button
+                      class="btn btn-danger"
+                      type="button"
+                      @click.prevent="destroyCategory(category)"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -337,6 +405,7 @@ export default {
         Japanese: 'ja'
       },
       newUserStatus: {},
+      newCategory: {},
     }
   },
   mounted() {
@@ -344,6 +413,7 @@ export default {
   computed: {
     ...mapWritableState(useSystemStore, ['statuses']),
     ...mapWritableState(useSystemStore, ['config']),
+    ...mapWritableState(useSystemStore, ['categories']),
     ...mapWritableState(useSystemStore, ['business']),
     switchBtn() {
       if (this.currentPage === 'profile') {
@@ -409,6 +479,40 @@ export default {
         this.error = error.data;
       })
     },
+    createCategory() {
+      const category = this.newCategory;
+      axios.post('/categories.json', category)
+      .then((res)=> {
+        this.systemStore.categories.push(res.data);
+      })
+      .catch((error)=> {
+        this.error = error.data;
+      })
+    },
+    updateCategory(category) {
+      const id = category.id
+      axios.patch(`/categories/${id}.json`, category)
+      .then(()=> {
+        alert('Updated');
+      })
+      .catch((error)=> {
+        this.error = error.data;
+      })
+    },
+    destroyCategory(category) {
+      const i = this.categories.indexOf(category);
+      const id = category.id
+      category.active = false;
+      console.log(category)
+      axios.patch(`/categories/${id}.json`, category)
+      .then(()=> {
+        this.categories.splice(i, 1);
+        alert('Deleted');
+      })
+      .catch((error)=> {
+        this.error = error.data;
+      })
+    },
   },
 }
 </script>
@@ -424,5 +528,8 @@ export default {
 }
 .update-btn {
   margin-right: 0px;
+}
+.config-nav {
+  background-color: white;
 }
 </style>

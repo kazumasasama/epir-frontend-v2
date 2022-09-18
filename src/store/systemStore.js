@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import axios from 'axios'
 
 export const useSystemStore = defineStore("systemStore", {
   state() {
@@ -9,6 +10,7 @@ export const useSystemStore = defineStore("systemStore", {
       calendarLocale: 'en',
       business: null,
       config: null,
+      categories: null,
       businessTimes: null,
     };
   },
@@ -22,6 +24,12 @@ export const useSystemStore = defineStore("systemStore", {
     initConfig(config) {
       this.config = config;
       // this.calendarLocale = config.lang;
+    },
+    initCategories() {
+      axios.get('/categories.json')
+      .then((res)=> {
+        this.categories = res.data;
+      })
     },
     startLoading() {
       this.isLoading = true;

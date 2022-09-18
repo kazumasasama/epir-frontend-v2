@@ -59,6 +59,7 @@ export default {
     this.getStatuses();
     this.autoLogin();
     this.indexBusinessTimes();
+    this.getCategories();
   },
   computed: {
     ...mapWritableState(useSystemStore, ['isLoading']),
@@ -131,6 +132,9 @@ export default {
       .then((res)=> {
         this.systemStore.businessTimes = res.data;
       })
+    },
+    getCategories() {
+      this.systemStore.initCategories();
     },
   },
 }
