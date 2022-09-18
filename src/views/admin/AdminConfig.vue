@@ -484,6 +484,7 @@ export default {
       axios.post('/categories.json', category)
       .then((res)=> {
         this.systemStore.categories.push(res.data);
+        this.newCategory = {};
       })
       .catch((error)=> {
         this.error = error.data;
@@ -503,7 +504,6 @@ export default {
       const i = this.categories.indexOf(category);
       const id = category.id
       category.active = false;
-      console.log(category)
       axios.patch(`/categories/${id}.json`, category)
       .then(()=> {
         this.categories.splice(i, 1);
