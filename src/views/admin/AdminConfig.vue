@@ -249,7 +249,7 @@
               </button>
             </div>
             </form>
-            <div v-for="status in systemStore.statuses" :key="status.id">
+            <div v-for="status in userStore.statuses" :key="status.id">
               <form
                 v-on:submit.prevent="updateStatus(status)"
                 class="col-12 needs-validation text-start"
@@ -289,21 +289,20 @@
 <script>
 import { mapWritableState } from 'pinia'
 import { useSystemStore } from '@/store/systemStore'
+import { useUserStore } from '@/store/userStore'
 import axios from 'axios'
 export default {
   setup() {
     const systemStore = useSystemStore();
+    const userStore = useUserStore();
     return {
       systemStore,
+      userStore,
     }
   },
   data() {
     return {
       error: null,
-      business: {},
-      config: {
-        lang: 'en'
-      },
       currentPage: 'profile',
       states: [
         'AL', 'AK', 'AZ', 'AR', 'CA',
@@ -325,11 +324,11 @@ export default {
     }
   },
   mounted() {
-    this.getBusiness();
-    this.getConfig();
   },
   computed: {
     ...mapWritableState(useSystemStore, ['statuses']),
+    ...mapWritableState(useSystemStore, ['config']),
+    ...mapWritableState(useSystemStore, ['business']),
     switchBtn() {
       if (this.currentPage === 'profile') {
         return this.$t('Btn.settings')
@@ -340,24 +339,6 @@ export default {
     }
   },
   methods: {
-    getBusiness() {
-      axios.get(`/businesses/1.json`)
-      .then((res)=> {
-        this.business = res.data;
-      })
-      .catch((error)=> {
-        this.error = error.data;
-      })
-    },
-    getConfig() {
-      axios.get(`/configs/1.json`)
-      .then((res)=> {
-        this.config = res.data;
-      })
-      .catch((error)=> {
-        this.error = error.data;
-      })
-    },
     createUserStatus() {
       axios.post('/statuses.json', this.newUserStatus)
       .then((res)=> {

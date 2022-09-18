@@ -124,11 +124,6 @@ const routes = [
     component: CompleteEvent
   },
   {
-    path: '/complete',
-    name: 'complete',
-    component: CompleteEvent
-  },
-  {
     path: '/termsandconditions',
     name: 'termsandconditions',
     component: TermsAndConditions
