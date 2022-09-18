@@ -32,252 +32,268 @@
   <div class="container">
     <div class="row">
       <div v-if="currentPage === 'profile'" class="col-12">
-        <form
-            v-on:submit.prevent="updateProfile()"
-            class="col-12 needs-validation text-start"
-            novalidate
-          >
-          <div class="row">
-            <h1 class="card-title">{{ $t('BusinessProfile') }}</h1>
-            <div class="col-sm-6 card-body">
-              <small>{{ $t('Forms.businessName') }}*</small>
-              <input
-                id="input-validation-firstname"
-                autocomplete="organization"
-                type="text"
-                v-model="business.name"
-                class="form-control"
-                required
-              >
-              <small>{{ $t('Forms.email') }}*</small>
-              <input
-                id="input-validation-email"
-                autocomplete="email"
-                type="email"
-                v-model="business.email"
-                class="form-control"
-                required
-              >
-              <small>{{ $t('Forms.phone') }}</small>
-              <input
-                autocomplete="tel-national"
-                type="text"
-                v-model="business.phone"
-                class="form-control"
-              >
-              <small>{{ $t('Forms.state') }}</small>
-              <select
-                v-model="business.state"
-                class="form-select"
-                autocomplete="address-level1"
-              >
-                <option
-                  v-for="state in states"
-                  :key="state"
-                  :value="state"
-                >
-                  {{ state }}
-                </option>
-              </select>
-              <small>{{ $t('Forms.city') }}</small>
-              <input
-                autocomplete="address-level2"
-                type="text"
-                v-model="business.city"
-                class="form-control"
-              >
-              <small>{{ $t('Forms.address') }}</small>
-              <input
-                autocomplete="street-address"
-                type="text"
-                v-model="business.address"
-                class="form-control"
-              >
-              <small>{{ $t('Forms.zip') }}</small>
-              <input
-                autocomplete="postal-code"
-                type="text"
-                v-model="business.zip"
-                class="form-control"
-              >
-            </div>
-            <div class="col-sm-6 card-body">
-              <small>{{ $t('Forms.website') }}</small>
-              <input
-                autocomplete="url"
-                type="text"
-                v-model="business.url"
-                class="form-control"
-              >
-              <small>{{ $t('Forms.instagram') }}</small>
-              <input
-                autocomplete="off"
-                type="text"
-                v-model="business.insta"
-                class="form-control"
-              >
-              <small>{{ $t('Forms.twitter') }}</small>
-              <input
-                autocomplete="off"
-                type="text"
-                v-model="business.twitter"
-                class="form-control"
-              >
-              <small>{{ $t('Forms.facebook') }}</small>
-              <input
-                autocomplete="off"
-                type="text"
-                v-model="business.facebook"
-                class="form-control"
-              >
-            </div>
-            <div class="btn-container col-12 text-end">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                @click="cancelSignup()"
-              >
-              {{ $t('Btn.cancel') }}
-              </button>
-              <button type="submit" class="btn btn-primary">{{ $t('Btn.updateProfile') }}</button>
+        <div class="card shadow">
+          <div class="card-body">
+            <div class="row">
+                <h1 class="card-title text-start">{{ $t('BusinessProfile') }}</h1>
+                <div class="col-sm-6">
+                  <form
+                      class="needs-validation text-start"
+                      novalidate
+                    >
+                    <small>{{ $t('Forms.businessName') }}*</small>
+                    <input
+                      id="input-validation-firstname"
+                      autocomplete="organization"
+                      type="text"
+                      v-model="business.name"
+                      class="form-control"
+                      required
+                    >
+                    <small>{{ $t('Forms.email') }}*</small>
+                    <input
+                      id="input-validation-email"
+                      autocomplete="email"
+                      type="email"
+                      v-model="business.email"
+                      class="form-control"
+                      required
+                    >
+                    <small>{{ $t('Forms.phone') }}</small>
+                    <input
+                      autocomplete="tel-national"
+                      type="text"
+                      v-model="business.phone"
+                      class="form-control"
+                    >
+                    <small>{{ $t('Forms.state') }}</small>
+                    <select
+                      v-model="business.state"
+                      class="form-select"
+                      autocomplete="address-level1"
+                    >
+                      <option
+                        v-for="state in states"
+                        :key="state"
+                        :value="state"
+                      >
+                        {{ state }}
+                      </option>
+                    </select>
+                    <small>{{ $t('Forms.city') }}</small>
+                    <input
+                      autocomplete="address-level2"
+                      type="text"
+                      v-model="business.city"
+                      class="form-control"
+                    >
+                    <small>{{ $t('Forms.address') }}</small>
+                    <input
+                      autocomplete="street-address"
+                      type="text"
+                      v-model="business.address"
+                      class="form-control"
+                    >
+                    <small>{{ $t('Forms.zip') }}</small>
+                    <input
+                      autocomplete="postal-code"
+                      type="text"
+                      v-model="business.zip"
+                      class="form-control"
+                    >
+                  </form>
+                </div>
+                <div class="col-sm-6">
+                  <form
+                      class="needs-validation text-start"
+                      novalidate
+                    >
+                    <small>{{ $t('Forms.website') }}</small>
+                    <input
+                      autocomplete="url"
+                      type="text"
+                      v-model="business.url"
+                      class="form-control"
+                    >
+                    <small>{{ $t('Forms.instagram') }}</small>
+                    <input
+                      autocomplete="off"
+                      type="text"
+                      v-model="business.insta"
+                      class="form-control"
+                    >
+                    <small>{{ $t('Forms.twitter') }}</small>
+                    <input
+                      autocomplete="off"
+                      type="text"
+                      v-model="business.twitter"
+                      class="form-control"
+                    >
+                    <small>{{ $t('Forms.facebook') }}</small>
+                    <input
+                      autocomplete="off"
+                      type="text"
+                      v-model="business.facebook"
+                      class="form-control"
+                    >
+                  </form>
+                </div>
+                <div class="btn-container col-12 text-end">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    @click="cancelSignup()"
+                  >
+                  {{ $t('Btn.cancel') }}
+                  </button>
+                  <button type="submit" class="btn btn-primary">{{ $t('Btn.updateProfile') }}</button>
+                </div>
             </div>
           </div>
-        </form>
+        </div>
       </div>
       <div v-if="currentPage === 'config'" class="col-12">
-        <div class="row">
-          <h1 class="card-title">{{ $t('Settings') }}</h1>
-          <div class="col-sm-6 card-body">
-            <form
-              v-on:submit.prevent="updateConfig()"
-              class="col-12 needs-validation text-start"
-              novalidate
-            >
-              <small>{{ $t('Forms.language') }}</small>
-              <select
-                v-model="config.lang"
-                class="form-select"
-                autocomplete="address-level1"
-                required
-              >
-                <option
-                  v-for="lang in Object.keys(languages)"
-                  :key="lang"
-                  :value="languages[lang]"
+        <div class="card shadow">
+          <div class="card-body">
+            <div class="row">
+              <h1 class="card-title text-start">{{ $t('Settings') }}</h1>
+              <div class="col-sm-6">
+                <form
+                  v-on:submit.prevent="updateConfig()"
+                  class="col-12 needs-validation text-start"
+                  novalidate
                 >
-                  {{ lang }}
-                </option>
-              </select>
-              <small>{{ $t('Forms.taxRate') }} (%)</small>
-              <input
-                autocomplete="off"
-                type="text"
-                v-model="config.tax"
-                class="form-control"
-                required
-              >
-              <small class="release-notice">Release soon! </small>
-              <small>Business Closing Days</small>
-              <input
-                autocomplete="off"
-                type="text"
-                v-model="config.closingDays"
-                class="form-control"
-                required
-                disabled
-              >
-              <small>{{ $t('Forms.calendarStartTime') }} (9:30AM = 9.5)</small>
-              <input
-                autocomplete="off"
-                type="text"
-                v-model="config.start"
-                class="form-control"
-                required
-              >
-              <small>{{ $t('Forms.calendarEndTime') }} (08:30PM = 20.5)</small>
-              <input
-                autocomplete="off"
-                type="text"
-                v-model="config.end"
-                class="form-control"
-                required
-              >
-              <small>{{ $t('Forms.intervalTime') }}</small>
-              <input
-                autocomplete="off"
-                type="number"
-                v-model="config.interval"
-                class="form-control"
-                required
-              >
-            </form>
-          </div>
-          <div class="btn-container col-12 text-end">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              @click="cancelSignup()"
-            >
-              {{ $t('Btn.cancel') }}
-            </button>
-            <button type="submit" class="btn btn-primary">{{ $t('Btn.updateSettings') }}</button>
+                  <small>{{ $t('Forms.language') }}</small>
+                  <select
+                    v-model="config.lang"
+                    class="form-select"
+                    autocomplete="address-level1"
+                    required
+                  >
+                    <option
+                      v-for="lang in Object.keys(languages)"
+                      :key="lang"
+                      :value="languages[lang]"
+                    >
+                      {{ lang }}
+                    </option>
+                  </select>
+                  <small>{{ $t('Forms.taxRate') }} (%)</small>
+                  <input
+                    autocomplete="off"
+                    type="text"
+                    v-model="config.tax"
+                    class="form-control"
+                    required
+                  >
+                  <small class="release-notice">Release soon! </small>
+                  <small>Business Closing Days</small>
+                  <input
+                    autocomplete="off"
+                    type="text"
+                    v-model="config.closingDays"
+                    class="form-control"
+                    required
+                    disabled
+                  >
+                  <small>{{ $t('Forms.calendarStartTime') }} (9:30AM = 9.5)</small>
+                  <input
+                    autocomplete="off"
+                    type="text"
+                    v-model="config.start"
+                    class="form-control"
+                    required
+                  >
+                  <small>{{ $t('Forms.calendarEndTime') }} (08:30PM = 20.5)</small>
+                  <input
+                    autocomplete="off"
+                    type="text"
+                    v-model="config.end"
+                    class="form-control"
+                    required
+                  >
+                  <small>{{ $t('Forms.intervalTime') }}</small>
+                  <input
+                    autocomplete="off"
+                    type="number"
+                    v-model="config.interval"
+                    class="form-control"
+                    required
+                  >
+                </form>
+              </div>
+              <div class="btn-container col-12 text-end">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  @click="cancelSignup()"
+                >
+                  {{ $t('Btn.cancel') }}
+                </button>
+                <button type="submit" class="btn btn-primary">{{ $t('Btn.updateSettings') }}</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div v-if="currentPage === 'userStatus'" class="col-12">
-        <div class="row">
-          <h1 class="card-title text-start">User Status</h1>
-          <div class="col-sm-6 card-body">
-            <form
-              v-on:submit.prevent="createUserStatus()"
-              class="col-12 needs-validation text-start"
-              novalidate
-            >
-            <div class="form-items input-group">
-              <input
-                autocomplete="off"
-                type="text"
-                class="form-control"
-                v-model="newUserStatus.title"
-                placeholder="Create new status"
-              >
-              <button
-                class="btn btn-primary"
-                type="submit"
-              >
-                Create
-              </button>
-            </div>
-            </form>
-            <div v-for="status in userStore.statuses" :key="status.id">
-              <form
-                v-on:submit.prevent="updateStatus(status)"
-                class="col-12 needs-validation text-start"
-                novalidate
-              >
-              <div class="form-items input-group">
-                <input
-                  autocomplete="off"
-                  type="text"
-                  class="form-control"
-                  v-model="status.title"
-                  required
+        <div class="card shadow">
+          <div class="card-body">
+            <div class="row">
+              <h1 class="card-title text-start">User Status</h1>
+              <div class="col-12">
+                <form
+                  v-on:submit.prevent="createUserStatus()"
+                  class="col-12 needs-validation text-start"
+                  novalidate
                 >
-                <button
-                  class="btn btn-primary update-btn"
-                  type="submit"
-                >
-                  Update
-                </button>
-                <button
-                  class="btn btn-danger"
-                  type="button"
-                  @click.prevent="destroyStatus(status)"
-                >
-                  Delete
-                </button>
+                  <div class="form-items input-group">
+                    <input
+                      autocomplete="off"
+                      type="text"
+                      class="form-control"
+                      v-model="newUserStatus.title"
+                      placeholder="Create new status"
+                    >
+                    <button
+                      class="btn btn-primary"
+                      type="submit"
+                    >
+                      Create
+                    </button>
+                  </div>
+                </form>
+                <div v-for="status in userStore.statuses" :key="status.id">
+                  <form
+                    v-on:submit.prevent="updateStatus(status)"
+                    class="col-12 needs-validation text-start"
+                    novalidate
+                  >
+                  <div class="form-items input-group">
+                    <input
+                      autocomplete="off"
+                      type="text"
+                      class="form-control"
+                      v-model="status.title"
+                      required
+                    >
+                    <button
+                      class="btn btn-primary update-btn"
+                      type="submit"
+                    >
+                      Update
+                    </button>
+                    <button
+                      class="btn btn-danger"
+                      type="button"
+                      @click.prevent="destroyStatus(status)"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                  </form>
+                </div>
               </div>
-              </form>
             </div>
           </div>
         </div>

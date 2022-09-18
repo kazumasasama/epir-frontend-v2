@@ -8,352 +8,358 @@
       {{ error }}
     </div>
 
-    <nav aria-label="breadcrumb" class="pg-bar">
-      <div class="progress">
-        <div
-          id="progress-1"
-          class="progress-bar bg-success"
-          role="progressbar"
-          style="width: 25%;"
-          aria-valuenow="25"
-          aria-valuemin="0"
-          aria-valuemax="25"
-        >
-          {{ $t('Appointments.steps.menu') }}
-        </div>
-        <div
-          id="progress-2"
-          class="progress-bar bg-secondary"
-          role="progressbar"
-          style="width: 25%;"
-          aria-valuenow="25"
-          aria-valuemin="0"
-          aria-valuemax="25"
-        >
-          {{ $t('Appointments.steps.dateTime') }}
-        </div>
-        <div
-          id="progress-3"
-          class="progress-bar bg-secondary"
-          role="progressbar"
-          style="width: 25%;"
-          aria-valuenow="25"
-          aria-valuemin="0"
-          aria-valuemax="25"
-        >
-          {{ $t('Appointments.steps.customerInfo') }}
-        </div>
-        <div
-          id="progress-4"
-          class="progress-bar bg-secondary"
-          role="progressbar"
-          style="width: 25%;"
-          aria-valuenow="25"
-          aria-valuemin="0"
-          aria-valuemax="25"
-        >
-          {{ $t('Appointments.steps.confirmation') }}
-        </div>
-      </div>
-    </nav>
-
-    <div class="pick-menus" v-if="currentStep === 1">
-      <div class="row">
-        <div class="text-start">
-          <h5>{{ $t('Appointments.title.pickMenu') }}</h5>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6">
-          <div
-            class="list-group"
-            role="tablist"
-            v-for="menu in menus" :key="menu.id"
-          >
-            <label class="list-group-item">
-              <ul>
-                <input
-                  class="form-check-input me-1 booking-checkbox"
-                  type="checkbox"
-                  :value="menu"
-                  v-model="selectedMenus"  
-                >
-                <li>{{ menu.title }}</li>
-                <li class="text-end">
-                  <small>{{ menu.duration }} {{ $t('DateTime.min') }}</small>
-                </li>
-                <li class="text-end">
-                  <small>{{ $t('Currency') }}{{ menu.price }}~</small>
-                </li>
-              </ul>
-            </label>
-          </div>
-        </div>
-        <div class="col-sm-6">
-          <div
-            class="list-group"
-            id="list-tab"
-            role="tablist"
-          >
-            <label
-              class="list-group-item"
+    
+    <div class="card shadow">
+      <div class="card-header">
+        <nav aria-label="breadcrumb" class="pg-bar">
+          <div class="progress">
+            <div
+              id="progress-1"
+              class="progress-bar bg-success"
+              role="progressbar"
+              style="width: 25%;"
+              aria-valuenow="25"
+              aria-valuemin="0"
+              aria-valuemax="25"
             >
-            <p>{{ $t('Appointments.totalDuration') }}</p>
-              <p class="text-end">
-                {{ durationSumInString }}
-              </p>
-            </label>
-          </div>
-        </div>
-        <div class="col-12">
-          <div class="btn-container">
-            <button
-              type="submit"
-              class="btn btn-primary"
-              @click.prevent="nextStep()"
+              {{ $t('Appointments.steps.menu') }}
+            </div>
+            <div
+              id="progress-2"
+              class="progress-bar bg-secondary"
+              role="progressbar"
+              style="width: 25%;"
+              aria-valuenow="25"
+              aria-valuemin="0"
+              aria-valuemax="25"
             >
-              {{ $t('Btn.dateTime') }}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="pick-date" v-if="currentStep === 2">
-      <div class="text-start">
-        <h5>{{ $t('Appointments.title.pickTime') }}</h5>
-      </div>
-      <form>
-        <div class="row">
-          <div class="col-sm-6">
-            <div class="datepicker-container">
-              <img
-                src="@/assets/icons/calendar.svg"
-                width="25"
-                height="25"
-                class="datepicker-item datepicker-icon"
-              >
-              <Datepicker
-                v-model="picked"
-                class="datepicker-item"
-                inline
-                autoApply
-                utc="true"
-              />
+              {{ $t('Appointments.steps.dateTime') }}
             </div>
-          </div>
-          <div class="col-sm-6">
-            <div class="row">
-              <div class="time-slot-col col-lg-4 col-sm-6" v-for="timeSlot in availableTimeSlots"
-                  :key="timeSlot.id">
-                <div
-                  class="list-group"
-                  id="list-tab"
-                  role="tablist"
-                >
-                  <label
-                    class="list-group-item"
-                  >
-                    <ul>
-                      <input
-                        class="form-check-input me-1 booking-checkbox"
-                        type="radio"
-                        :value="timeSlot.time"
-                        v-model="selectedTime"
-                      >
-                      <li>
-                        {{ timeSlot.time.slice(11, -8) }}
-                      </li>
-                    </ul>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="btn-container">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                @click.prevent="prevStep()"
-              >
-                {{ $t('Btn.goBack') }}
-              </button>
-              <button
-                type="submit"
-                class="btn btn-primary"
-                @click.prevent="nextStep()"
-              >
-                {{ $t('Btn.customerInfo') }}
-              </button>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-
-    <div class="user-info" v-if="currentStep === 3">
-      <div class="text-start">
-        <h5>{{ $t('Appointments.title.customerInfo') }}</h5>
-      </div>
-      <form>
-        <div class="row">
-          <div class="col-sm-4">
-            <small>{{ $t('Forms.firstName') }}</small>
-            <input type="text" v-model="user.first_name" class="booking-checkbox form-control">
-            <small>{{ $t('Forms.lastName') }}</small>
-            <input type="text" v-model="user.last_name" class="form-control">
-            <small>{{ $t('Forms.email') }}</small>
-            <input type="email" v-model="user.email" class="form-control">
-            <small>{{ $t('Forms.phone') }}</small>
-            <input type="tel" v-model="user.phone" class="form-control">
-            <small>{{ $t('Forms.gender') }}</small>
-            <select v-model="user.gender" class="form-select">
-              <option
-                v-for="gender in genders"
-                :key="gender"
-                :value="gender"
-              >
-                {{ gender }}
-              </option>
-            </select>
-          </div>
-          <div class="col-sm-4">
-            <small>{{ $t('Forms.zip') }}</small>
-            <input type="text" v-model="user.zip" class="form-control">
-            <small>{{ $t('Forms.state') }}</small>
-            <select
-              v-model="user.state"
-              class="form-select"
-              autocomplete="address-level1"
+            <div
+              id="progress-3"
+              class="progress-bar bg-secondary"
+              role="progressbar"
+              style="width: 25%;"
+              aria-valuenow="25"
+              aria-valuemin="0"
+              aria-valuemax="25"
             >
-              <option
-                v-for="state in states"
-                :key="state"
-                :value="state"
-              >
-                {{ state }}
-              </option>
-            </select>
-            <small>{{ $t('Forms.city') }}</small>
-            <input type="text" v-model="user.city" class="form-control">
-            <small>{{ $t('Forms.address') }}</small>
-            <input type="text" v-model="user.address" class="form-control">
-          </div>
-          <div class="col-sm-4">
-            <small>{{ $t('Forms.requestsAndNote') }}</small>
-            <textarea v-model="user.note" col-sm-6s="30" rows="3" class="user-note form-control"></textarea>
-          </div>
-          <div class="col-12">
-            <div class="btn-container">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                @click.prevent="prevStep()"
-              >
-                {{ $t('Btn.goBack') }}
-              </button>
-              <button
-                type="submit"
-                class="btn btn-primary"
-                @click.prevent="nextStep()"
-              >
-                {{ $t('Btn.confirm') }}
-              </button>
+              {{ $t('Appointments.steps.customerInfo') }}
+            </div>
+            <div
+              id="progress-4"
+              class="progress-bar bg-secondary"
+              role="progressbar"
+              style="width: 25%;"
+              aria-valuenow="25"
+              aria-valuemin="0"
+              aria-valuemax="25"
+            >
+              {{ $t('Appointments.steps.confirmation') }}
             </div>
           </div>
-        </div>
-      </form>
-    </div>
-
-    <div class="confirmation" v-if="currentStep === 4">
-      <form v-on:submit.prevent="createAppointment()">
-        <div class="row">
-          <div class="text-start">
-            <h5>{{ $t('Appointments.title.confirmation') }}</h5>
+        </nav>
+      </div>
+      <div class="card-body">
+        <div class="pick-menus" v-if="currentStep === 1">
+          <div class="row">
+            <div class="text-start">
+              <h5>{{ $t('Appointments.title.pickMenu') }}</h5>
+            </div>
           </div>
-          <div class="col-md-6">
-            <section>
-              <div class="card confirmation-detail-card">
-                <div class="card-body text-start">
-                  <ul class="payment-item">
-                    <h6 class="card-title">{{ $t('Appointments.steps.dateTime') }}</h6>
-                    <p>{{ formatBookingDate }}</p>
-                    <p>{{ formattedBookingTime }} - {{ endTime }}</p>
-                    <h6 class="confirm-item-tag">{{ $t('Menus.menu') }}:</h6>
-                    <div v-for="menu in selectedMenus" :key="menu.id" class="d-flex justify-content-between">
-                      <li>
-                        {{ menu.title }}
-                      </li>
-                      <span>{{ $t('Currency') }}{{ menu.price }}</span>
-                    </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div
+                class="list-group"
+                role="tablist"
+                v-for="menu in menus" :key="menu.id"
+              >
+                <label class="list-group-item">
+                  <ul>
+                    <input
+                      class="form-check-input me-1 booking-checkbox"
+                      type="checkbox"
+                      :value="menu"
+                      v-model="selectedMenus"  
+                    >
+                    <li>{{ menu.title }}</li>
+                    <li class="text-end">
+                      <small>{{ menu.duration }} {{ $t('DateTime.min') }}</small>
+                    </li>
+                    <li class="text-end">
+                      <small>{{ $t('Currency') }}{{ menu.price }}~</small>
+                    </li>
                   </ul>
-                  <hr>
-                  <div class="payment-item d-flex justify-content-between">
-                    <h6 class="text-end">{{ $t('Forms.subtotal') }}</h6>
-                    <span>{{ $t('Currency') }}{{ subTotal }}</span>
-                  </div>
-                  <div class="payment-item d-flex justify-content-between">
-                    <span class="text-end">{{ $t('Forms.tax') }} {{ $t('Locale.tax') }}</span>
-                    <span>{{ $t('Currency') }}{{ serviceTax }}</span>
-                  </div>
-                    <hr>
-                  <div class="payment-item d-flex justify-content-between">
-                    <h6 class="text-end">{{ $t('Forms.total') }}</h6>
-                    <span>{{ $t('Currency') }}{{ subTotal + serviceTax }}</span>
-                  </div>
-                  <hr>
-                  <p>
-                    <small>{{ $t('Messages.couponNotice') }}</small>
+                </label>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div
+                class="list-group"
+                id="list-tab"
+                role="tablist"
+              >
+                <label
+                  class="list-group-item"
+                >
+                <p>{{ $t('Appointments.totalDuration') }}</p>
+                  <p class="text-end">
+                    {{ durationSumInString }}
                   </p>
-                  <p>
-                    <small>{{ $t('Messages.priceNotice') }}</small>
-                  </p>
+                </label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="btn-container">
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  @click.prevent="nextStep()"
+                >
+                  {{ $t('Btn.dateTime') }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <div class="pick-date" v-if="currentStep === 2">
+          <div class="text-start">
+            <h5>{{ $t('Appointments.title.pickTime') }}</h5>
+          </div>
+          <form>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="datepicker-container">
+                  <img
+                    src="@/assets/icons/calendar.svg"
+                    width="25"
+                    height="25"
+                    class="datepicker-item datepicker-icon"
+                  >
+                  <Datepicker
+                    v-model="picked"
+                    class="datepicker-item"
+                    inline
+                    autoApply
+                    utc="true"
+                  />
                 </div>
               </div>
-            </section>
-          </div>
-          <div v-if="subTotal > 0" class="col-md-6">
-            <CheckoutView
-              @checkout="checkout()"
-              :stripe="stripe"
-              :elements="elements"
-              :checkBoxError="checkBoxError"
-            />
-          </div>
+              <div class="col-sm-6">
+                <div class="row">
+                  <div class="time-slot-col col-lg-4 col-sm-6" v-for="timeSlot in availableTimeSlots"
+                      :key="timeSlot.id">
+                    <div
+                      class="list-group"
+                      id="list-tab"
+                      role="tablist"
+                    >
+                      <label
+                        class="list-group-item"
+                      >
+                        <ul>
+                          <input
+                            class="form-check-input me-1 booking-checkbox"
+                            type="radio"
+                            :value="timeSlot.time"
+                            v-model="selectedTime"
+                          >
+                          <li>
+                            {{ timeSlot.time.slice(11, -8) }}
+                          </li>
+                        </ul>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="btn-container">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    @click.prevent="prevStep()"
+                  >
+                    {{ $t('Btn.goBack') }}
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    @click.prevent="nextStep()"
+                  >
+                    {{ $t('Btn.customerInfo') }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
-        <div class="btn-container">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            @click.prevent="prevStep()"
-          >
-            {{ $t('Btn.goBack') }}
-          </button>
-          <button
-            type="button"
-            class="btn btn-danger"
-            @click.prevent="clearAppointment()"
-          >
-            {{ $t('Btn.startOver') }}
-          </button>
-          <button
-            v-if="subTotal === 0"
-            type="button"
-            class="btn btn-success"
-            @click.prevent="createAppointment()"
-          >
-            {{ $t('Btn.bookAppointment') }}
-          </button>
-          <!-- <button
-            type="submit"
-            class="btn btn-primary"
-            :disabled="!confirmCheckbox"
-          >
-            {{ $t('Btn.bookAppointment') }}
-          </button> -->
+    
+        <div class="user-info" v-if="currentStep === 3">
+          <div class="text-start">
+            <h5>{{ $t('Appointments.title.customerInfo') }}</h5>
+          </div>
+          <form>
+            <div class="row">
+              <div class="col-sm-4">
+                <small>{{ $t('Forms.firstName') }}</small>
+                <input type="text" v-model="user.first_name" class="booking-checkbox form-control">
+                <small>{{ $t('Forms.lastName') }}</small>
+                <input type="text" v-model="user.last_name" class="form-control">
+                <small>{{ $t('Forms.email') }}</small>
+                <input type="email" v-model="user.email" class="form-control">
+                <small>{{ $t('Forms.phone') }}</small>
+                <input type="tel" v-model="user.phone" class="form-control">
+                <small>{{ $t('Forms.gender') }}</small>
+                <select v-model="user.gender" class="form-select">
+                  <option
+                    v-for="gender in genders"
+                    :key="gender"
+                    :value="gender"
+                  >
+                    {{ gender }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-sm-4">
+                <small>{{ $t('Forms.zip') }}</small>
+                <input type="text" v-model="user.zip" class="form-control">
+                <small>{{ $t('Forms.state') }}</small>
+                <select
+                  v-model="user.state"
+                  class="form-select"
+                  autocomplete="address-level1"
+                >
+                  <option
+                    v-for="state in states"
+                    :key="state"
+                    :value="state"
+                  >
+                    {{ state }}
+                  </option>
+                </select>
+                <small>{{ $t('Forms.city') }}</small>
+                <input type="text" v-model="user.city" class="form-control">
+                <small>{{ $t('Forms.address') }}</small>
+                <input type="text" v-model="user.address" class="form-control">
+              </div>
+              <div class="col-sm-4">
+                <small>{{ $t('Forms.requestsAndNote') }}</small>
+                <textarea v-model="user.note" col-sm-6s="30" rows="3" class="user-note form-control"></textarea>
+              </div>
+              <div class="col-12">
+                <div class="btn-container">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    @click.prevent="prevStep()"
+                  >
+                    {{ $t('Btn.goBack') }}
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    @click.prevent="nextStep()"
+                  >
+                    {{ $t('Btn.confirm') }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
-      </form>
+    
+        <div class="confirmation" v-if="currentStep === 4">
+          <form v-on:submit.prevent="createAppointment()">
+            <div class="row">
+              <div class="text-start">
+                <h5>{{ $t('Appointments.title.confirmation') }}</h5>
+              </div>
+              <div class="col-md-6">
+                <section>
+                  <div class="card confirmation-detail-card">
+                    <div class="card-body text-start">
+                      <ul class="payment-item">
+                        <h6 class="card-title">{{ $t('Appointments.steps.dateTime') }}</h6>
+                        <p>{{ formatBookingDate }}</p>
+                        <p>{{ formattedBookingTime }} - {{ endTime }}</p>
+                        <h6 class="confirm-item-tag">{{ $t('Menus.menu') }}:</h6>
+                        <div v-for="menu in selectedMenus" :key="menu.id" class="d-flex justify-content-between">
+                          <li>
+                            {{ menu.title }}
+                          </li>
+                          <span>{{ $t('Currency') }}{{ menu.price }}</span>
+                        </div>
+                      </ul>
+                      <hr>
+                      <div class="payment-item d-flex justify-content-between">
+                        <h6 class="text-end">{{ $t('Forms.subtotal') }}</h6>
+                        <span>{{ $t('Currency') }}{{ subTotal }}</span>
+                      </div>
+                      <div class="payment-item d-flex justify-content-between">
+                        <span class="text-end">{{ $t('Forms.tax') }} {{ $t('Locale.tax') }}</span>
+                        <span>{{ $t('Currency') }}{{ serviceTax }}</span>
+                      </div>
+                        <hr>
+                      <div class="payment-item d-flex justify-content-between">
+                        <h6 class="text-end">{{ $t('Forms.total') }}</h6>
+                        <span>{{ $t('Currency') }}{{ subTotal + serviceTax }}</span>
+                      </div>
+                      <hr>
+                      <p>
+                        <small>{{ $t('Messages.couponNotice') }}</small>
+                      </p>
+                      <p>
+                        <small>{{ $t('Messages.priceNotice') }}</small>
+                      </p>
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <div v-if="subTotal > 0" class="col-md-6">
+                <CheckoutView
+                  @checkout="checkout()"
+                  :stripe="stripe"
+                  :elements="elements"
+                  :checkBoxError="checkBoxError"
+                />
+              </div>
+            </div>
+            <div class="btn-container">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                @click.prevent="prevStep()"
+              >
+                {{ $t('Btn.goBack') }}
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                @click.prevent="clearAppointment()"
+              >
+                {{ $t('Btn.startOver') }}
+              </button>
+              <button
+                v-if="subTotal === 0"
+                type="button"
+                class="btn btn-primary"
+                @click.prevent="createAppointment()"
+              >
+                {{ $t('Btn.bookAppointment') }}
+              </button>
+              <!-- <button
+                type="submit"
+                class="btn btn-primary"
+                :disabled="!confirmCheckbox"
+              >
+                {{ $t('Btn.bookAppointment') }}
+              </button> -->
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -718,7 +724,14 @@ export default {
     padding-right: 0px;
   }
   .progress {
-    margin-bottom: 23px;
+    height: 25px;
+    font-size: medium;
+  }
+  .progress-bar {
+    height: 25px;
+  }
+  .card-header {
+    padding: 24px 48px;
   }
   .booking-checkbox:checked {
     background-color: rgb(54, 162, 235);
