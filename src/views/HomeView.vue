@@ -46,6 +46,7 @@
           <div class="col-sm-6">
             <h2 class="release-card-title">Releases</h2>
             <ul>
+              <li><small>09-19-2022: Categorized Menus for both appointment page and admin menus page</small></li>
               <li><small>09-14-2022: Appointment reschedule function in admin calendar</small></li>
               <li><small>09-07-2022: Auto login</small></li>
               <li><small>09-07-2022: Customer search by name and email (Admin)</small></li>
