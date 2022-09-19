@@ -4,6 +4,7 @@ import axios from 'axios'
 export const useSystemStore = defineStore("systemStore", {
   state() {
     return {
+      error: null,
       isLoading: false,
       LoadingMessage: '',
       mapboxURL: 'mapbox://styles/mapbox/streets-v11',
@@ -12,23 +13,58 @@ export const useSystemStore = defineStore("systemStore", {
       config: null,
       categories: null,
       businessTimes: null,
+      activeMenus: null,
+      inactiveMenus: null,
+      groupedMenus: null,
+      menusByCategory: null,
     };
   },
   actions: {
-    initBusiness(business) {
-      this.business = business;
+    initBusiness() {
+      axios.get(`/businesses/1.json`)
+      .then((res)=> {
+        this.business = res.data;
+      })
+      .catch((error)=> {
+        this.error = error.response.data.errors;
+      })
     },
-    initBusinessTimes(business) {
-      this.businessTimes = business;
+    initBusinessTimes() {
+      axios.get("/business_times.json")
+      .then((res)=> {
+        this.businessTimes = res.data;
+      })
+      .catch((error)=> {
+        this.error = error.response
+      })
     },
-    initConfig(config) {
-      this.config = config;
-      // this.calendarLocale = config.lang;
+    initConfig() {
+      axios.get(`/configs/1.json`)
+      .then((res)=> {
+        this.config = res.data;
+      })
+      .catch((error)=> {
+        this.error = error.response.data.errors;
+      })
     },
     initCategories() {
       axios.get('/categories.json')
       .then((res)=> {
         this.categories = res.data;
+      })
+      .catch((error)=> {
+        this.error = error.response.data.errors;
+      })
+    },
+    initMenus() {
+      axios.get('/menus.json')
+      .then((res)=> {
+        this.activeMenus = res.data.active;
+        this.inactiveMenus = res.data.inactive;
+      })
+      axios.get('/grouped-menus.json')
+      .then((res)=> {
+        this.groupedMenus = res.data;
       })
     },
     startLoading() {

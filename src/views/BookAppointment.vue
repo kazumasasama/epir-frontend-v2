@@ -72,7 +72,7 @@
               <div
                 class="list-group"
                 role="tablist"
-                v-for="menu in menus" :key="menu.id"
+                v-for="menu in activeMenus" :key="menu.id"
               >
                 <label class="list-group-item">
                   <ul>
@@ -395,7 +395,6 @@ export default {
       error: null,
       event: {},
       currentStep: 1,
-      menus: [],
       menu: {},
       selectedMenus: [],
       selectedTime: null,
@@ -428,7 +427,6 @@ export default {
   created() {
     this.systemStore.modifyLoadingMessage(this.$t('Spinner.loading'));
     this.systemStore.startLoading();
-    this.indexMenus();
     this.stripe = window.Stripe(`${process.env.VUE_APP_STRIPE_PUBLIC_KEY}`);
   },
   mounted() {
@@ -451,6 +449,7 @@ export default {
   computed: {
     ...mapWritableState(useSystemStore, ['config']),
     ...mapWritableState(useSystemStore, ['businessTimes']),
+    ...mapWritableState(useSystemStore, ['activeMenus']),
     ...mapWritableState(useUserStore, ['user']),
     fullName() {
       return `${this.user.first_name} ${this.user.last_name}`;
@@ -520,12 +519,6 @@ export default {
     },
   },
   methods: {
-    indexMenus() {
-      axios.get("/menus.json")
-      .then((res)=> {
-        this.menus = res.data.active;
-      })
-    },
     getClientSecret() {
       const payment = {
         "menuIds": this.selectedMenuIds,

@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-light" style="background-color: #f5f6fe;">
+  <nav class="navbar navbar-light user-index-nav">
     <div class="col-12 users-btn-container">
       <button class="btn btn-outline-success btn-sm" @click.prevent="openNewUserDialog()">{{ $t('Btn.addCustomer') }}</button>
       <div class="control-navbar-items">
@@ -264,6 +264,9 @@ export default {
 }
 .list-group-item {
   text-align: left;
+}
+.user-index-nav {
+  background-color: white;
 }
 .users-btn-container {
   text-align: left;

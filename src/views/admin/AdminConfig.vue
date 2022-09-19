@@ -433,7 +433,7 @@ export default {
         alert('Updated');
       })
       .catch((error)=> {
-        this.error = error.data;
+        this.error = error.response.data.errors;
       })
     },
     updateProfile() {
@@ -443,7 +443,7 @@ export default {
         alert('Updated');
       })
       .catch((error)=> {
-        this.error = error.data;
+        this.error = error.response.data.errors;
       })
     },
     updateConfig() {
@@ -453,7 +453,7 @@ export default {
         alert('Updated');
       })
       .catch((error)=> {
-        this.error = error.data;
+        this.error = error.response.data.errors;
       })
     },
     updateStatus(status) {
@@ -463,7 +463,7 @@ export default {
         alert('Updated');
       })
       .catch((error)=> {
-        this.error = error.data;
+        this.error = error.response.data.errors;
       })
     },
     destroyStatus(status) {
@@ -476,7 +476,7 @@ export default {
         alert('Deleted');
       })
       .catch((error)=> {
-        this.error = error.data;
+        this.error = error.response.data.errors;
       })
     },
     createCategory() {
@@ -487,7 +487,7 @@ export default {
         this.newCategory = {};
       })
       .catch((error)=> {
-        this.error = error.data;
+        this.error = error.response.data.errors;
       })
     },
     updateCategory(category) {
@@ -497,7 +497,7 @@ export default {
         alert('Updated');
       })
       .catch((error)=> {
-        this.error = error.data;
+        this.error = error.response.data.errors;
       })
     },
     destroyCategory(category) {
@@ -510,7 +510,7 @@ export default {
         alert('Deleted');
       })
       .catch((error)=> {
-        this.error = error.data;
+        this.error = error.response.data.errors;
       })
     },
   },

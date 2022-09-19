@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import axios from 'axios'
 
 export const useUserStore = defineStore('userStore', {
   state() {
@@ -15,8 +16,14 @@ export const useUserStore = defineStore('userStore', {
     pushUser(user) {
       this.user = user;
     },
-    initStatuses(statuses) {
-      this.statuses = statuses;
+    initStatuses() {
+      axios.get('/statuses.json')
+      .then((res)=> {
+        this.statuses = res.data;
+      })
+      .catch((error)=> {
+        this.error = error.response.data.errors;
+      })
     },
     switchLoggedin(boolean) {
       this.isLoggedin = boolean;

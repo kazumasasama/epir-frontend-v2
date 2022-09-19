@@ -54,12 +54,13 @@ export default {
     HeaderNav,
   },
   created() {
-    this.getBusiness();
-    this.getConfig();
-    this.getStatuses();
     this.autoLogin();
-    this.indexBusinessTimes();
-    this.getCategories();
+    this.systemStore.initBusiness();
+    this.systemStore.initBusinessTimes();
+    this.systemStore.initCategories();
+    this.systemStore.initConfig();
+    this.systemStore.initMenus();
+    this.userStore.initStatuses();
   },
   computed: {
     ...mapWritableState(useSystemStore, ['isLoading']),
@@ -93,48 +94,12 @@ export default {
           this.isAdmin = user.admin;
         })
         .catch((error)=> {
-          this.error = error.data;
+          this.error = error.response;
         })
       }
     },
     getMessage(message) {
       this.message = message
-    },
-    getBusiness() {
-      axios.get(`/businesses/1.json`)
-      .then((res)=> {
-        this.systemStore.initBusiness(res.data);
-      })
-      .catch((error)=> {
-        this.error = error.data;
-      })
-    },
-    getConfig() {
-      axios.get(`/configs/1.json`)
-      .then((res)=> {
-        this.systemStore.initConfig(res.data);
-      })
-      .catch((error)=> {
-        this.error = error.data;
-      })
-    },
-    getStatuses() {
-      axios.get('/statuses.json')
-      .then((res)=> {
-        this.userStore.initStatuses(res.data);
-      })
-      .catch((error)=> {
-        this.error = error.data;
-      })
-    },
-    indexBusinessTimes() {
-      axios.get("/business_times.json")
-      .then((res)=> {
-        this.systemStore.businessTimes = res.data;
-      })
-    },
-    getCategories() {
-      this.systemStore.initCategories();
     },
   },
 }

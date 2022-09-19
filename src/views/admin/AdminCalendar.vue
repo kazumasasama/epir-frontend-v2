@@ -176,6 +176,7 @@ export default {
   },
   data() {
     return {
+      error: null,
       events: [],
       selectedEvent: {
         user: {},
@@ -395,6 +396,9 @@ export default {
       .then(()=> {
         this.eventDetailsModal.hide();
       })
+      .catch((error)=> {
+        this.error = error.response.data.errors;
+      })
     }
   },
 }
@@ -463,8 +467,5 @@ export default {
   .vuecal__event.gray {
     background-color: rgba(201, 203, 207, 0.2);
     border: 2px solid rgba(201, 203, 207, 0.8);
-  }
-  .list-group-item ul {
-    margin-bottom: 0px;
   }
 </style>
