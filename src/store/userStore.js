@@ -4,6 +4,7 @@ import axios from 'axios'
 export const useUserStore = defineStore('userStore', {
   state() {
     return {
+      error: null,
       userStoreError: null,
       users: [],
       user: null,
@@ -20,6 +21,15 @@ export const useUserStore = defineStore('userStore', {
       axios.get('/statuses.json')
       .then((res)=> {
         this.statuses = res.data;
+      })
+      .catch((error)=> {
+        this.error = error.response.data.errors;
+      })
+    },
+    initUsers() {
+      axios.get('/users.json')
+      .then((res)=> {
+        this.users = res.data;
       })
       .catch((error)=> {
         this.error = error.response.data.errors;

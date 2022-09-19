@@ -9,14 +9,13 @@ export const useSystemStore = defineStore("systemStore", {
       LoadingMessage: '',
       mapboxURL: 'mapbox://styles/mapbox/streets-v11',
       calendarLocale: 'en',
+      businessTimes: null,
       business: null,
       config: null,
       categories: null,
-      businessTimes: null,
       activeMenus: null,
       inactiveMenus: null,
       groupedMenus: null,
-      menusByCategory: null,
     };
   },
   actions: {

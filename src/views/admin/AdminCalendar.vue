@@ -158,16 +158,19 @@ import 'vue-cal/dist/vuecal.css'
 import axios from 'axios'
 import * as moment from 'moment-timezone';
 import * as bootstrap from 'bootstrap'
-import { useSystemStore } from '@/store/systemStore';
 import { mapWritableState } from 'pinia'
+import { useSystemStore } from '@/store/systemStore';
+import { useUserStore } from '@/store/userStore';
 import Datepicker from 'vue3-datepicker';
 import { ref } from 'vue'
 
 export default {
   setup() {
     const systemStore = useSystemStore();
+    const userStore = useUserStore();
     return {
       systemStore,
+      userStore,
     }
   },
   components: { 
@@ -185,8 +188,6 @@ export default {
       selectedTime: null,
       disableDays: [],
       newEvent: {},
-      users: [],
-      menus: [],
       new_menus: [],
       eventDetailsModal: null,
       picked: ref(new Date),
@@ -197,9 +198,8 @@ export default {
   created() {
     this.systemStore.modifyLoadingMessage(this.$t('Spinner.loading'))
     this.systemStore.startLoading();
+    this.userStore.initUsers();
     this.indexEvents();
-    this.indexUsers();
-    this.indexMenus();
   },
   mounted() {
     this.eventDetailsModal = new bootstrap.Modal(document.getElementById('event-details'));
@@ -210,6 +210,7 @@ export default {
   computed: {
     ...mapWritableState(useSystemStore, ['calendarLocale']),
     ...mapWritableState(useSystemStore, ['config']),
+    ...mapWritableState(useUserStore, ['users']),
     bookingDate() {
       return moment(this.picked).format('YYYY-MM-DD');
     },
@@ -252,31 +253,13 @@ export default {
   methods: {
     reloadData() {
       this.indexEvents();
-      this.indexBusinessTimes();
+      this.systemStore.initBusinessTimes();
       this.reloadKey++;
     },
     indexEvents() {
       axios.get('/events.json')
       .then((res)=> {
         this.events = res.data.filter((event)=> event.status === "booked")
-      })
-    },
-    indexBusinessTimes() {
-      axios.get("/business_times.json")
-      .then((res)=> {
-        this.systemStore.businessTimes = res.data;
-      })
-    },
-    indexUsers() {
-      axios.get('/users.json')
-      .then((res)=> {
-        this.users = res.data;
-      })
-    },
-    indexMenus() {
-      axios.get('/menus.json')
-      .then((res)=> {
-        this.menus = res.data;
       })
     },
     onEventClick (event, e) {

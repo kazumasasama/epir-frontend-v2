@@ -182,8 +182,6 @@
       }
     },
     computed: {
-      // ...mapWritableState(useSystemStore, ['activeMenus']),
-      // ...mapWritableState(useSystemStore, ['inactiveMenus']),
       ...mapWritableState(useSystemStore, ['categories']),
       ...mapWritableState(useSystemStore, ['groupedMenus']),
     },
@@ -238,8 +236,7 @@
         if (menu.id) {
           delete menu['id'];
         }
-        axios
-        .post('/menus', this.updatingMenu)
+        axios.post('/menus', this.updatingMenu)
         .then((res)=> {
           this.systemStore.activeMenus.push(res.data);
           this.updatingMenu = {};
@@ -247,8 +244,7 @@
       },
       updateMenu() {
         let id = this.updatingMenu.id;
-        axios
-        .patch(`/menus/${id}`, this.updatingMenu)
+        axios.patch(`/menus/${id}`, this.updatingMenu)
         .then((res)=> {
           this.selectedMenu = {};
           if (res.data.active) {
@@ -267,8 +263,7 @@
       deactivateMenu() {
         let id = this.updatingMenu.id;
         this.updatingMenu.active = false;
-        axios
-        .patch(`/menus/${id}`, this.updatingMenu)
+        axios.patch(`/menus/${id}`, this.updatingMenu)
         .then((res)=> {
           this.selectedMenu = {};
           let menu = this.menus.find(menu => menu.id === id);
@@ -280,8 +275,7 @@
       activateMenu() {
         let id = this.updatingMenu.id;
         this.updatingMenu.active = true;
-        axios
-        .patch(`/menus/${id}`, this.updatingMenu)
+        axios.patch(`/menus/${id}`, this.updatingMenu)
         .then((res)=> {
           this.selectedMenu = {};
           let menu = this.menus.find(menu => menu.id === id);
