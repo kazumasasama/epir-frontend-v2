@@ -60,6 +60,7 @@
           </div>
         </nav>
       </div>
+      
       <div class="card-body">
         <div class="pick-menus" v-if="currentStep === 1">
           <div class="row">
@@ -68,45 +69,101 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-6">
-              <div
-                class="list-group"
-                role="tablist"
-                v-for="menu in activeMenus" :key="menu.id"
-              >
-                <label class="list-group-item">
-                  <ul>
-                    <input
-                      class="form-check-input me-1 booking-checkbox"
-                      type="checkbox"
-                      :value="menu"
-                      v-model="selectedMenus"  
-                    >
-                    <li>{{ menu.title }}</li>
-                    <li class="text-end">
-                      <small>{{ menu.duration }} {{ $t('DateTime.min') }}</small>
-                    </li>
-                    <li class="text-end">
-                      <small>{{ $t('Currency') }}{{ menu.price }}~</small>
-                    </li>
-                  </ul>
-                </label>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div
-                class="list-group"
-                id="list-tab"
-                role="tablist"
-              >
-                <label
-                  class="list-group-item"
-                >
-                <p>{{ $t('Appointments.totalDuration') }}</p>
-                  <p class="text-end">
-                    {{ durationSumInString }}
-                  </p>
-                </label>
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 col-sm-5">
+                      <div class="d-flex category-nav">
+                        <div
+                          class="nav flex-column nav-pills me-3"
+                          role="tablist"
+                        >
+                          <button
+                            v-for="category in categories"
+                            :key="category.id"
+                            @click.prevent="switchCategory(category.id)"
+                            class="nav-link text-start btn"
+                            data-bs-toggle="pill"
+                            type="button"
+                            aria-selected="true"
+                          >
+                            {{ category.title }}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-7 menu-nav-tab-container text-start">
+                      <div
+                        class="active-menu-container-card text-start"
+                        role="tablist"
+                      >
+                        <form>
+                          <ul class="list-group menu-list">
+                            <li
+                            class="list-group-item"
+                            v-for="menu in menus"
+                            :key="menu.id"
+                            >
+                              <label
+                                class="form-check-label"
+                              >
+                                <input
+                                  class="form-check-input me-1 menu-checkbox no-active-menu-checkbox booking-checkbox"
+                                  type="checkbox"
+                                  :value="menu"
+                                  v-model="selectedMenus"
+                                  v-if="menus[0].id !== -1"
+                                >
+                                  {{ menu.title }}
+                                  <div>
+                                    <small>{{ menu.duration }} {{ $t('DateTime.min') }} | {{ $t('Currency') }}{{ menu.price }}</small>
+                                  </div>
+                              </label>
+                            </li>
+                          </ul>
+                        </form>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-12">
+                      <div class="row">
+                        <div class="col-lg-12 col-sm-6 total-duration-col">
+                          <div
+                            class="list-group"
+                            id="list-tab"
+                            role="tablist"
+                          >
+                            <label
+                              class="list-group-item"
+                            >
+                            <p>{{ $t('Appointments.totalDuration') }}</p>
+                              <p class="text-end">
+                                {{ durationSumInString }}
+                              </p>
+                            </label>
+                          </div>
+                        </div>
+                        <div class="col-lg-12 col-sm-6 total-duration-col">
+                          <div
+                            class="list-group"
+                            id="list-tab"
+                            role="tablist"
+                          >
+                            <label
+                              class="list-group-item"
+                            >
+                            <p>Selected Menus</p>
+                              <ol>
+                                <li v-for="menu in selectedMenus" :key="menu.id">{{ menu.title }}</li>
+                              </ol>
+                            </label>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="col-12">
@@ -396,6 +453,14 @@ export default {
       event: {},
       currentStep: 1,
       menu: {},
+      menus: [
+        {
+          id: -1,
+          title: 'Select a category',
+          price: '--',
+          duration: '--',
+        }
+      ],
       selectedMenus: [],
       selectedTime: null,
       genders: [
@@ -448,8 +513,10 @@ export default {
   },
   computed: {
     ...mapWritableState(useSystemStore, ['config']),
+    ...mapWritableState(useSystemStore, ['categories']),
     ...mapWritableState(useSystemStore, ['businessTimes']),
     ...mapWritableState(useSystemStore, ['activeMenus']),
+    ...mapWritableState(useSystemStore, ['groupedMenus']),
     ...mapWritableState(useUserStore, ['user']),
     fullName() {
       return `${this.user.first_name} ${this.user.last_name}`;
@@ -519,6 +586,23 @@ export default {
     },
   },
   methods: {
+    switchCategory(categoryId) {
+      if (this.groupedMenus[categoryId]) {
+        var active = this.groupedMenus[categoryId].filter(menu => menu.active === true);
+        if (active) {
+          this.menus = active;
+        }
+      } else {
+        this.menus = [
+          {
+            id: -1,
+            title: 'No menu in this category...',
+            price: '--',
+            duration: '--',
+          }
+        ];
+      }
+    },
     getClientSecret() {
       const payment = {
         "menuIds": this.selectedMenuIds,
@@ -671,6 +755,12 @@ export default {
   .col-sm-4 {
     text-align: left;
     padding: 15px;
+  }
+  .total-duration-col {
+    padding-top: 0px;
+  }
+  .menu-list {
+    padding-bottom: 20px;
   }
   .datepicker-container {
     display: flex;

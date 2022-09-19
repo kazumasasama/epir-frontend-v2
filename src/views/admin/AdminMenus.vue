@@ -4,149 +4,173 @@
       <div class="col-12">
         <div class="card shadow">
           <div class="card-body">
-              <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-5">
-                  <div class="d-flex category-nav">
-                    <div
-                      class="nav flex-column nav-pills me-3"
-                      role="tablist"
-                    >
-                      <button
-                        v-for="category in categories"
-                        :key="category.id"
-                        @click.prevent="switchCategory(category.id)"
-                        class="nav-link text-start btn"
-                        data-bs-toggle="pill"
-                        type="button"
-                        aria-selected="true"
-                      >
-                        {{ category.title }}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-8 col-md-8 col-sm-7 menu-nav-tab-container text-start">
-                  <!-- Tabs -->
-                  <ul class="nav nav-tabs active-nav-tabs">
-                    <li class="nav-item" id="tab-active-menu" @click.prevent="selectActiveTab()">
-                      <a class="nav-link active-nav-link">{{ $t('Btn.active') }}</a>
-                    </li>
-                    <li class="nav-item" id="tab-inactive-menu" @click.prevent="selectInactiveTab()">
-                      <a class="nav-link">{{ $t('Btn.inactive') }}</a>
-                    </li>
-                  </ul>
-                  <!-- Active Menus -->
+            <div class="row">
+              <div class="col-lg-4 col-md-4 col-sm-5">
+                <div class="d-flex category-nav">
                   <div
-                    v-if="menuContent === 'active'"
-                    class="list-group active-menu-container-card card"
-                    id="list-tab"
+                    class="nav flex-column nav-pills me-3"
                     role="tablist"
                   >
-                      <label
-                        v-for="menu in activeMenus"
-                        :key="menu.id"
-                        class="form-check-label"
-                      >
-                        <ul>
-                          <input
-                            class="form-check-input me-1 menu-checkbox no-active-menu-checkbox"
-                            type="radio"
-                            :value="menu"
-                            v-model="selectedMenu"
-                          >
-                          {{ menu.title }}
-                          <li class="text-end"><small>{{ menu.duration }} {{ $t('DateTime.min') }} | {{ $t('Currency') }}{{ menu.price }}</small></li>
-                        </ul>
-                        <hr class="menu-hr-divider">
-                      </label>
-                  </div>
-                  <!-- Inactive Menus -->
-                  <div
-                    v-if="menuContent === 'inactive'"
-                    class="list-group inactive-menu-container-card card"
-                    id="list-tab"
-                    role="tablist"
-                  >
-                    <label
-                      v-for="menu in inactiveMenus"
-                      :key="menu.id"
-                      class="form-check-label"
-                    >
-                      <ul>
-                        <input
-                          class="form-check-input me-1 menu-checkbox no-inactive-menu-checkbox"
-                          type="radio"
-                          :value="menu"
-                          v-model="selectedMenu"
-                        >
-                        {{ menu.title }}
-                        <li class="text-end"><small>{{ menu.duration }} {{ $t('DateTime.min') }} | {{ $t('Currency') }}{{ menu.price }}</small></li>
-                      </ul>
-                      <hr class="menu-hr-divider">
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- menu controller -->
-          <div class="col-lg-4 col-md-12 text-start">
-            <div class="card shadow">
-              <div class="card-body">
-                <form>
-                  <small>{{ $t('Forms.title') }}</small>
-                  <input type="text" v-model="updatingMenu.title" class="form-control">
-                  <small>{{ $t('Forms.price') }}</small>
-                  <input type="number" v-model="updatingMenu.price" class="form-control">
-                  <small>{{ $t('Forms.duration') }}</small>
-                  <input type="number" v-model="updatingMenu.duration" class="form-control">
-                  <small>{{ $t('Forms.description') }}</small>
-                  <textarea type="text" v-model="updatingMenu.description" class="form-control"></textarea>
-                  <small>Category</small>
-                  <select
-                    v-model="updatingMenu.category_id"
-                    class="form-select"
-                    autocomplete="off"
-                  >
-                    <option
-                      v-for="category in categories"
+                    <button
+                      v-for="(category, index) in categories"
                       :key="category.id"
-                      :value="category.id"
+                      :id="`category-title-${index}`"
+                      @click.prevent="switchCategory(category.id)"
+                      class="nav-link text-start btn"
+                      data-bs-toggle="pill"
+                      type="button"
+                      aria-selected="true"
                     >
                       {{ category.title }}
-                    </option>
-                  </select>
-                  <div class="btn-container">
-                    <button @click.prevent="createMenu()" class="btn-sm btn-outline-success btn">{{ $t('Btn.newMenu') }}</button>
-                    <button @click.prevent="updateMenu()" class="btn-sm btn-outline-primary btn">{{ $t('Btn.update') }}</button>
-                    <button
-                      type="reset"
-                      class="btn-sm btn-outline-secondary btn"
-                      @click.prevent="clearForm()"
-                    >
-                      {{ $t('Btn.clearForm') }}
-                    </button>
-                    <button
-                      class="btn-sm btn-outline-danger btn"
-                      v-if="menuContent === 'active'"
-                      @click.prevent="deactivateMenu()"
-                    >
-                      {{ $t('Btn.deactivate') }}
-                    </button>
-                    <button
-                      class="btn-sm btn-outline-danger btn"
-                      v-if="menuContent === 'inactive'"
-                      @click.prevent="activateMenu()"
-                    >
-                      {{ $t('Btn.activate') }}
+                      <span
+                        class="badge bg-success rounded-pill"
+                        v-if="groupedMenus[category.id]"
+                      >
+                        {{ groupedMenus[category.id].length }}
+                      </span>
+                      <span
+                        class="badge bg-success rounded-pill"
+                        v-if="!groupedMenus[category.id]"
+                      >
+                        {{ 0 }}
+                      </span>
                     </button>
                   </div>
-                </form>
+                </div>
+              </div>
+              <div class="col-lg-8 col-md-8 col-sm-7 menu-nav-tab-container text-start">
+                <!-- Tabs -->
+                <ul class="nav nav-tabs active-nav-tabs">
+                  <li
+                    class="nav-item"
+                    id="tab-active-menu"
+                    @click.prevent="selectActiveTab()"
+                  >
+                    <a class="nav-link active-nav-link">{{ $t('Btn.active') }}</a>
+                  </li>
+                  <li
+                    class="nav-item"
+                    id="tab-inactive-menu"
+                    @click.prevent="selectInactiveTab()"
+                  >
+                    <a class="nav-link">{{ $t('Btn.inactive') }}</a>
+                  </li>
+                </ul>
+                <!-- Active Menus -->
+                <div
+                  v-if="menuContent === 'active'"
+                  class="list-group active-menu-container-card card"
+                  id="list-tab"
+                  role="tablist"
+                >
+                  <label
+                    v-for="menu in activeMenus"
+                    :key="menu.id"
+                    class="form-check-label"
+                  >
+                    <ul>
+                      <input
+                        class="form-check-input me-1 menu-checkbox no-active-menu-checkbox"
+                        type="radio"
+                        :value="menu"
+                        v-model="selectedMenu"
+                        v-if="activeMenus[0].id !== -1"
+                      >
+                      {{ menu.title }}
+                      <li class="text-end"><small>{{ menu.duration }} {{ $t('DateTime.min') }} | {{ $t('Currency') }}{{ menu.price }}</small></li>
+                    </ul>
+                    <hr class="menu-hr-divider">
+                  </label>
+                </div>
+                <!-- Inactive Menus -->
+                <div
+                  v-if="menuContent === 'inactive'"
+                  class="list-group inactive-menu-container-card card"
+                  id="list-tab"
+                  role="tablist"
+                >
+                  <label
+                    v-for="menu in inactiveMenus"
+                    :key="menu.id"
+                    class="form-check-label"
+                  >
+                    <ul>
+                      <input
+                        class="form-check-input me-1 menu-checkbox no-inactive-menu-checkbox"
+                        type="radio"
+                        :value="menu"
+                        v-model="selectedMenu"
+                        v-if="inactiveMenus[0].id !== -1"
+                      >
+                      {{ menu.title }}
+                      <li class="text-end">
+                        <small>{{ menu.duration }} {{ $t('DateTime.min') }} | {{ $t('Currency') }}{{ menu.price }}</small>
+                      </li>
+                    </ul>
+                    <hr class="menu-hr-divider">
+                  </label>
+                </div>
               </div>
             </div>
           </div>
+        </div>
+        <!-- menu controller -->
+        <div class="col-lg-4 col-md-12 text-start">
+          <div class="card shadow">
+            <div class="card-body">
+              <form>
+                <small>{{ $t('Forms.title') }}</small>
+                <input type="text" v-model="updatingMenu.title" class="form-control">
+                <small>{{ $t('Forms.price') }}</small>
+                <input type="number" v-model="updatingMenu.price" class="form-control">
+                <small>{{ $t('Forms.duration') }}</small>
+                <input type="number" v-model="updatingMenu.duration" class="form-control">
+                <small>{{ $t('Forms.description') }}</small>
+                <textarea type="text" v-model="updatingMenu.description" class="form-control"></textarea>
+                <small>Category</small>
+                <select
+                  v-model="updatingMenu.category_id"
+                  class="form-select"
+                  autocomplete="off"
+                >
+                  <option
+                    v-for="category in categories"
+                    :key="category.id"
+                    :value="category.id"
+                  >
+                    {{ category.title }}
+                  </option>
+                </select>
+                <div class="btn-container">
+                  <button @click.prevent="createMenu()" class="btn-sm btn-outline-success btn">{{ $t('Btn.newMenu') }}</button>
+                  <button @click.prevent="updateMenu()" class="btn-sm btn-outline-primary btn">{{ $t('Btn.update') }}</button>
+                  <button
+                    type="reset"
+                    class="btn-sm btn-outline-secondary btn"
+                    @click.prevent="clearForm()"
+                  >
+                    {{ $t('Btn.clearForm') }}
+                  </button>
+                  <button
+                    class="btn-sm btn-outline-danger btn"
+                    v-if="menuContent === 'active'"
+                    @click.prevent="deactivateMenu()"
+                  >
+                    {{ $t('Btn.deactivate') }}
+                  </button>
+                  <button
+                    class="btn-sm btn-outline-danger btn"
+                    v-if="menuContent === 'inactive'"
+                    @click.prevent="activateMenu()"
+                  >
+                    {{ $t('Btn.activate') }}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -168,13 +192,27 @@
         updatingMenu: {},
         menuContent: "active",
         categoryMenu: null,
-        activeMenus: null,
-        inactiveMenus: null,
+        activeMenus: [
+          {
+            id: -1,
+            title: 'Select a category',
+            price: '--',
+            duration: '--',
+          }
+        ],
+        inactiveMenus: [
+          {
+            id: -1,
+            title: 'Select a category',
+            price: '--',
+            duration: '--',
+          }
+        ],
       }
     },
-    created() {
-      const id = this.categories[0].id;
-      this.switchCategory(id);
+    mounted() {
+      let category = document.getElementById('category-title-0');
+      category.classList.add('active')
     },
     watch: {
       selectedMenu() {
@@ -195,7 +233,8 @@
           if (!active.length) {
             this.activeMenus = [
               {
-                title: 'No menu here...',
+                id: -1,
+                title: 'No menu in this category...',
                 price: '--',
                 duration: '--',
               }
@@ -205,7 +244,8 @@
           if (!inactive.length) {
             this.inactiveMenus = [
               {
-                title: 'No menu here...',
+                id: -1,
+                title: 'No menu in this category...',
                 price: '--',
                 duration: '--',
               }
@@ -215,14 +255,16 @@
         } else {
           this.inactiveMenus = [
             {
-              title: 'No menu here...',
+              id: -1,
+              title: 'No menu in this category...',
               price: '--',
               duration: '--',
             }
           ];
           this.activeMenus = [
             {
-              title: 'No menu here...',
+              id: -1,
+              title: 'No menu in this category...',
               price: '--',
               duration: '--',
             }
