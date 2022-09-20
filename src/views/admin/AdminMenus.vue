@@ -339,6 +339,8 @@
           const categoryId = res.data.category_id;
           this.groupedMenus[categoryId].push(res.data)
           this.updatingMenu = {};
+          const modal = this.menuModal;
+          modal.hide();
         })
         .catch((error)=> {
           this.error = error;
@@ -422,6 +424,9 @@
         this.menuContent = 'inactive';
       },
       showModal(menu, func) {
+        if (this.inactiveMenus[0].id === -1) {
+          return
+        }
         if (func === 'create') {
           this.menu = {};
           this.updatingMenu = {};
