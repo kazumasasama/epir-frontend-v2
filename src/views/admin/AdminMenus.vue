@@ -424,19 +424,20 @@
         this.menuContent = 'inactive';
       },
       showModal(menu, func) {
-        if (this.inactiveMenus[0].id === -1) {
+        if (this.menuContent ==='inactive' && this.inactiveMenus[0].id === -1) {
           return
-        }
-        if (func === 'create') {
-          this.menu = {};
-          this.updatingMenu = {};
         } else {
-          this.menu = Object.assign({}, menu);
-          this.updatingMenu = Object.assign({}, menu);
+          if (func === 'create') {
+            this.menu = {};
+            this.updatingMenu = {};
+          } else {
+            this.menu = Object.assign({}, menu);
+            this.updatingMenu = Object.assign({}, menu);
+          }
+          this.modalMode = func;
+          const modal = this.menuModal;
+          modal.show();
         }
-        this.modalMode = func;
-        const modal = this.menuModal;
-        modal.show();
       }
     },
   }
