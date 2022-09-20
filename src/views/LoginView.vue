@@ -3,55 +3,54 @@
     {{ error }}
   </div>
   <div class="container">
-    <div>
-      <h4>{{ $t('Login.pageTitle') }}</h4>
-    </div>
-    <div class="row">
-      <div class="col-sm-12 login-form-container">
-        <div class="login-form-container">
-          <form v-on:submit.prevent="login()" class="needs-validation" novalidate>
-            <small>{{ $t('Login.form.email') }}</small>
-            <input
-              v-model="user.email"
-              id="login-input-email"
-              class="form-control"
-              type="text"
-              autocomplete="email"
-              required
-            >
-            <div v-if="emailInputError" class="invalid-feedback">
-              {{ emailInputError }}
-            </div>
-            <small>{{ $t('Login.form.password') }}</small>
-            <input
-              v-model="user.password"
-              id="login-input-password"
-              class="form-control"
-              type="password"
-              autocomplete="current-password"
-              required
-            >
-            <div class="btn-container">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                @click.prevent="this.$router.push('/')"
+    <div class="row d-flex justify-content-center">
+      <div class="col-4">
+        <div class="card shadow">
+          <div class="card-header text-center">
+            <h4 class="">{{ $t('Login.pageTitle') }}</h4>
+          </div>
+          <div class="card-body login-form-container">
+            <form v-on:submit.prevent="login()" class="needs-validation" novalidate>
+              <small>{{ $t('Login.form.email') }}</small>
+              <input
+                v-model="user.email"
+                id="login-input-email"
+                class="form-control"
+                type="text"
+                autocomplete="email"
+                required
               >
-                {{ $t('Btn.backHome') }}
-              </button>
-              <button type="submit" class="btn btn-danger" @click="login()">{{ $t('Btn.login') }}</button>
-            </div>
-          </form>
+              <div v-if="emailInputError" class="invalid-feedback">
+                {{ emailInputError }}
+              </div>
+              <small>{{ $t('Login.form.password') }}</small>
+              <input
+                v-model="user.password"
+                id="login-input-password"
+                class="form-control"
+                type="password"
+                autocomplete="current-password"
+                required
+              >
+              <div class="btn-container">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  @click.prevent="this.$router.push('/')"
+                >
+                  {{ $t('Btn.backHome') }}
+                </button>
+                <button type="submit" class="btn btn-info" @click="login()">{{ $t('Btn.login') }}</button>
+              </div>
+            </form>
+          </div>
         </div>
+      </div>
+      <div class="login-form-container">
       </div>
       <div class="col-sm-6 login-hint">
         <p class="login-hint-title">{{ $t('Login.loginAdmin') }}</p>
         <p class="login-hint-item"><small>{{ $t('Login.form.email') }}: test@test.com</small></p>
-        <p class="login-hint-item"><small>{{ $t('Login.form.password') }}: password</small></p>
-      </div>
-      <div class="col-sm-6 login-hint">
-        <p class="login-hint-title">{{ $t('Login.loginUser') }}</p>
-        <p class="login-hint-item"><small>{{ $t('Login.form.email') }}: test@user.com</small></p>
         <p class="login-hint-item"><small>{{ $t('Login.form.password') }}: password</small></p>
       </div>
     </div>
@@ -77,8 +76,8 @@ export default {
       error: null,
       emailInputError: null,
       user: {
-        email: "",
-        password: "",
+        email: "test@test.com",
+        password: "password",
       },
     }
   },

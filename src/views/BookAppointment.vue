@@ -73,17 +73,18 @@
               <div class="card">
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-lg-3 col-md-4 col-sm-5">
+                    <div class="col-lg-3 col-md-4 col-sm-12">
                       <div class="d-flex category-nav">
                         <div
                           class="nav flex-column nav-pills me-3"
                           role="tablist"
                         >
                           <button
-                            v-for="category in categories"
+                            v-for="(category, index) in categories"
                             :key="category.id"
                             @click.prevent="switchCategory(category.id)"
                             class="nav-link text-start btn"
+                            :id="`category-title-${index}`"
                             data-bs-toggle="pill"
                             type="button"
                             aria-selected="true"
@@ -93,36 +94,39 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-lg-6 col-md-8 col-sm-7 menu-nav-tab-container text-start">
+                    <div class="col-lg-6 col-md-8 col-sm-12 menu-nav-tab-container text-start">
                       <div
                         class="active-menu-container-card text-start"
                         role="tablist"
                       >
-                        <form>
-                          <ul class="list-group menu-list">
-                            <li
-                            class="list-group-item"
+                        <ul class="list-group menu-list">
+                          <label
+                            class="form-check-label"
                             v-for="menu in menus"
                             :key="menu.id"
+                          >
+                            <li
+                              class="list-group-item"
                             >
-                              <label
-                                class="form-check-label"
-                              >
-                                <input
-                                  class="form-check-input me-1 menu-checkbox no-active-menu-checkbox booking-checkbox"
-                                  type="checkbox"
-                                  :value="menu"
-                                  v-model="selectedMenus"
-                                  v-if="menus[0].id !== -1"
-                                >
-                                  {{ menu.title }}
-                                  <div>
-                                    <small>{{ menu.duration }} {{ $t('DateTime.min') }} | {{ $t('Currency') }}{{ menu.price }}</small>
-                                  </div>
-                              </label>
+                              <form>
+                                <div class="d-flex justify-content-between menu-card">
+                                  <input
+                                    class="form-check-input me-1 booking-checkbox"
+                                    type="checkbox"
+                                    :value="menu"
+                                    v-model="selectedMenus"
+                                    v-if="menus[0].id !== -1"
+                                  >
+                                  <span>
+                                    {{ menu.title }}
+                                  </span>
+                                  <small>{{ menu.duration }} {{ $t('DateTime.min') }} | {{ $t('Currency') }}{{ menu.price }}</small>
+                                </div>
+                                <small>{{ menu.description }}</small>
+                              </form>
                             </li>
-                          </ul>
-                        </form>
+                          </label>
+                        </ul>
                       </div>
                     </div>
                     <div class="col-lg-3 col-md-12">
@@ -133,33 +137,16 @@
                             id="list-tab"
                             role="tablist"
                           >
-                            <label
-                              class="list-group-item"
-                            >
-                            <p>{{ $t('Appointments.totalDuration') }}</p>
-                              <p class="text-end">
-                                {{ durationSumInString }}
-                              </p>
-                            </label>
-                          </div>
-                        </div>
-                        <div class="col-lg-12 col-sm-6 total-duration-col">
-                          <div
-                            class="list-group"
-                            id="list-tab"
-                            role="tablist"
-                          >
-                            <label
-                              class="list-group-item"
-                            >
-                            <p>Selected Menus</p>
+                            <label class="list-group-item">
+                              <small class="step-1-summary">{{ $t('Appointments.totalDuration') }}</small>
+                              <p>{{ durationSumInString }}</p>
+                              <small class="step-1-summary">Selected Menus</small>
                               <ol>
                                 <li v-for="menu in selectedMenus" :key="menu.id">{{ menu.title }}</li>
                               </ol>
                             </label>
                           </div>
                         </div>
-
                       </div>
                     </div>
                   </div>
@@ -493,8 +480,11 @@ export default {
     this.systemStore.modifyLoadingMessage(this.$t('Spinner.loading'));
     this.systemStore.startLoading();
     this.stripe = window.Stripe(`${process.env.VUE_APP_STRIPE_PUBLIC_KEY}`);
+    this.switchCategory(1)
   },
   mounted() {
+    const selectedCategory = document.getElementById('category-title-0')
+    selectedCategory.classList.add('active')
     this.$nextTick(function() {
       this.systemStore.endLoading();
     })
@@ -819,8 +809,24 @@ export default {
   .booking-checkbox:checked {
     background-color: rgb(54, 162, 235);
   }
+  form {
+    position: relative;
+    left: 20px;
+  }
   .time-slot-col {
     padding: 8px;
+  }
+  .list-group-item span{
+    font-size: 18px;
+    font-weight: bold;
+    color: rgb(110, 110, 110);
+  }
+  .step-1-summary {
+    position: relative;
+    font-weight: bold;
+  }
+  .menu-card {
+    padding-right: 20px;
   }
   ul {
     margin-bottom: 0px;

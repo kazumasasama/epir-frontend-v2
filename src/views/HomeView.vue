@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="card home-card">
-        <div class="row">
+    <div class="row home-card-container">
+      <div class="card home-card ">
+        <div class="row d-flex justify-content-center">
           <h1 class="card-title top-card-title">{{ $t('Home.greeting') }}</h1>
           <div class="col-md-6">
             <div class="card-body home" id="card-home">
@@ -18,29 +18,38 @@
               </p>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="login-hint row">
-              <p class="card-text" id="text-home">{{ $t('Home.message') }}</p>
-              <div class="col-md-6">
-                <p class="login-hint-title">{{ $t('Home.loginAdmin') }}</p>
-                <p class="login-hint-item"><small>{{ $t('Home.email') }}: test@test.com</small></p>
-                <p class="login-hint-item"><small>{{ $t('Home.password') }}: password</small></p>
+          <div class="col-md-5 col-sm-7">
+            <div class="login-hint">
+              <div class="card shadow">
+                <div class="card-header">
+                  <p class="card-text" id="text-home">{{ $t('Home.message') }}</p>
+                </div>
+                <div class="card-body">
+                  <p class="login-hint-title">{{ $t('Home.loginAdmin') }}</p>
+                  <p class="login-hint-item"><small>{{ $t('Home.email') }}: test@test.com</small></p>
+                  <p class="login-hint-item"><small>{{ $t('Home.password') }}: password</small></p>
+                  <div class="btn-container">
+                    <button
+                      @click="this.$router.push('/login')"
+                      class="btn btn-primary"
+                    >
+                      {{ $t('Btn.login') }}
+                    </button>
+                    <button
+                      @click="this.$router.push('/signup')"
+                      class="btn btn-primary"
+                    >
+                      {{ $t('Btn.signup') }}
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div class="col-md-6">
-                <p class="login-hint-title">{{ $t('Home.loginUser') }}</p>
-                <p class="login-hint-item"><small>{{ $t('Home.email') }}: test@user.com</small></p>
-                <p class="login-hint-item"><small>{{ $t('Home.password') }}: password</small></p>
-              </div>
-            </div>
-            <div class="btn-container">
-              <button @click="this.$router.push('/login')" class="btn btn-primary">{{ $t('Btn.login') }}</button>
-              <button @click="this.$router.push('/signup')" class="btn btn-primary">{{ $t('Btn.signup') }}</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row home-card-container">
       <div class="card release-card text-start">
         <div class="row">
           <div class="col-sm-6">
@@ -94,6 +103,13 @@ export default {
 </script>
 
 <style scoped>
+.home-card-container {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.card-header {
+  background-color: rgb(140, 146, 232, 0.2);
+}
 .card-img-home {
   max-width: 100%;
 }
@@ -109,10 +125,14 @@ export default {
 }
 .login-hint {
   margin-top: 20px;
+  margin-bottom: 20px;
   vertical-align: middle;
 }
 .login-hint-title {
   font-weight: bold;
+}
+.login-hint-item {
+  margin-bottom: 0px;
 }
 .illust-credit {
   font-size: 7pt;
