@@ -2,10 +2,9 @@
   <div class="container">
     <div class="row">
       <div class="col-12 text-end">
-        <small>{{ $t('Calendar.dontSeeAppointments') }}</small>
         <button
           @click="reloadData()"
-          class="btn btn-info"
+          class="btn btn-info reload-btn"
         >
           {{ $t('Btn.reloadData') }}
           <font-awesome-icon icon="fa-solid fa-arrow-rotate-right" />
@@ -394,6 +393,9 @@ export default {
 </script>
 
 <style>
+  .reload-btn {
+    margin-bottom: 8px;
+  }
   .modal-user-statuses {
     color: rgb(255, 99, 132);
     padding-left: 0px;

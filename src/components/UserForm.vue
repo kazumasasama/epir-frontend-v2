@@ -1,177 +1,193 @@
 <template>
-  <div class="card" :key="userFormKey">
-    <div class="card-body">
-      <form v-if="user">
-        <div class="row">
-          <div class="col-sm-6">
-            <small>First Name</small>
+  <div class="modal" id="password-modal" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-body text-start">
+          <form>
+            <small>Current Password*</small>
             <input
-              type="text"
-              v-model="updatingUser.first_name"
-              class="form-control mb-2"
+              type="password"
+              v-model="password.currentPassword"
+              class="form-control"
+              autocomplete="current-password"
             >
-            <small>Last Name</small>
+            <small>New Password*</small>
             <input
-              type="text"
-              v-model="updatingUser.last_name"
-              class="form-control mb-2"
+              type="password"
+              v-model="password.newPassword"
+              class="form-control"
+              autocomplete="new-password"
             >
-            <small>Gender</small>
-            <select v-model="updatingUser.gender" class="form-select mb-2">
-              <option
-                v-for="gender in genders"
-                :key="gender"
-                :value="gender"
+            <small>Confirm New Password*</small>
+            <div class="input-group mb-3">
+              <input
+                type="password"
+                v-model="password.password_confirmation"
+                class="form-control"
+                autocomplete="new-password"
               >
-                {{ gender }}
-              </option>
-            </select>
-            <small>Email</small>
-            <input
-              type="text"
-              v-model="updatingUser.email"
-              class="form-control mb-2"
-            >
-            <small>Phone</small>
-            <input
-              type="text"
-              v-model="updatingUser.phone"
-              class="form-control mb-2"
-            >
-            <small>Birthday</small>
-            <input
-              class="form-control mb-2"
-              type="text"
-              v-model="updatingUser.birthday"
-            >
-            <small>Status</small>
-            <Multiselect
-              v-model="updatingUser.status_ids"
-              :placeholder="multipleselectPlaceholder"
-              :options="multiselectOptions"
-              mode="tags"
-              class="multiselect-tag-color mb-2"
-              :close-on-select="false"
-              :hideSelected="false"
-              :create-option="true"
-            />
-          </div>
-  
-          <div class="col-sm-6">
-            <small>State</small>
-            <select
-              v-model="updatingUser.state"
-              class="form-select mb-2"
-              autocomplete="address-level1"
-            >
-              <option
-                v-for="state in states"
-                :key="state"
-                :value="state"
-                >
-                {{ state }}
-              </option>
-            </select>
-            <small>City</small>
-            <input
-              class="form-control mb-2"
-              type="text"
-              v-model="updatingUser.city"
-            >
-            <small>Address</small>
-            <input
-              class="form-control mb-2"
-              type="text"
-              v-model="updatingUser.address"
-            >
-            <small>Zip</small>
-            <input
-              class="form-control mb-2"
-              type="text"
-              v-model="updatingUser.zip"
-            >
-            <small>Requirements/Note</small>
-            <textarea
-              rows="3"
-              class="form-control mb-2"
-              v-model="updatingUser.note"
-            >
-            </textarea>
-            <div class="control-navbar-item">
-              <button
-                class="btn btn-sm btn-primary"
-                @click.prevent="handleUpdateUser()"
-              >
-                {{ $t('Btn.update') }}
+              <button class="btn btn-outline-secondary">
+                <font-awesome-icon icon="fa-regular fa-eye" />
               </button>
-              <button class="btn btn-sm btn-danger">{{ $t('Btn.deactivate') }}</button>
             </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <div>
+            <button
+              class="btn-sm btn-outline-success btn"
+              data-bs-dismiss="modal"
+              @click.prevent="updatePassword()"
+            >
+              Submit
+            </button>
+            <button
+              class="btn-sm btn-outline-secondary btn"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="alert alert-danger"
+    role="alert"
+    v-if="error"
+  >
+    {{ error }}
+  </div>
+  <div
+    class="alert alert-info"
+    role="alert"
+    v-if="message"
+  >
+    {{ message }}
+  </div>
+
+  <div class="row">
+    <div class="col-12 text-end">
+      <button disabled @click="showPasswordModal()" class="btn btn-sm btn-outline-danger">Change Password</button>
+    </div>
+    <div class="col-sm-6">
+      <form>
+        <small>First Name</small>
+        <input type="text" v-model="user.first_name" class="form-control">
+        <small>Last Name</small>
+        <input type="text" v-model="user.last_name" class="form-control">
+        <small>Gender</small>
+        <select v-model="user.gender" class="form-select">
+          <option
+            v-for="gender in genders"
+            :key="gender"
+            :value="gender"
+          >
+            {{ gender }}
+          </option>
+        </select>
+        <small>Email</small>
+        <input type="text" v-model="user.email" class="form-control">
+        <small>Phone</small>
+        <input type="text" v-model="user.phone" class="form-control">
+        <small>Birthday</small>
+        <input class="form-control" type="text" v-model="user.birthday">
+        <small>Status</small>
+        <Multiselect
+          v-model="user.status_ids"
+          :placeholder="multipleselectPlaceholder"
+          :options="multiselectOptions"
+          mode="tags"
+          class="multiselect-tag-color"
+          :close-on-select="false"
+          :hideSelected="false"
+          :create-option="true"
+        />
       </form>
+    </div>
+  
+    <div class="col-sm-6">
+      <form>
+        <small>Zip</small>
+        <input class="form-control" type="text" v-model="user.zip">
+        <small>State</small>
+        <select v-model="user.state" class="form-select" autocomplete="address-level1">
+          <option
+            v-for="state in states"
+            :key="state"
+            :value="state"
+          >
+            {{ state }}
+          </option>
+        </select>
+        <small>City</small>
+        <input class="form-control" type="text" v-model="user.city">
+        <small>Address</small>
+        <input class="form-control" type="text" v-model="user.address">
+        <small>Requirements/Note</small>
+        <textarea rows="3" class="form-control" v-model="user.note"></textarea>
+      </form>
+    </div>
+    <div class="btn-container text-end">
+      <button class="btn btn-primary" @click.prevent="updateUser()">{{ $t('Btn.update') }}</button>
     </div>
   </div>
 </template>
 
 <script>
-// import { mapWritableState } from 'pinia'
-// import { useSystemStore } from '@/store/systemStore'
-import { useUserStore } from '@/store/userStore'
 import Multiselect from '@vueform/multiselect'
+import { mapWritableState } from 'pinia'
+import { useUserStore } from '@/store/userStore'
+import axios from 'axios'
+import * as bootstrap from 'bootstrap'
 
 export default {
-  setup() {
-    const userStore = useUserStore();
-    // const systemStore = useSystemStore();
-    return {
-      userStore,
-      // systemStore,
-    }
-  },
   components: {
     Multiselect,
   },
-  created() {
-    // this.user = this.userStore.user;
-    this.statuses = this.userStore.statuses;
-    this.updatingUser = this.user;
-  },
-  mounted() {
-    this.userFormKey++;
-  },
-  props: {
-    user: {
-      type: Object
-    }
-  },
   data() {
     return {
-      userFormKey: 0,
-      updatingUser: {},
-      statuses: null,
-      // user: null,
+      error: null,
       genders: [
-        this.$t('Gender.male'),
-        this.$t('Gender.female'),
-        this.$t('Gender.nonBinary'),
-        this.$t('Gender.ratherNot'),
-        this.$t('Gender.NA')
+        "Male",
+        "Female",
+        "Non Binary",
+        "Rather not to descrive",
+        "N/A"
       ],
       states: [
-        'AL', 'AK', 'AZ', 'AR', 'CA',
-        'CO', 'CT', 'DE', 'FL', 'GA',
-        'HI', 'ID', 'IL', 'IN', 'IA',
-        'KS', 'KY', 'LA', 'ME', 'MD',
-        'MA', 'MI', 'MN', 'MS', 'MO',
-        'MT', 'NE', 'NV', 'NH', 'NJ',
-        'NM', 'NY', 'NC', 'ND', 'OH',
-        'OK', 'OR', 'PA', 'RI', 'SC',
-        'SD', 'TN', 'TX', 'UT', 'VT',
-        'VA', 'WA', 'WV', 'WI', 'WY'
+        "AL", "AK", "AZ", "AR", "CA",
+        "CO", "CT", "DE", "FL", "GA",
+        "HI", "ID", "IL", "IN", "IA",
+        "KS", "KY", "LA", "ME", "MD",
+        "MA", "MI", "MN", "MS", "MO",
+        "MT", "NE", "NV", "NH", "NJ",
+        "NM", "NY", "NC", "ND", "OH",
+        "OK", "OR", "PA", "RI", "SC",
+        "SD", "TN", "TX", "UT", "VT",
+        "VA", "WA", "WV", "WI", "WY"
       ],
+      showHistory: false,
+      message: null,
+      passwordModal: null,
+      password: {
+        currentPassword: '',
+        newPassword: '',
+        passwordConfirmation: '',
+      }
     }
   },
+  created() {
+    this.showUser();
+  },
+  mounted() {
+    this.passwordModal = new bootstrap.Modal(document.getElementById('password-modal'));
+  },
   computed: {
+    ...mapWritableState(useUserStore, ['statuses']),
+    ...mapWritableState(useUserStore, ['user']),
     multiselectOptions() {
       const statusIds = this.statuses.map(status => status.id)
       const statusValues = this.statuses.map(status => status.title)
@@ -182,10 +198,10 @@ export default {
       return options
     },
     multipleselectPlaceholder() {
-      if (this.updatingUser.status_ids.length === 0) {
+      if (this.user.status_ids.length === 0) {
         return 'Select Status'
       }
-      const statusIds = this.updatingUser.status_ids;
+      const statusIds = this.user.status_ids;
       let selectedStatuses = [];
       for (let j in this.multiselectOptions) {
         for (let i in statusIds) {
@@ -202,20 +218,96 @@ export default {
     },
   },
   methods: {
-    handleUpdateUser() {
-      this.$emit('updateUser', this.updatingUser);
+    showUser() {
+      let id = this.user.id
+      axios.get(`/users/${id}.json`)
+      .then((res)=> {
+        this.user = res.data;
+      })
+      .catch((error)=> {
+      this.error = error;
+    })
     },
+    updateUser() {
+      let id = this.user.id;
+      let user = {}
+      user = {
+        first_name: this.user.first_name,
+        last_name: this.user.last_name,
+        gender: this.user.gender,
+        email: this.user.email,
+        phone: this.user.phone,
+        birthday: this.user.birthday,
+        address: this.user.address,
+        state: this.user.state,
+        city: this.user.city,
+        zip: this.user.zip,
+        status: this.user.status,
+        status_ids: this.user.status_ids,
+        note: this.user.note
+      }
+      axios.patch(`/users/${id}.json`, user)
+      .then((res)=> {
+        this.user = res.data;
+      })
+      .catch((error)=> {
+        this.error = error;
+      })
+      this.message = "User updated";
+      setTimeout(()=> {this.message = null}, 3000);
+    },
+    updatePassword() {
+      const id = this.user.id;
+      const updateData = this.password;
+      axios.patch(`/users/${id}.json`, updateData)
+      .then((res)=> {
+        this.user = res.data;
+      })
+      .catch((error)=> {
+        this.error = error;
+      })
+    },
+    showPasswordModal() {
+      this.passwordModal.show();
+    }
   },
 }
 </script>
 
 <style src="@vueform/multiselect/themes/default.css"></style>
+
 <style scoped>
+  
   .row {
     text-align: left;
   }
-  .control-navbar-item {
-    float: right;
+  .btn-container {
+    margin-top: 15px;
+  }
+  .user-btn-container {
+    text-align: left;
+    overflow: hidden;
+  }
+  .history-event-container {
+    text-align: left;
+  }
+  .notification {
+    color: red;
+  }
+  .history-hairline {
+    color:#FFFFFF;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border: none;
+    border-top: 2px dashed gray;
+    height: 1px;
+  }
+  .hr-user-statics {
+    border-top: 1px;
+  }
+  .userFullName {
+    margin-top: 8px;
+    font-size: larger;
   }
   .multiselect-tag-color {
     --ms-tag-bg: rgb(75, 192, 192);

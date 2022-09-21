@@ -1,13 +1,19 @@
 <template>
-  <nav class="navbar navbar-light text-start config-nav">
-    <div class="col-12 users-btn-container">
+  <nav class="navbar navbar-light text-start navbar-white">
+    <div class="col-12 btn-container">
       <button
         @click.prevent="this.currentPage = 'profile'"
         class="btn btn-outline-success btn-sm"
         id="profile-btn"
-        data-bs-toggle="button"
       >
-        Profile
+        Business Profile
+      </button>
+      <button
+        @click.prevent="this.currentPage = 'account'"
+        class="btn btn-outline-success btn-sm"
+        id="profile-btn"
+      >
+        Account
       </button>
       <button
         @click.prevent="this.currentPage = 'config'"
@@ -252,7 +258,7 @@
               <div class="col-12">
                 <form
                   v-on:submit.prevent="createUserStatus()"
-                  class="col-12 needs-validation text-start"
+                  class="col-12 needs-validation text-start mb-3"
                   novalidate
                 >
                   <div class="form-items input-group">
@@ -274,7 +280,7 @@
                 <div v-for="status in userStore.statuses" :key="status.id">
                   <form
                     v-on:submit.prevent="updateStatus(status)"
-                    class="col-12 needs-validation text-start"
+                    class="col-12 needs-validation text-start mb-3"
                     novalidate
                   >
                   <div class="form-items input-group">
@@ -314,7 +320,7 @@
               <div class="col-12">
                 <form
                   v-on:submit.prevent="createCategory()"
-                  class="col-12 needs-validation text-start"
+                  class="col-12 needs-validation text-start mb-3"
                   novalidate
                 >
                   <div class="form-items input-group">
@@ -336,7 +342,7 @@
                 <div v-for="category in categories" :key="category.id">
                   <form
                     v-on:submit.prevent="updateCategory(category)"
-                    class="col-12 needs-validation text-start"
+                    class="col-12 needs-validation text-start mb-3"
                     novalidate
                   >
                   <div class="form-items input-group">
@@ -368,6 +374,19 @@
           </div>
         </div>
       </div>
+      <div v-if="currentPage === 'account'" class="col-12">
+        <div class="card shadow">
+          <div class="card-body">
+            <div class="row">
+              <h1 class="card-title text-start">Account</h1>
+              <div class="col-12">
+                <UserForm/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -377,6 +396,8 @@ import { mapWritableState } from 'pinia'
 import { useSystemStore } from '@/store/systemStore'
 import { useUserStore } from '@/store/userStore'
 import axios from 'axios'
+import UserForm from '@/components/UserForm.vue'
+
 export default {
   setup() {
     const systemStore = useSystemStore();
@@ -385,6 +406,9 @@ export default {
       systemStore,
       userStore,
     }
+  },
+  components: {
+    UserForm,
   },
   data() {
     return {
@@ -532,8 +556,5 @@ export default {
 }
 .update-btn {
   margin-right: 0px;
-}
-.config-nav {
-  background-color: white;
 }
 </style>

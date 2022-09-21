@@ -119,6 +119,10 @@ html {
   background-color: rgb(246, 243, 255);
 }
 
+.navbar-white {
+  background-color: white;
+}
+
 nav a {
   font-weight: bold;
 }
@@ -147,9 +151,10 @@ hr {
   margin-bottom: 25px;
 }
 
-.btn {
+.btn-container * {
   margin: 5px 8px;
 }
+
 
 #bisiness-name-logo {
   /* font-family: Helvetica;

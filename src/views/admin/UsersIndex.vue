@@ -6,11 +6,11 @@
         <div class="control-navbar-item">
           <input v-model="keyword" type="text" class="form-control" placeholder="Search Users">
         </div>
-        <div class="control-navbar-item">
+        <div class="control-navbar-item btn-container">
           <small>{{ $t('Customers.sortBy') }}</small>
-          <button class="btn btn-outline-primary btn-sm control-navbar-item" @click.prevent="sortById()">{{ $t('Btn.customerId') }}</button>
-          <button class="btn btn-outline-primary btn-sm control-navbar-item" @click.prevent="sortByFirstName()">{{ $t('Btn.firstName') }}</button>
           <button class="btn btn-outline-primary btn-sm control-navbar-item" @click.prevent="sortByLastName()">{{ $t('Btn.lastName') }}</button>
+          <button class="btn btn-outline-primary btn-sm control-navbar-item" @click.prevent="sortByFirstName()">{{ $t('Btn.firstName') }}</button>
+          <button class="btn btn-outline-primary btn-sm control-navbar-item" @click.prevent="sortById()">{{ $t('Btn.customerId') }}</button>
         </div>
       </div>
     </div>

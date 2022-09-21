@@ -28,8 +28,10 @@ import {
   faFacebook,
   faInstagram
 } from '@fortawesome/free-brands-svg-icons'
+
+import { faEye } from '@fortawesome/free-regular-svg-icons'
 /* add icons to the library */
-library.add(faLanguage, faArrowRotateRight, faBars, faLock, faArrowRightFromBracket, faRepeat, faPhone, faTwitter, faFacebook, faInstagram)
+library.add(faLanguage, faArrowRotateRight, faBars, faLock, faArrowRightFromBracket, faRepeat, faPhone, faTwitter, faFacebook, faInstagram, faEye)
 
 const i18n = createI18n({
   locale: 'en',

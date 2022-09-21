@@ -212,9 +212,6 @@ export default {
     justify-content: center;
     align-items: center;
   }
-  .btn-container {
-    margin-top: 20px;
-  }
   .login-hint {
     margin-top: 20px;
     text-align: center;
@@ -224,5 +221,8 @@ export default {
   }
   .login-hint-title {
     font-weight: bold;
+  }
+  .btn-container {
+    margin-top: 20px;
   }
 </style>

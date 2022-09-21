@@ -120,9 +120,6 @@ export default {
 .release-card-title {
   font-size: large;
 }
-.btn {
-  margin: 5px 8px;
-}
 .login-hint {
   margin-top: 20px;
   margin-bottom: 20px;
@@ -133,6 +130,9 @@ export default {
 }
 .login-hint-item {
   margin-bottom: 0px;
+}
+.btn-container {
+  margin-top: 20px;
 }
 .illust-credit {
   font-size: 7pt;

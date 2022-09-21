@@ -1,7 +1,7 @@
 <template>
 
-  <nav class="navbar navbar-light" style="background-color: #f5f6fe;">
-    <div class="col-12 user-btn-container">
+  <nav class="navbar navbar-light navbar-white">
+    <div class="col-12 user-btn-container btn-container">
       <button class="btn btn-sm btn-outline-secondary" @click="$router.push('/admin/users')">{{ $t('Btn.customerIndex') }}</button>
       <button
         class="btn btn-sm btn-outline-success"
@@ -84,13 +84,15 @@
               <input class="form-control" type="text" v-model="user.address">
               <small>Requirements/Note</small>
               <textarea rows="3" class="form-control" v-model="user.note"></textarea>
-              <div class="control-navbar-item">
-                <button class="btn btn-sm btn-primary" @click.prevent="updateUser()">{{ $t('Btn.update') }}</button>
-                <button class="btn btn-sm btn-danger">{{ $t('Btn.deactivate') }}</button>
-              </div>
             </div>
           </div>
         </form>
+        <div class="col-12">
+          <div class="btn-container text-end update-btn-container">
+            <button class="btn btn btn-primary" @click.prevent="updateUser()">{{ $t('Btn.update') }}</button>
+            <button class="btn btn btn-danger">{{ $t('Btn.deactivate') }}</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -289,15 +291,15 @@ import axios from 'axios'
   .row {
     text-align: left;
   }
-  .btn-container {
-    margin-top: 15px;
-  }
   .user-btn-container {
     text-align: left;
     overflow: hidden;
   }
   .history-event-container {
     text-align: left;
+  }
+  .update-btn-container {
+    margin-top: 20px;
   }
   .notification {
     color: red;
