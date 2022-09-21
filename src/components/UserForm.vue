@@ -180,7 +180,6 @@ export default {
     }
   },
   created() {
-    this.showUser();
   },
   mounted() {
     this.passwordModal = new bootstrap.Modal(document.getElementById('password-modal'));
@@ -218,16 +217,6 @@ export default {
     },
   },
   methods: {
-    showUser() {
-      let id = this.user.id
-      axios.get(`/users/${id}.json`)
-      .then((res)=> {
-        this.user = res.data;
-      })
-      .catch((error)=> {
-      this.error = error;
-    })
-    },
     updateUser() {
       let id = this.user.id;
       let user = {}

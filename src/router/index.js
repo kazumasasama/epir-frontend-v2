@@ -6,6 +6,7 @@ import BookAppointment from '@/views/BookAppointment.vue'
 import CompleteEvent from '@/views/CompleteEvent.vue'
 import SignupView from '@/views/SignupView.vue'
 import LoginView from '@/views/LoginView.vue'
+import MyPage from '@/views/MyPage.vue'
 
 import AdminDashboard from '@/views/admin/AdminDashboard.vue'
 import AdminCalendar from '@/views/admin/AdminCalendar.vue'
@@ -112,6 +113,19 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginView
+  },
+  {
+    path: '/mypage',
+    name: 'userPage',
+    component: MyPage,
+    // beforeEnter: (to, from, next)=> {
+    //   const userStore = useUserStore();
+    //   if (userStore.user.id === this.$route.params.id) {
+    //     next('/login')
+    //   } else {
+    //     next()
+    //   }
+    // }
   },
   {
     path: '/appointments',
