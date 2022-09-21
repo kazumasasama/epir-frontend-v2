@@ -261,6 +261,9 @@ export default {
       .then((res)=> {
         this.events = res.data.filter((event)=> event.status === "booked")
       })
+      .catch((error)=> {
+        this.error = error;
+      })
     },
     onEventClick (event, e) {
       if (event.user.id !== 2) { // User ID for interval
@@ -345,6 +348,9 @@ export default {
       .then(()=> {
         this.eventDetailsModal.hide();
       })
+      .catch((error)=> {
+        this.error = error;
+      })
     },
     destroyEvent() {
       const id = this.selectedEvent.id
@@ -380,7 +386,7 @@ export default {
         this.eventDetailsModal.hide();
       })
       .catch((error)=> {
-        this.error = error.response.data.errors;
+        this.error = error;
       })
     }
   },

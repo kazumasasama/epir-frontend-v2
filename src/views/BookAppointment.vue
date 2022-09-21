@@ -108,7 +108,7 @@
                             <li
                               class="list-group-item"
                             >
-                              <form>
+                              <form class="menu-form">
                                 <div class="d-flex justify-content-between menu-card">
                                   <input
                                     class="form-check-input me-1 booking-checkbox"
@@ -611,6 +611,9 @@ export default {
         const paymentElement = this.elements.create('payment');
         paymentElement.mount('#payment-element');
       })
+      .catch((error)=> {
+        this.error = error;
+      })
     },
     nextStep() {
       var targetElement
@@ -694,7 +697,7 @@ export default {
         this.systemStore.endLoading();
       })
       .catch((error)=> {
-        this.error = error.response;
+        this.error = error;
       })
     },
     clearAppointment() {
@@ -809,7 +812,7 @@ export default {
   .booking-checkbox:checked {
     background-color: rgb(54, 162, 235);
   }
-  form {
+  .menu-form {
     position: relative;
     left: 20px;
   }

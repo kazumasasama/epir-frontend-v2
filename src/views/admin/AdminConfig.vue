@@ -4,6 +4,8 @@
       <button
         @click.prevent="this.currentPage = 'profile'"
         class="btn btn-outline-success btn-sm"
+        id="profile-btn"
+        data-bs-toggle="button"
       >
         Profile
       </button>
@@ -409,6 +411,8 @@ export default {
     }
   },
   mounted() {
+    // const btn = document.getElementById('profile-btn')
+    // btn.classList.add('active', 'aria-pressed="true"')
   },
   computed: {
     ...mapWritableState(useSystemStore, ['statuses']),
@@ -433,7 +437,7 @@ export default {
         alert('Updated');
       })
       .catch((error)=> {
-        this.error = error.response.data.errors;
+        this.error = error;
       })
     },
     updateProfile() {
@@ -443,7 +447,7 @@ export default {
         alert('Updated');
       })
       .catch((error)=> {
-        this.error = error.response.data.errors;
+        this.error = error;
       })
     },
     updateConfig() {
@@ -453,7 +457,7 @@ export default {
         alert('Updated');
       })
       .catch((error)=> {
-        this.error = error.response.data.errors;
+        this.error = error;
       })
     },
     updateStatus(status) {
@@ -463,7 +467,7 @@ export default {
         alert('Updated');
       })
       .catch((error)=> {
-        this.error = error.response.data.errors;
+        this.error = error;
       })
     },
     destroyStatus(status) {
@@ -476,7 +480,7 @@ export default {
         alert('Deleted');
       })
       .catch((error)=> {
-        this.error = error.response.data.errors;
+        this.error = error;
       })
     },
     createCategory() {
@@ -487,7 +491,7 @@ export default {
         this.newCategory = {};
       })
       .catch((error)=> {
-        this.error = error.response.data.errors;
+        this.error = error;
       })
     },
     updateCategory(category) {
@@ -497,7 +501,7 @@ export default {
         alert('Updated');
       })
       .catch((error)=> {
-        this.error = error.response.data.errors;
+        this.error = error;
       })
     },
     destroyCategory(category) {
@@ -510,7 +514,7 @@ export default {
         alert('Deleted');
       })
       .catch((error)=> {
-        this.error = error.response.data.errors;
+        this.error = error;
       })
     },
   },

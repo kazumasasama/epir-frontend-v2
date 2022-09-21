@@ -116,6 +116,7 @@ import * as bootstrap from 'bootstrap'
 export default {
   data() {
     return {
+      error: null,
       users: [],
       user: {},
       displayUsers: [],
@@ -175,6 +176,9 @@ export default {
       axios.get('/users.json')
       .then((res)=> {
         this.users = res.data;
+      })
+      .catch((error)=> {
+        this.error = error;
       })
     },
     showUser(user) {
@@ -246,6 +250,9 @@ export default {
       })
       .then(()=> {
         this.closeNewUserDialog()
+      })
+      .catch((error)=> {
+        this.error = error;
       })
     },
     openNewUserDialog() {

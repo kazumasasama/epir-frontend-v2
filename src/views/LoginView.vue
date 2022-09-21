@@ -181,7 +181,6 @@ export default {
           .catch((error)=> {
             this.systemStore.endLoading();
             this.error = `${error.response}: Invalid email or password`;
-            error.response;
           })
         })
         .catch((error)=> {

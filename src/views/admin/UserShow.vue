@@ -137,6 +137,7 @@ import axios from 'axios'
     },
     data() {
       return {
+        error: null,
         user: {
           events: [],
           status_ids: [],
@@ -245,6 +246,9 @@ import axios from 'axios'
         .then((res)=> {
           this.user = res.data;
         })
+        .catch((error)=> {
+        this.error = error;
+      })
       },
       updateUser() {
         let id = this.user.id;
@@ -266,7 +270,10 @@ import axios from 'axios'
         }
         axios.patch(`/users/${id}.json`, user)
         .then((res)=> {
-          this.user = res.data
+          this.user = res.data;
+        })
+        .catch((error)=> {
+          this.error = error;
         })
         this.message = "User updated";
         setTimeout(()=> {this.message = null}, 3000);

@@ -101,8 +101,7 @@
     </div>
 
     <div class="card shadow">
-      <div class="card-header text-start">
-        <a href="#">New Category</a>
+      <div class="card-header text-end">
         <a href="#" @click="showModal(menu, 'create')">New Menu</a>
       </div>
       <div class="card-body">
@@ -369,29 +368,8 @@
           this.message = `${menuTitle} was successfully updated`;
           this.switchCategory(newMenu.category_id);
         })
-      },
-      deactivateMenu() {
-        let id = this.menu.id;
-        this.menu.active = false;
-        axios.patch(`/menus/${id}`, this.menu)
-        .then((res)=> {
-          this.selectedMenu = {};
-          let menu = this.menus.find(menu => menu.id === id);
-          let i = this.menus.indexOf(menu);
-          this.menus.splice(i, 1);
-          this.inactiveMenus.push(res.data);
-        })
-      },
-      activateMenu() {
-        let id = this.menu.id;
-        this.menu.active = true;
-        axios.patch(`/menus/${id}`, this.menu)
-        .then((res)=> {
-          this.selectedMenu = {};
-          let menu = this.menus.find(menu => menu.id === id);
-          let i = this.menus.indexOf(menu);
-          this.inactiveMenus.splice(i, 1);
-          this.menus.push(res.data);
+        .catch((error)=> {
+          this.error = error;
         })
       },
       clearForm() {
@@ -494,7 +472,6 @@
   .card-header a {
     font-weight: bold;
     color: rgb(255, 99, 132);
-    margin-right: 18px;
   }
   .card-header a:hover {
     font-weight: bold;
