@@ -84,7 +84,6 @@ components: {
     }
   },
   created() {
-    this.showUser();
   },
   computed: {
     ...mapWritableState(useUserStore, ['statuses']),
@@ -162,16 +161,6 @@ components: {
     },
   },
   methods: {
-    showUser() {
-      let id = this.$route.params.id
-      axios.get(`/users/${id}.json`)
-      .then((res)=> {
-        this.user = res.data;
-      })
-      .catch((error)=> {
-      this.error = error;
-    })
-    },
     updateUser() {
       let id = this.user.id;
       let user = {}
@@ -195,6 +184,7 @@ components: {
         this.user = res.data;
       })
       .catch((error)=> {
+        console.log(error)
         this.error = error;
       })
       this.message = "User updated";
