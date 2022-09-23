@@ -1,35 +1,42 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="container">
+    <div class="card shadow text-start">
+      <div class="card-body">
         <div class="row">
-          <div class="col-sm-6">
-            <p></p>
-            <h4>{{ $t('Complete.thankYou') }}</h4>
-            <p></p>
-            <p>{{ $t('Complete.bookedNotice') }}</p>
-            <p>{{ $t('Complete.rescheduleNotice') }}</p>
-            <p>
-              {{ $t('Complete.cancelationNotice') }}
-            </p>
-            <strong>{{ $t('Complete.linkNotice') }}</strong>
-            <p></p>
-            <p @click="this.$router.push('/admin/calendar')">
-              <a class="link-primary" href="#">https://biznesu.netlify.app/admin/calendar</a>
-            </p>
-            <ul class="store-info-complete">
-              <h5>{{ business.name }}</h5>
-              <li>{{ business.address }}</li>
-              <li>{{ business.city }}, {{ business.state }} {{ business.zip }}</li>
-              <p></p>
-              <li><font-awesome-icon icon="fa-solid fa-phone" /> {{ business.phone }}</li>
-              <li v-if="business.facebook"><font-awesome-icon icon="fa-brands fa-facebook" /> {{ business.facebook }}</li>
-              <li v-if="business.twitter"><font-awesome-icon icon="fa-brands fa-twitter" /> {{ business.twitter }}</li>
-              <li v-if="business.insta"><font-awesome-icon icon="fa-brands fa-instagram" /> {{ business.insta }}</li>
-            </ul>
-          </div>
-          <div class="col-sm-6">
-            <div id="map" style='width: 100%; height: 400px;'></div>
+          <div class="container">
+            <div class="row">
+              <div class="col-12">
+                <h4>{{ $t('Complete.thankYou') }}</h4>
+                <p></p>
+                <p>{{ $t('Complete.bookedNotice') }}</p>
+                <p>{{ $t('Complete.rescheduleNotice') }}</p>
+                <p>
+                  {{ $t('Complete.cancelationNotice') }}
+                </p>
+                <strong>{{ $t('Complete.linkNotice') }}</strong>
+                <p></p>
+                <p @click="this.$router.push('/admin/calendar')">
+                  <a class="link-primary" href="#">https://biznesu.netlify.app/admin/calendar</a>
+                </p>
+              </div>
+              <div class="col-12">
+                <div class="row">
+                  <div class="d-flex justfy-content-between">
+                    <ul class="store-info-complete">
+                      <h5>{{ business.name }}</h5>
+                      <li>{{ business.address }}</li>
+                      <li>{{ business.city }}, {{ business.state }} {{ business.zip }}</li>
+                      <p></p>
+                      <li><font-awesome-icon icon="fa-solid fa-phone" /> {{ business.phone }}</li>
+                      <li v-if="business.facebook"><font-awesome-icon icon="fa-brands fa-facebook" /> {{ business.facebook }}</li>
+                      <li v-if="business.twitter"><font-awesome-icon icon="fa-brands fa-twitter" /> {{ business.twitter }}</li>
+                      <li v-if="business.insta"><font-awesome-icon icon="fa-brands fa-instagram" /> {{ business.insta }}</li>
+                    </ul>
+                    <div id="map" style='width: 80%; height: 400px;'></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -38,7 +45,7 @@
 </template>
 
 <script>
-  import { mapWritableState } from 'pinia'
+import { mapWritableState } from 'pinia'
 import { useSystemStore } from '@/store/systemStore';
 import mapboxgl from 'mapbox-gl';
 
@@ -80,12 +87,6 @@ export default {
 </script>
 
 <style scoped>
-  .col-sm-6 {
-    text-align: left;
-  }
-  .col-sm-4 {
-    text-align: left;
-  }
   .map-container {
     display: flex;
     justify-content: center;
@@ -93,6 +94,7 @@ export default {
   }
   .store-info-complete {
     margin-top: 50px;
+    margin-right: 50px;
     padding-left: 0px;
   }
 </style>
