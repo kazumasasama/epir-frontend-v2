@@ -18,9 +18,16 @@ import {
   faArrowRotateRight,
   faBars,
   faLock,
-  faArrowRightFromBracket,
+  faRightFromBracket,
   faRepeat,
-  faPhone
+  faPhone,
+  faUser,
+  faUsers,
+  faGauge,
+  faCalendarDays,
+  faBookOpen,
+  faScrewdriverWrench,
+  faCircleCheck
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -31,7 +38,7 @@ import {
 
 import { faEye } from '@fortawesome/free-regular-svg-icons'
 /* add icons to the library */
-library.add(faLanguage, faArrowRotateRight, faBars, faLock, faArrowRightFromBracket, faRepeat, faPhone, faTwitter, faFacebook, faInstagram, faEye)
+library.add(faLanguage, faArrowRotateRight, faBars, faLock, faRightFromBracket, faRepeat, faPhone, faTwitter, faFacebook, faInstagram, faEye, faUser, faUsers, faGauge, faCalendarDays, faBookOpen, faScrewdriverWrench, faCircleCheck)
 
 const i18n = createI18n({
   locale: 'en',

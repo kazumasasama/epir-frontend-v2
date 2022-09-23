@@ -1,121 +1,141 @@
 <template :key="reloadKey">
 
-<div class="modal fade calendar-modal" id="event-details">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <form action="">
-        <div class="modal-header">
-          <h6 class="modal-title">{{ eventStartEndDateTime }}</h6>
-        </div>
-        <div class="modal-body event-detail-modal-body">
-          <div class="row">
-            <div class="col-sm-9">
-              <ul
-                v-if="selectedEvent.user.statuses"
-                class="modal-user-statuses"
-              >
-                <li
-                  v-for="status in selectedEvent.user.statuses"
-                  :key="status.id"
-                >
-                  {{ status.title }}
-                </li>
-              </ul>
-              <small class="event-details-tag">Name</small>
-              <p data-bs-toggle="modal" class="event-detail-item">
-                <a
-                  class="link-primary"
-                  href="#"
-                  id="linkToUserDetail"
-                  data-bs-dismiss="modal"
-                  @click="redirectToUser(selectedEvent.user.id)"
-              >
-                {{ selectedEvent.user.full_name }}
-              </a>
-              </p>
-              <small class="event-details-tag">Note</small>
-              <p class="event-detail-item">{{ selectedEvent.user.note }}</p>
-              <small class="event-details-tag">Menus</small>
-              <div>
-                <ul class="event-detail-item">
-                  <li v-for="menu in selectedEvent.menus" :key="menu.id">{{ menu.title }}</li>
-                </ul>
-              </div>
-            </div>
-            <div class="col-sm-3 text-end">
-              <div class="btn-container">
-                <button
-                  v-if="!rescheduleBtn"
-                  class="btn btn-success"
-                  @click.prevent="rescheduleBtn = true"
-                >
-                  Reschedule
-                </button>
-                <button
-                  v-if="rescheduleBtn"
-                  class="btn btn-outline-success"
-                  @click.prevent="rescheduleBtn = false"
-                >
-                  Hide Scheduler
-                </button>
-                <button
-                  class="btn btn-primary"
-                  @click.prevent="updateEvent()"
-                >
-                  Update
-                </button>
-                <button
-                  class="btn btn-danger"
-                  @click.prevent="destroyEvent()"
-                >
-                  Delete
-                </button>
-                <button
-                  class="btn btn-secondary"
-                  @click.prevent="this.eventDetailsModal.hide()"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
+  <nav class="navbar navbar-light text-start navbar-white">
+    <div class="col-12 btn-container">
+      <button
+        class="btn btn-outline-success btn-sm"
+        id="profile-btn"
+        disabled
+      >
+        New Appointment
+      </button>
+    </div>
+  </nav>
+
+  <div
+    v-if="error"
+    class="alert alert-danger"
+    role="alert"
+  >
+    {{ error }}
+  </div>
+
+  <div class="modal fade calendar-modal" id="event-details">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <form action="">
+          <div class="modal-header">
+            <h6 class="modal-title">{{ eventStartEndDateTime }}</h6>
           </div>
-          <div v-if="rescheduleBtn" class="row">
-            <div class="col-12">
-              <Datepicker
-                v-model="picked"
-                class="datepicker-item"
-                inline
-                autoApply
-                utc="true"
-              />
-              <div v-if="availableTimeSlots.length" class="row">
-                <div
-                  class="time-slot-col col-sm-3"
-                  v-for="timeSlot in availableTimeSlots"
-                  :key="timeSlot.id"
+          <div class="modal-body event-detail-modal-body">
+            <div class="row">
+              <div class="col-sm-9">
+                <ul
+                  v-if="selectedEvent.user.statuses"
+                  class="modal-user-statuses"
                 >
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <ul>
-                        <input
-                          class="form-check-input me-1 booking-checkbox"
-                          type="radio"
-                          :value="timeSlot.time"
-                          v-model="selectedTime"
-                        >
-                        <li>{{ timeSlot.time.slice(11, -8) }}</li>
-                      </ul>
-                    </label>
+                  <li
+                    v-for="status in selectedEvent.user.statuses"
+                    :key="status.id"
+                  >
+                    {{ status.title }}
+                  </li>
+                </ul>
+                <small class="event-details-tag">Name</small>
+                <p data-bs-toggle="modal" class="event-detail-item">
+                  <a
+                    class="link-primary"
+                    href="#"
+                    id="linkToUserDetail"
+                    data-bs-dismiss="modal"
+                    @click="redirectToUser(selectedEvent.user.id)"
+                >
+                  {{ selectedEvent.user.full_name }}
+                </a>
+                </p>
+                <small class="event-details-tag">Note</small>
+                <p class="event-detail-item">{{ selectedEvent.user.note }}</p>
+                <small class="event-details-tag">Menus</small>
+                <div>
+                  <ul class="event-detail-item">
+                    <li v-for="menu in selectedEvent.menus" :key="menu.id">{{ menu.title }}</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-sm-3 text-end">
+                <div class="btn-container">
+                  <button
+                    v-if="!rescheduleBtn"
+                    class="btn btn-success"
+                    @click.prevent="rescheduleBtn = true"
+                  >
+                    Reschedule
+                  </button>
+                  <button
+                    v-if="rescheduleBtn"
+                    class="btn btn-outline-success"
+                    @click.prevent="rescheduleBtn = false"
+                  >
+                    Hide Scheduler
+                  </button>
+                  <button
+                    class="btn btn-primary"
+                    @click.prevent="updateEvent()"
+                  >
+                    Update
+                  </button>
+                  <button
+                    class="btn btn-danger"
+                    @click.prevent="destroyEvent()"
+                  >
+                    Delete
+                  </button>
+                  <button
+                    class="btn btn-secondary"
+                    @click.prevent="this.eventDetailsModal.hide()"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div v-if="rescheduleBtn" class="row">
+              <div class="col-12">
+                <Datepicker
+                  v-model="picked"
+                  class="datepicker-item"
+                  inline
+                  autoApply
+                  utc="true"
+                />
+                <div v-if="availableTimeSlots.length" class="row">
+                  <div
+                    class="time-slot-col col-sm-3"
+                    v-for="timeSlot in availableTimeSlots"
+                    :key="timeSlot.id"
+                  >
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <ul>
+                          <input
+                            class="form-check-input me-1 booking-checkbox"
+                            type="radio"
+                            :value="timeSlot.time"
+                            v-model="selectedTime"
+                          >
+                          <li>{{ timeSlot.time.slice(11, -8) }}</li>
+                        </ul>
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 
   <div class="container">
     <div class="row">

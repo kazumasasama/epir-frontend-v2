@@ -1,119 +1,115 @@
 <template>
-  <nav 
-      class="navbar navbar-expand-lg navbar-light"
-      style="background-color: rgb(140, 146, 232);"
-    >
-      <div class="container-fluid">
-        <div @click="this.$router.push('/')">
-          <a href="#">
-            <img
-              id="bisiness-name-logo"
-              src="@/assets/Biznesu-logo-white.png"
-              alt="Biznesu company logo"
-            >
-            <!-- <h1 id="bisiness-name-logo">Biznesu</h1> -->
-          </a>
-        </div>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          </ul>
-          <ul class="navbar-nav mb-2 mb-lg-0">
-            <li v-if="isLoggedin" class="nav-item">
-              <a
-                class="nav-link"
-                id="navbar-link-admin"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                @click.prevent="this.$router.push('/mypage')"
-              >
-                <span class="header-nav-menu">My Page</span>
-              </a>
-            </li>
-            <li class="nav-item dropdown dropstart header-nav-menu">
-              <a
-                class="nav-link"
-                id="navbar-link-admin"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-              <span class="header-nav-menu">Languages</span>
-              </a>
-              <ul
-                class="dropdown-menu"
-              >
-                <li @click.prevent="changeLocale('en')">
-                  <a class="dropdown-item admin-dropdown-item" href="#">ENG</a>
-                </li>
-                <li @click="changeLocale('ja')">
-                  <a class="dropdown-item" href="#">JPN</a>
-                </li>
-              </ul>
-            </li>
-            <li v-if="isAdmin" class="nav-item dropdown dropstart header-nav-menu">
-              <a
-                class="nav-link"
-                id="navbar-link-admin"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <span class="header-nav-menu">User Menu</span>
-              </a>
-              <ul
-                class="dropdown-menu"
-              >
-                <li @click="this.$router.push('/mypage')">
-                  <a class="dropdown-item admin-dropdown-item" href="#">My Page</a>
-                </li>
-                <li @click="this.$router.push('/appointments')">
-                  <a class="dropdown-item admin-dropdown-item" href="#">Appointments</a>
-                </li>
-                <li @click="this.$router.push('/complete')">
-                  <a class="dropdown-item" href="#">Complete</a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item dropdown dropstart header-nav-menu" v-if="isAdmin">
-              <a
-                class="nav-link"
-                id="navbar-link-admin"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <span class="header-nav-menu">Admin Menu</span>
-              </a>
-              <ul
-                class="dropdown-menu"
-              >
-                <li @click="this.$router.push('/admin/dashboard')">
-                  <a class="dropdown-item admin-dropdown-item" href="#">Dashboard</a>
-                </li>
-                <li @click="this.$router.push('/admin/calendar')">
-                  <a class="dropdown-item" href="#">Appointments</a>
-                </li>
-                <li @click="this.$router.push('/admin/menus')">
-                  <a class="dropdown-item" href="#">Menus</a>
-                </li>
-                <li @click="this.$router.push('/admin/users')">
-                  <a class="dropdown-item" href="#">Customers</a>
-                </li>
-                <li @click="this.$router.push('/admin/config')">
-                  <a class="dropdown-item" href="#">Settings</a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item header-nav-menu" @click="logout()" v-if="isLoggedin">
-              <a class="nav-link">
-                <span class="header-nav-menu">Logout</span>
-              </a>
-            </li>
-          </ul>
-        </div>
+  <nav class="navbar navbar-expand-lg navbar-light app-page-nav">
+    <div class="container-fluid">
+      <div @click.prevent="this.$router.push('/')">
+        <a href="#">
+          <img
+            id="bisiness-name-logo"
+            src="@/assets/Biznesu-logo-white.png"
+            alt="Biznesu company logo"
+          >
+          <!-- <h1 id="bisiness-name-logo">Biznesu</h1> -->
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
       </div>
-    </nav>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        </ul>
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li v-if="isAdmin" class="nav-item dropdown dropstart header-nav-menu">
+            <a
+              class="nav-link"
+              id="navbar-link-admin"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <span class="header-nav-menu">
+                <font-awesome-icon icon="fa-solid fa-bars" /> Menu
+              </span>
+            </a>
+            <ul
+              class="dropdown-menu"
+            >
+              <li @click.prevent="routeNavigation('/mypage')">
+                <a class="dropdown-item admin-dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-user" /> My Page</a>
+              </li>
+              <li @click.prevent="routeNavigation('/appointments')">
+                <a class="dropdown-item admin-dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-calendar-days" /> Appointments</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown dropstart header-nav-menu" v-if="isAdmin">
+            <a
+              class="nav-link"
+              id="navbar-link-admin"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <span class="header-nav-menu">
+                <font-awesome-icon icon="fa-solid fa-lock" /> Admin Menu
+              </span>
+            </a>
+            <ul
+              class="dropdown-menu"
+            >
+              <li @click.prevent="routeNavigation('/admin/dashboard')">
+                <a class="dropdown-item admin-dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-gauge" /> Dashboard</a>
+              </li>
+              <li @click.prevent="routeNavigation('/admin/calendar')">
+                <a class="dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-calendar-days" /> Appointments</a>
+              </li>
+              <li @click.prevent="routeNavigation('/admin/menus')">
+                <a class="dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-book-open" /> Menus</a>
+              </li>
+              <li @click.prevent="routeNavigation('/admin/users')">
+                <a class="dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-users" /> Customers</a>
+              </li>
+              <li @click.prevent="routeNavigation('/admin/config')">
+                <a class="dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-screwdriver-wrench" /> Settings</a>
+              </li>
+              <li @click.prevent="routeNavigation('/complete')">
+                <a class="dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-circle-check" /> Complete</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown dropstart header-nav-menu">
+            <a
+              class="nav-link"
+              id="navbar-link-admin"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+            <span class="header-nav-menu">
+              <font-awesome-icon icon="fa-solid fa-language" /> Languages
+            </span>
+            </a>
+            <ul
+              class="dropdown-menu"
+            >
+              <li @click.prevent="changeLocale('en')">
+                <a class="dropdown-item admin-dropdown-item" href="#">ENG</a>
+              </li>
+              <li @click.prevent="changeLocale('ja')">
+                <a class="dropdown-item" href="#">JPN</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item header-nav-menu" @click.prevent="logout()" v-if="isLoggedin">
+            <a class="nav-link">
+              <span class="header-nav-menu">
+                <font-awesome-icon icon="fa-solid fa-right-from-bracket" /> Logout
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 </template>
 
 <script>
@@ -138,9 +134,10 @@ export default {
   data() {
     return {
       message: null,
+      popover: null,
     }
   },
-  created() {
+  mounted() {
   },
   methods: {
     async logout() {
@@ -164,15 +161,39 @@ export default {
       this.$i18n.locale = lang;
       this.changeAppLocale(lang);
     },
+    routeNavigation(route) {
+      const popover = document.getElementsByClassName('navbar-toggler')[0]
+      popover.classList.add('collapsed');
+      popover.setAttribute('aria-expanded', false)
+      
+      const collapse = document.getElementsByClassName('navbar-collapse')[0]
+      collapse.classList.remove('show')
+      this.$router.push(route);
+    }
   },
 }
 </script>
 
 <style scoped>
+  .app-page-nav {
+    background-color: rgb(140, 146, 232);
+    /* background: -moz-linear-gradient(45deg, rgb(140, 146, 232), rgb(75, 192, 192));
+    background: -webkit-linear-gradient(45deg, rgb(140, 146, 232), rgb(75, 192, 192));
+    background: linear-gradient(45deg, rgb(140, 146, 232) 30%, rgba(75, 192, 192, 0.9)); */
+  }
   .header-nav-menu {
-    color: rgb(60, 60, 60);
+    color: rgb(70, 70, 70);
+    font-size: 16px;
   }
   .header-nav-menu:hover {
     color: white;
+  }
+  .nav-item {
+    padding-left: 5px;
+  }
+  .dropdown-item {
+    color: rgb(90, 90, 90);
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 </style>
