@@ -5,7 +5,7 @@
         <div class="row">
           <div class="container">
             <div class="row">
-              <div class="col-12">
+              <div class="col-12 thanks-message">
                 <h4>{{ $t('Complete.thankYou') }}</h4>
                 <p></p>
                 <p>{{ $t('Complete.bookedNotice') }}</p>
@@ -19,22 +19,20 @@
                   <a class="link-primary" href="#">https://biznesu.netlify.app/admin/calendar</a>
                 </p>
               </div>
-              <div class="col-12">
-                <div class="row">
-                  <div class="d-flex justfy-content-between">
-                    <ul class="store-info-complete">
-                      <h5>{{ business.name }}</h5>
-                      <li>{{ business.address }}</li>
-                      <li>{{ business.city }}, {{ business.state }} {{ business.zip }}</li>
-                      <p></p>
-                      <li><font-awesome-icon icon="fa-solid fa-phone" /> {{ business.phone }}</li>
-                      <li v-if="business.facebook"><font-awesome-icon icon="fa-brands fa-facebook" /> {{ business.facebook }}</li>
-                      <li v-if="business.twitter"><font-awesome-icon icon="fa-brands fa-twitter" /> {{ business.twitter }}</li>
-                      <li v-if="business.insta"><font-awesome-icon icon="fa-brands fa-instagram" /> {{ business.insta }}</li>
-                    </ul>
-                    <div id="map" style='width: 80%; height: 400px;'></div>
-                  </div>
-                </div>
+              <div class="col-lg-4 col-md-4 col-sm-12">
+                <ul class="store-info-complete">
+                  <h5>{{ business.name }}</h5>
+                  <li>{{ business.address }}</li>
+                  <li>{{ business.city }}, {{ business.state }} {{ business.zip }}</li>
+                  <p></p>
+                  <li><font-awesome-icon icon="fa-solid fa-phone" /> {{ business.phone }}</li>
+                  <li v-if="business.facebook"><font-awesome-icon icon="fa-brands fa-facebook" /> {{ business.facebook }}</li>
+                  <li v-if="business.twitter"><font-awesome-icon icon="fa-brands fa-twitter" /> {{ business.twitter }}</li>
+                  <li v-if="business.insta"><font-awesome-icon icon="fa-brands fa-instagram" /> {{ business.insta }}</li>
+                </ul>
+              </div>
+              <div class="col-lg-8 col-md-8 col-sm-12">
+                <div id="map" style='width: 100%; height: 400px;'></div>
               </div>
             </div>
           </div>
@@ -93,8 +91,9 @@ export default {
     align-items: center;
   }
   .store-info-complete {
-    margin-top: 50px;
-    margin-right: 50px;
     padding-left: 0px;
+  }
+  .thanks-message {
+    margin-bottom: 30px;
   }
 </style>
