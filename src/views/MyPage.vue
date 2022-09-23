@@ -27,7 +27,11 @@
       </div>
 
       <div v-if="!showHistory" class="col-12">
-        <UserForm/>
+        <div class="card shadow">
+          <div class="card-body">
+            <UserForm/>
+          </div>
+        </div>
       </div>
     </div>
 
