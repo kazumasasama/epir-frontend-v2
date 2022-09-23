@@ -4,7 +4,7 @@
   </div>
   <div class="container">
     <div class="row d-flex justify-content-center">
-      <div class="col-4">
+      <div class="col-lg-5 col-md-6 col-sm-8">
         <div class="card shadow">
           <div class="card-header text-center">
             <h4 class="">{{ $t('Login.pageTitle') }}</h4>
