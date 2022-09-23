@@ -9,11 +9,19 @@
         Business Profile
       </button>
       <button
+        @click.prevent="this.currentPage = 'closing'"
+        class="btn btn-outline-success btn-sm"
+        id="profile-btn"
+        disabled
+      >
+        Closing Days
+      </button>
+      <button
         @click.prevent="this.currentPage = 'account'"
         class="btn btn-outline-success btn-sm"
         id="profile-btn"
       >
-        Account
+        Admin Account
       </button>
       <button
         @click.prevent="this.currentPage = 'config'"
@@ -250,6 +258,37 @@
           </div>
         </div>
       </div>
+      <div v-if="currentPage === 'closing'" class="col-12">
+        <div class="card shadow">
+          <div class="card-body">
+            <div class="row">
+              <h1 class="card-title text-start">Business Closing Days</h1>
+              <div class="col-sm-6">
+                <form
+                  v-on:submit.prevent="createUserStatus()"
+                  class="col-12 needs-validation mb-3"
+                  novalidate
+                >
+                <div class="datepicker-container">
+                  <VueCal
+                    class="vuecal--date-picker"
+                    hide-view-selector
+                    :time="false"
+                    active-view="month"
+                    :disable-views="['week']"
+                  />
+                </div>
+                </form>
+              </div>
+              <div class="col-sm-6">
+                <ul>
+                  <li v-for="day in selectedClosingDays" :key="day">{{ day }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div v-if="currentPage === 'userStatus'" class="col-12">
         <div class="card shadow">
           <div class="card-body">
@@ -397,6 +436,10 @@ import { useSystemStore } from '@/store/systemStore'
 import { useUserStore } from '@/store/userStore'
 import axios from 'axios'
 import UserForm from '@/components/UserForm.vue'
+import VueCal from 'vue-cal'
+import 'vue-cal/dist/i18n/ja.js'
+import 'vue-cal/dist/vuecal.css'
+// import * as moment from 'moment-timezone';
 
 export default {
   setup() {
@@ -409,6 +452,7 @@ export default {
   },
   components: {
     UserForm,
+    VueCal,
   },
   data() {
     return {
@@ -556,5 +600,8 @@ export default {
 }
 .update-btn {
   margin-right: 0px;
+}
+.datepicker-container {
+  height: 350px;
 }
 </style>
