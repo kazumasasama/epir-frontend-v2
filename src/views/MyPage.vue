@@ -188,7 +188,6 @@ components: {
         this.user = res.data;
       })
       .catch((error)=> {
-        console.log(error)
         this.error = error;
       })
       this.message = "User updated";
