@@ -41,8 +41,8 @@ import { faEye } from '@fortawesome/free-regular-svg-icons'
 library.add(faLanguage, faArrowRotateRight, faBars, faLock, faRightFromBracket, faRepeat, faPhone, faTwitter, faFacebook, faInstagram, faEye, faUser, faUsers, faGauge, faCalendarDays, faBookOpen, faScrewdriverWrench, faCircleCheck)
 
 const i18n = createI18n({
-  locale: 'en',
-  fallbackLocale: 'ja',
+  locale: 'ja',
+  fallbackLocale: 'en',
   messages: data,
 })
 

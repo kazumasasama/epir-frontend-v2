@@ -27,17 +27,17 @@
               aria-expanded="false"
             >
               <span class="header-nav-menu">
-                <font-awesome-icon icon="fa-solid fa-bars" /> Menu
+                <font-awesome-icon icon="fa-solid fa-bars" /> メニュー
               </span>
             </a>
             <ul
               class="dropdown-menu"
             >
               <li @click.prevent="routeNavigation('/mypage')">
-                <a class="dropdown-item admin-dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-user" /> My Page</a>
+                <a class="dropdown-item admin-dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-user" /> マイページ</a>
               </li>
               <li @click.prevent="routeNavigation('/appointments')">
-                <a class="dropdown-item admin-dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-calendar-days" /> Appointments</a>
+                <a class="dropdown-item admin-dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-calendar-days" /> 予約する</a>
               </li>
             </ul>
           </li>
@@ -50,33 +50,33 @@
               aria-expanded="false"
             >
               <span class="header-nav-menu">
-                <font-awesome-icon icon="fa-solid fa-lock" /> Admin Menu
+                <font-awesome-icon icon="fa-solid fa-lock" /> 管理メニュー
               </span>
             </a>
             <ul
               class="dropdown-menu"
             >
               <li @click.prevent="routeNavigation('/admin/dashboard')">
-                <a class="dropdown-item admin-dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-gauge" /> Dashboard</a>
+                <a class="dropdown-item admin-dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-gauge" /> ダッシュボード</a>
               </li>
               <li @click.prevent="routeNavigation('/admin/calendar')">
-                <a class="dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-calendar-days" /> Appointments</a>
+                <a class="dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-calendar-days" /> カレンダー</a>
               </li>
               <li @click.prevent="routeNavigation('/admin/menus')">
-                <a class="dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-book-open" /> Menus</a>
+                <a class="dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-book-open" /> メニュー</a>
               </li>
               <li @click.prevent="routeNavigation('/admin/users')">
-                <a class="dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-users" /> Customers</a>
+                <a class="dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-users" /> 顧客</a>
               </li>
               <li @click.prevent="routeNavigation('/admin/config')">
-                <a class="dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-screwdriver-wrench" /> Settings</a>
+                <a class="dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-screwdriver-wrench" /> 設定</a>
               </li>
               <li @click.prevent="routeNavigation('/complete')">
-                <a class="dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-circle-check" /> Complete</a>
+                <a class="dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-circle-check" /> 予約完了画面</a>
               </li>
             </ul>
           </li>
-          <li class="nav-item dropdown dropstart header-nav-menu">
+          <!-- <li class="nav-item dropdown dropstart header-nav-menu">
             <a
               class="nav-link"
               id="navbar-link-admin"
@@ -85,7 +85,7 @@
               aria-expanded="false"
             >
             <span class="header-nav-menu">
-              <font-awesome-icon icon="fa-solid fa-language" /> Languages
+              <font-awesome-icon icon="fa-solid fa-language" /> 言語
             </span>
             </a>
             <ul
@@ -95,14 +95,14 @@
                 <a class="dropdown-item admin-dropdown-item" href="#">ENG</a>
               </li>
               <li @click.prevent="changeLocale('ja')">
-                <a class="dropdown-item" href="#">JPN</a>
+                <a class="dropdown-item" href="#">日本語</a>
               </li>
             </ul>
-          </li>
+          </li> -->
           <li class="nav-item header-nav-menu" @click.prevent="logout()" v-if="isLoggedin">
             <a class="nav-link">
               <span class="header-nav-menu">
-                <font-awesome-icon icon="fa-solid fa-right-from-bracket" /> Logout
+                <font-awesome-icon icon="fa-solid fa-right-from-bracket" /> ログアウト
               </span>
             </a>
           </li>

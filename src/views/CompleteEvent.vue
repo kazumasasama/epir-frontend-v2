@@ -6,29 +6,34 @@
           <div class="container">
             <div class="row">
               <div class="col-12 thanks-message">
-                <h4>{{ $t('Complete.thankYou') }}</h4>
+                <h3>{{ $t('Complete.thankYou') }}</h3>
                 <p></p>
                 <p>{{ $t('Complete.bookedNotice') }}</p>
                 <p>{{ $t('Complete.rescheduleNotice') }}</p>
                 <p>
                   {{ $t('Complete.cancelationNotice') }}
                 </p>
-                <strong>{{ $t('Complete.linkNotice') }}</strong>
-                <p></p>
-                <p @click="this.$router.push('/admin/calendar')">
-                  <a class="link-primary" href="#">https://biznesu.netlify.app/admin/calendar</a>
-                </p>
               </div>
               <div class="col-lg-4 col-md-4 col-sm-12">
                 <ul class="store-info-complete">
-                  <h5>{{ business.name }}</h5>
+                  <h4>{{ business.name }}</h4>
+                  <li>〒{{ business.zip }}</li>
+                  <li>{{ business.state }}{{ business.city }}</li>
                   <li>{{ business.address }}</li>
-                  <li>{{ business.city }}, {{ business.state }} {{ business.zip }}</li>
                   <p></p>
                   <li><font-awesome-icon icon="fa-solid fa-phone" /> {{ business.phone }}</li>
                   <li v-if="business.facebook"><font-awesome-icon icon="fa-brands fa-facebook" /> {{ business.facebook }}</li>
                   <li v-if="business.twitter"><font-awesome-icon icon="fa-brands fa-twitter" /> {{ business.twitter }}</li>
-                  <li v-if="business.insta"><font-awesome-icon icon="fa-brands fa-instagram" /> {{ business.insta }}</li>
+                  <li v-if="business.insta">
+                    <font-awesome-icon icon="fa-brands fa-instagram" />
+                    <a
+                      :href="business.insta"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                       epir.soshigaya
+                    </a>
+                  </li>
                 </ul>
               </div>
               <div class="col-lg-8 col-md-8 col-sm-12">
