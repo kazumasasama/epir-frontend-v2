@@ -46,13 +46,6 @@
           </div>
         </div>
       </div>
-      <div class="login-form-container">
-      </div>
-      <div class="col-sm-6 login-hint">
-        <p class="login-hint-title">{{ $t('Login.loginAdmin') }}</p>
-        <p class="login-hint-item"><small>{{ $t('Login.form.email') }}: test@test.com</small></p>
-        <p class="login-hint-item"><small>{{ $t('Login.form.password') }}: password</small></p>
-      </div>
     </div>
   </div>
 </template>

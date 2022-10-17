@@ -2,7 +2,7 @@
   <div class="container">
     <div class="card shadow text-start">
       <div class="card-body">
-          <h2 class="card-title">Signup</h2>
+          <h2 class="card-title">会員登録</h2>
           <form
             v-on:submit.prevent="createUser()"
             class="col-12 needs-validation"
@@ -10,8 +10,8 @@
           >
             <div class="row">
               <div class="col-sm-6">
-                <p><strong>Required</strong></p>
-                <small>First name</small>
+                <p><strong>必須項目</strong></p>
+                <small>名</small>
                 <input
                   id="input-validation-firstname"
                   autocomplete="given-name"
@@ -20,7 +20,7 @@
                   class="form-control"
                   required
                 >
-                <small>Last name</small>
+                <small>姓</small>
                 <input
                   id="input-validation-lastname"
                   autocomplete="family-name"
@@ -29,7 +29,7 @@
                   class="form-control"
                   required
                 >
-                <small>Email</small>
+                <small>メールアドレス</small>
                 <input
                   id="input-validation-email"
                   autocomplete="email"
@@ -38,7 +38,7 @@
                   class="form-control"
                   required
                 >
-                <small>Password</small>
+                <small>パスワード</small>
                 <input
                   id="input-validation-password"
                   autocomplete="new-password"
@@ -47,7 +47,7 @@
                   class="form-control"
                   required
                 >
-                <small>Confirm password</small>
+                <small>パスワード確認</small>
                 <input
                   id="input-validation-passwordconfirm"
                   autocomplete="new-password"
@@ -57,26 +57,26 @@
                   required
                 >
                 <small v-if="passwordMatch" class="password-match">
-                  Not a matching Password.
+                  パスワードが一致していません。
                 </small>
               </div>
               <div class="col-sm-6">
-                <p><strong>Optional</strong></p>
-                <small>Phone</small>
+                <p><strong>任意項目</strong></p>
+                <small>電話番号</small>
                 <input
                   autocomplete="tel-national"
                   type="text"
                   v-model="user.phone"
                   class="form-control"
                 >
-                <small>Zip</small>
+                <small>郵便番号</small>
                 <input
                   autocomplete="postal-code"
                   type="text"
                   v-model="user.zip"
                   class="form-control"
                 >
-                <small>State</small>
+                <small>都道府県</small>
                 <select
                   v-model="user.state"
                   class="form-select"
@@ -90,21 +90,21 @@
                     {{ state }}
                   </option>
                 </select>
-                <small>City</small>
+                <small>市区町村</small>
                 <input
                   autocomplete="address-level2"
                   type="text"
                   v-model="user.city"
                   class="form-control"
                 >
-                <small>Address</small>
+                <small>以降の住所</small>
                 <input
                   autocomplete="street-address"
                   type="text"
                   v-model="user.address"
                   class="form-control"
                 >
-                <small>Gender</small>
+                <small>性別</small>
                 <select v-model="user.gender" class="form-select">
                   <option
                     v-for="gender in genders"
@@ -114,7 +114,7 @@
                     {{ gender }}
                   </option>
                 </select>
-                <small>Birthday</small>
+                <small>生年月日</small>
                 <input
                   autocomplete="bday"
                   type="date"
@@ -128,9 +128,9 @@
                   class="btn btn-secondary"
                   @click="cancelSignup()"
                 >
-                  Cancel
+                  キャンセル
                 </button>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">登録する</button>
               </div>
             </div>
           </form>
@@ -161,18 +161,18 @@ export default {
         password: "",
         phone: "",
         zip: "",
-        state: "",
-        city: "",
+        state: "東京都",
+        city: "世田谷区",
         address: "",
         gender: "",
         birthday: "",
       },
       genders: [
-        "Male",
-        "Female",
-        "Non Binary",
-        "Rather not to descrive",
-        "N/A"
+        "男性",
+        "女性",
+        "ノンバイナリー",
+        "回答しない",
+        "該当なし"
       ],
       states: [
         "AL", "AK", "AZ", "AR", "CA",
@@ -184,7 +184,7 @@ export default {
         "NM", "NY", "NC", "ND", "OH",
         "OK", "OR", "PA", "RI", "SC",
         "SD", "TN", "TX", "UT", "VT",
-        "VA", "WA", "WV", "WI", "WY"
+        "VA", "WA", "WV", "WI", "WY", "東京都"
       ],
     }
   },
