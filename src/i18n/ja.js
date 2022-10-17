@@ -63,7 +63,7 @@ export default {
       tax: '(NY)'
     },
     Home: {
-      greeting: 'Welcome to Booking App Biznesu',
+      greeting: '脱毛サロン エピア 予約サイト',
       message: 'ご利用にはログイン/ご登録が必要です。',
       loginAdmin: '管理者ログイン',
       loginUser: '一般ユーザーログイン',

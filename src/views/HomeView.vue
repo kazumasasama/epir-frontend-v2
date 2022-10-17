@@ -2,8 +2,8 @@
   <div class="container">
     <div class="row home-card-container">
       <div class="card home-card ">
+        <h1 class="card-title top-card-title">{{ $t('Home.greeting') }}</h1>
         <div class="row d-flex justify-content-center">
-          <h1 class="card-title top-card-title">{{ $t('Home.greeting') }}</h1>
           <div class="col-md-6">
             <div class="card-body home" id="card-home">
               <img src="@/assets/people-top-image.jpg" class="card-img-home">
@@ -20,14 +20,9 @@
           </div>
           <div class="col-md-5 col-sm-7">
             <div class="login-hint">
-              <div class="card shadow">
-                <div class="card-header">
-                  <p class="card-text" id="text-home">{{ $t('Home.message') }}</p>
-                </div>
+              <div class="card">
                 <div class="card-body">
-                  <p class="login-hint-title">{{ $t('Home.loginAdmin') }}</p>
-                  <p class="login-hint-item"><small>{{ $t('Home.email') }}: test@test.com</small></p>
-                  <p class="login-hint-item"><small>{{ $t('Home.password') }}: password</small></p>
+                  <p class="card-text" id="text-home">{{ $t('Home.message') }}</p>
                   <div class="btn-container">
                     <button
                       @click="this.$router.push('/login')"
@@ -45,38 +40,6 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row home-card-container">
-      <div class="card release-card text-start">
-        <div class="row">
-          <div class="col-sm-6">
-            <h2 class="release-card-title">Releases</h2>
-            <ul>
-              <li><small>09-19-2022: Categorized Menus for both appointment page and admin menus page</small></li>
-              <li><small>09-14-2022: Appointment reschedule function in admin calendar</small></li>
-              <li><small>09-07-2022: Auto login</small></li>
-              <li><small>09-07-2022: Customer search by name and email (Admin)</small></li>
-              <li><small>09-05-2022: Cashless payment</small></li>
-              <li><small>08-26-2022: Multiple language i18n</small></li>
-              <li><small>08-26-2022: State</small></li>
-              <li><small>08-22-2022: Improve error handling</small></li>
-              <li><small>08-20-2022: Admin Dashboard (Statics)</small></li>
-              <li><small>05-19-2022: Launch Biznesu</small></li>
-            </ul>
-          </div>
-          <div class="col-sm-6">
-            <h2 class="release-card-title">Bug Fix</h2>
-            <ul>
-              <li><small>09-08-2022: Reloading problem at Admin Menu</small></li>
-              <li><small>09-06-2022: Calendar locale</small></li>
-              <li><small>09-06-2022: Translation</small></li>
-              <li><small>09-05-2022: Progress bar</small></li>
-              <li><small>08-26-2022: Reloading problem at links and buttons</small></li>
-              <li><small>08-26-2022: Responsive layout fix</small></li>
-            </ul>
           </div>
         </div>
       </div>
