@@ -69,16 +69,16 @@
   </div>
 
   <div class="row">
-    <div class="col-12 text-end">
+    <!-- <div class="col-12 text-end">
       <button disabled @click="showPasswordModal()" class="btn btn-sm btn-outline-danger">Change Password</button>
-    </div>
+    </div> -->
     <div class="col-sm-6">
       <form>
-        <small>First Name</small>
-        <input type="text" v-model="user.first_name" class="form-control">
-        <small>Last Name</small>
+        <small>姓</small>
         <input type="text" v-model="user.last_name" class="form-control">
-        <small>Gender</small>
+        <small>名</small>
+        <input type="text" v-model="user.first_name" class="form-control">
+        <small>性別</small>
         <select v-model="user.gender" class="form-select">
           <option
             v-for="gender in genders"
@@ -88,13 +88,13 @@
             {{ gender }}
           </option>
         </select>
-        <small>Email</small>
+        <small>メールアドレス</small>
         <input type="text" v-model="user.email" class="form-control">
-        <small>Phone</small>
+        <small>電話番号</small>
         <input type="text" v-model="user.phone" class="form-control">
-        <small>Birthday</small>
+        <small>生年月日</small>
         <input class="form-control" type="text" v-model="user.birthday">
-        <small>Status</small>
+        <small>ステータス</small>
         <Multiselect
           v-model="user.status_ids"
           :placeholder="multipleselectPlaceholder"
@@ -110,9 +110,9 @@
   
     <div class="col-sm-6">
       <form>
-        <small>Zip</small>
+        <small>郵便番号</small>
         <input class="form-control" type="text" v-model="user.zip">
-        <small>State</small>
+        <small>都道府県</small>
         <select v-model="user.state" class="form-select" autocomplete="address-level1">
           <option
             v-for="state in states"
@@ -122,11 +122,11 @@
             {{ state }}
           </option>
         </select>
-        <small>City</small>
+        <small>市区町村</small>
         <input class="form-control" type="text" v-model="user.city">
-        <small>Address</small>
+        <small>以降の住所</small>
         <input class="form-control" type="text" v-model="user.address">
-        <small>Requirements/Note</small>
+        <small>ご要望などこちらへご記入ください</small>
         <textarea rows="3" class="form-control" v-model="user.note"></textarea>
       </form>
     </div>

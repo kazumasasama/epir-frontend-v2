@@ -252,7 +252,11 @@
                 >
                   {{ $t('Btn.cancel') }}
                 </button>
-                <button type="submit" class="btn btn-primary">{{ $t('Btn.updateSettings') }}</button>
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  @click="updateConfig()"
+                >{{ $t('Btn.updateSettings') }}</button>
               </div>
             </div>
           </div>

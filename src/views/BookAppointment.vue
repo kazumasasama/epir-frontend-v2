@@ -120,7 +120,7 @@
                                   <span>
                                     {{ menu.title }}
                                   </span>
-                                  <small>{{ menu.duration }} {{ $t('DateTime.min') }} | {{ $t('Currency') }}{{ menu.price }}</small>
+                                  <small>{{ menu.duration }} {{ $t('DateTime.min') }} | {{ $t('Currency') }}{{ Math.floor(menu.price) }}</small>
                                 </div>
                                 <small>{{ menu.description }}</small>
                               </form>
@@ -140,7 +140,7 @@
                             <label class="list-group-item">
                               <small class="step-1-summary">{{ $t('Appointments.totalDuration') }}</small>
                               <p>{{ durationSumInString }}</p>
-                              <small class="step-1-summary">Selected Menus</small>
+                              <small class="step-1-summary">選択中のメニュー</small>
                               <ol>
                                 <li v-for="menu in selectedMenus" :key="menu.id">{{ menu.title }}</li>
                               </ol>
@@ -325,10 +325,10 @@
                   <div class="card confirmation-detail-card">
                     <div class="card-body text-start">
                       <ul class="payment-item">
-                        <h6 class="card-title">{{ $t('Appointments.steps.dateTime') }}</h6>
+                        <h6 class="card-title" style="font-weight: bold">{{ $t('Appointments.steps.dateTime') }}</h6>
                         <p>{{ formatBookingDate }}</p>
                         <p>{{ formattedBookingTime }} - {{ endTime }}</p>
-                        <h6 class="confirm-item-tag">{{ $t('Menus.menu') }}:</h6>
+                        <h6 class="confirm-item-tag" style="font-weight: bold">{{ $t('Menus.menu') }}</h6>
                         <div v-for="menu in selectedMenus" :key="menu.id" class="d-flex justify-content-between">
                           <li>
                             {{ menu.title }}
@@ -347,28 +347,28 @@
                       </div>
                         <hr>
                       <div class="payment-item d-flex justify-content-between">
-                        <h6 class="text-end">{{ $t('Forms.total') }}</h6>
-                        <span>{{ $t('Currency') }}{{ subTotal + serviceTax }}</span>
+                        <h6 class="text-end"  style="font-weight: bold">{{ $t('Forms.total') }}</h6>
+                        <span  style="font-weight: bold">{{ $t('Currency') }}{{ subTotal + serviceTax }}</span>
                       </div>
                       <hr>
                       <p>
-                        <small>{{ $t('Messages.couponNotice') }}</small>
+                        <small>表示金額は<span style="font-weight: bold">都度払いの金額</span>となっております。回数券をお持ちのお客様はお支払いの必要はありません。</small>
                       </p>
                       <p>
-                        <small>{{ $t('Messages.priceNotice') }}</small>
+                        <small>{{ $t('Messages.couponNotice') }}</small>
                       </p>
                     </div>
                   </div>
                 </section>
               </div>
-              <div v-if="subTotal > 0" class="col-md-6">
+              <!-- <div v-if="subTotal > 0" class="col-md-6">
                 <CheckoutView
                   @checkout="checkout()"
                   :stripe="stripe"
                   :elements="elements"
                   :checkBoxError="checkBoxError"
                 />
-              </div>
+              </div> -->
             </div>
             <div class="btn-container">
               <button
@@ -393,13 +393,13 @@
               >
                 {{ $t('Btn.bookAppointment') }}
               </button>
-              <!-- <button
+              <button
                 type="submit"
                 class="btn btn-primary"
                 :disabled="!confirmCheckbox"
               >
                 {{ $t('Btn.bookAppointment') }}
-              </button> -->
+              </button>
             </div>
           </form>
         </div>
@@ -417,7 +417,7 @@ import * as moment from 'moment-timezone';
 import { mapWritableState } from 'pinia'
 import { useSystemStore } from '@/store/systemStore'
 import { useUserStore } from '@/store/userStore'
-import CheckoutView from '@/components/CheckoutView.vue';
+// import CheckoutView from '@/components/CheckoutView.vue';
 
 export default {
   setup() {
@@ -430,7 +430,7 @@ export default {
   },
   components: {
     Datepicker,
-    CheckoutView,
+    // CheckoutView,
 },
   data() {
     return {
@@ -469,8 +469,6 @@ export default {
         'SD', 'TN', 'TX', 'UT', 'VT',
         'VA', 'WA', 'WV', 'WI', 'WY'
       ],
-      // NYC service tax rate
-      taxRate: 0.045,
       confirmCheckbox: false,
       checkBoxError: null,
       picked: ref(new Date),
@@ -479,7 +477,7 @@ export default {
   created() {
     this.systemStore.modifyLoadingMessage(this.$t('Spinner.loading'));
     this.systemStore.startLoading();
-    this.stripe = window.Stripe(`${process.env.VUE_APP_STRIPE_PUBLIC_KEY}`);
+    // this.stripe = window.Stripe(`${process.env.VUE_APP_STRIPE_PUBLIC_KEY}`);
     this.switchCategory(1)
   },
   mounted() {
@@ -571,8 +569,8 @@ export default {
       return this.selectedMenus.map((menu)=> parseFloat(menu.price)).reduce((sum, price)=> { return sum + price}, 0);
     },
     serviceTax() {
-      let tax = this.subTotal * this.taxRate;
-      return Math.floor(tax * Math.pow(10, 2)) / Math.pow(10, 2);
+      let tax = Number(this.subTotal) * (Number(this.config.tax) / 100);
+      return Math.floor(tax);
     },
   },
   methods: {
@@ -593,28 +591,28 @@ export default {
         ];
       }
     },
-    getClientSecret() {
-      const payment = {
-        "menuIds": this.selectedMenuIds,
-        "tax": this.serviceTax 
-      };
-      axios.post('/secret.json', payment)
-      .then((res)=> {
-        const clientSecret = res.data
-        const options = {
-          clientSecret: clientSecret,
-          appearance: {
-            theme: 'flat'
-          },
-        }
-        this.elements = this.stripe.elements(options);
-        const paymentElement = this.elements.create('payment');
-        paymentElement.mount('#payment-element');
-      })
-      .catch((error)=> {
-        this.error = error;
-      })
-    },
+    // getClientSecret() {
+    //   const payment = {
+    //     "menuIds": this.selectedMenuIds,
+    //     "tax": this.serviceTax 
+    //   };
+    //   axios.post('/secret.json', payment)
+    //   .then((res)=> {
+    //     const clientSecret = res.data
+    //     const options = {
+    //       clientSecret: clientSecret,
+    //       appearance: {
+    //         theme: 'flat'
+    //       },
+    //     }
+    //     this.elements = this.stripe.elements(options);
+    //     const paymentElement = this.elements.create('payment');
+    //     paymentElement.mount('#payment-element');
+    //   })
+    //   .catch((error)=> {
+    //     this.error = error;
+    //   })
+    // },
     nextStep() {
       var targetElement
       if (this.currentStep === 1 && this.selectedMenus.length === 0) {
@@ -632,9 +630,9 @@ export default {
         targetElement.classList.remove('bg-secondary');
         targetElement.classList.add('bg-success');
       } else if (this.currentStep === 3) {
-        if (this.subTotal > 0) {
-          this.getClientSecret()
-        }
+        // if (this.subTotal > 0) {
+        //   this.getClientSecret()
+        // }
         this.currentStep++;
         targetElement = document.querySelector('#progress-4')
         targetElement.classList.remove('bg-secondary');

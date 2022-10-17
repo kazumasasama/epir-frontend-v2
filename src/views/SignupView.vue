@@ -11,21 +11,21 @@
             <div class="row">
               <div class="col-sm-6">
                 <p><strong>必須項目</strong></p>
-                <small>名</small>
-                <input
-                  id="input-validation-firstname"
-                  autocomplete="given-name"
-                  type="text"
-                  v-model="user.first_name"
-                  class="form-control"
-                  required
-                >
                 <small>姓</small>
                 <input
                   id="input-validation-lastname"
                   autocomplete="family-name"
                   type="text"
                   v-model="user.last_name"
+                  class="form-control"
+                  required
+                >
+                <small>名</small>
+                <input
+                  id="input-validation-firstname"
+                  autocomplete="given-name"
+                  type="text"
+                  v-model="user.first_name"
                   class="form-control"
                   required
                 >
@@ -37,6 +37,14 @@
                   v-model="user.email"
                   class="form-control"
                   required
+                >
+                <small>電話番号</small>
+                <input
+                  id="input-validation-phone"
+                  autocomplete="tel-national"
+                  type="text"
+                  v-model="user.phone"
+                  class="form-control"
                 >
                 <small>パスワード</small>
                 <input
@@ -62,13 +70,6 @@
               </div>
               <div class="col-sm-6">
                 <p><strong>任意項目</strong></p>
-                <small>電話番号</small>
-                <input
-                  autocomplete="tel-national"
-                  type="text"
-                  v-model="user.phone"
-                  class="form-control"
-                >
                 <small>郵便番号</small>
                 <input
                   autocomplete="postal-code"
