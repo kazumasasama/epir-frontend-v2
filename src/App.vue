@@ -154,7 +154,15 @@ hr {
 .btn-container * {
   margin: 5px 8px;
 }
-
+.card {
+  padding: 30px;
+}
+.card-base {
+  padding: 0px;
+}
+.card-base-body {
+  padding: 30px;
+}
 
 #bisiness-name-logo {
   /* font-family: Helvetica;

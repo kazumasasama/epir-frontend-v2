@@ -9,7 +9,7 @@
     </div>
 
     
-    <div class="card shadow">
+    <div class="card shadow card-base">
       <div class="card-header">
         <nav aria-label="breadcrumb" class="pg-bar">
           <div class="progress">
@@ -61,7 +61,7 @@
         </nav>
       </div>
       
-      <div class="card-body">
+      <div class="card-body card-base-body">
         <div class="pick-menus" v-if="currentStep === 1">
           <div class="row">
             <div class="text-start">
@@ -850,4 +850,7 @@ export default {
   hr {
     border-top: 1px;
   }
+  .card-base-body {
+    padding: 30px;
+  } 
 </style>

@@ -15,13 +15,13 @@
       </div>
       <div class="col-12">
         <div class="card-group">
-          <div class="card text-bg-light mb-3">
+          <div class="card text-bg-light mb-3 card-base">
             <div class="card-header">{{ $t('Dashboard.Charts.users') }}</div>
             <div class="card-body">
               <p class="card-text">{{ usersTotal }}</p>
             </div>
           </div>
-          <div class="card text-bg-light mb-3">
+          <div class="card text-bg-light mb-3 card-base">
             <div class="card-header">{{ $t('Dashboard.Charts.avarageSpent') }}</div>
             <div class="card-body">
               <p class="card-text">¥{{ salesAve }}</p>
@@ -80,13 +80,13 @@
               </div>
               <div class="col-md-4">
                 <div class="card-group">
-                  <div class="card text-bg-light mb-3">
+                  <div class="card text-bg-light mb-3 card-base">
                     <div class="card-header">{{ currentYear }}</div>
                     <div class="card-body">
                       <p class="card-text">{{ currentAppointmentTotal }}</p>
                     </div>
                   </div>
-                  <div class="card text-bg-light mb-3">
+                  <div class="card text-bg-light mb-3 card-base">
                     <div class="card-header">{{ currentYear - 1 }}</div>
                     <div class="card-body">
                       <p class="card-text">{{ prevAppointmentTotal }}</p>
@@ -111,13 +111,13 @@
               </div>
               <div class="col-md-4">
                 <div class="card-group">
-                  <div class="card text-bg-light mb-3">
+                  <div class="card text-bg-light mb-3 card-base">
                     <div class="card-header">{{ currentYear }}</div>
                     <div class="card-body">
                       <p class="card-text">¥{{ currentSalesTotal }}</p>
                     </div>
                   </div>
-                  <div class="card text-bg-light mb-3">
+                  <div class="card text-bg-light mb-3 card-base">
                     <div class="card-header">{{ currentYear - 1 }}</div>
                     <div class="card-body">
                       <p class="card-text">¥{{ prevSalesTotal }}</p>

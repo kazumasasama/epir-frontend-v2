@@ -11,7 +11,7 @@
     <div class="modal" id="menu-modal" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-          <div class="modal-body text-start">
+          <div class="modal-body text-start card-base-body">
             <form>
               <small>使用中</small>
               <div class="form-check form-switch">
@@ -84,13 +84,13 @@
       </div>
     </div>
 
-    <div class="card shadow">
+    <div class="card shadow card-base">
       <div class="card-header text-end">
         <button class="btn btn-sm btn-outline-danger" @click="showModal(menu, 'create')">新規メニュー</button>
         {{ ' ' }}
         <button class="btn btn-sm btn-outline-danger" @click="$router.push('/admin/config')">新規カテゴリー</button>
       </div>
-      <div class="card-body">
+      <div class="card-body card-base-body">
         <div class="row">
           <div class="col-lg-4 col-md-4 col-sm-5">
             <div class="d-flex category-nav">
@@ -464,6 +464,9 @@
     font-weight: bold;
     text-decoration: none;
     color: rgb(54, 162, 235);
+  }
+  .card-base-body {
+    padding: 30px;
   }
   .form-check-label {
     padding-top: 8px;

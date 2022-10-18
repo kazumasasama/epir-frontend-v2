@@ -5,11 +5,11 @@
   <div class="container">
     <div class="row d-flex justify-content-center">
       <div class="col-lg-5 col-md-6 col-sm-8">
-        <div class="card shadow">
+        <div class="card shadow card-base">
           <div class="card-header text-center">
             <h4 class="">{{ $t('Login.pageTitle') }}</h4>
           </div>
-          <div class="card-body login-form-container">
+          <div class="card-body login-form-container card-base-body">
             <form v-on:submit.prevent="login()" class="needs-validation" novalidate>
               <small>{{ $t('Login.form.email') }}</small>
               <input
@@ -197,6 +197,9 @@ export default {
 </script>
 
 <style scoped>
+  h4 {
+    margin: 10px 0px;
+  }
   .row {
     text-align: left;
   }
@@ -217,5 +220,8 @@ export default {
   }
   .btn-container {
     margin-top: 20px;
+  }
+  .card-base-body {
+    padding: 50px;
   }
 </style>
