@@ -183,14 +183,14 @@
       <div v-if="currentPage === 'config'" class="col-12">
         <div class="card shadow">
           <div class="card-body">
-            <div class="row">
-              <h4 class="card-title text-start">{{ $t('Settings') }}</h4>
-              <div class="col-sm-6">
-                <form
-                  v-on:submit.prevent="updateConfig()"
-                  class="col-12 needs-validation text-start"
-                  novalidate
-                >
+            <h4 class="card-title text-start">{{ $t('Settings') }}</h4>
+            <form
+            v-on:submit.prevent="updateConfig()"
+            class="col-12 needs-validation text-start"
+            novalidate
+            >
+              <div class="row">
+                <div class="col-sm-6">
                   <small>{{ $t('Forms.language') }}</small>
                   <select
                     v-model="config.lang"
@@ -213,16 +213,6 @@
                     v-model="config.tax"
                     class="form-control"
                     required
-                  >
-                  <small class="release-notice">Release soon! </small>
-                  <small>Business Closing Days</small>
-                  <input
-                    autocomplete="off"
-                    type="text"
-                    v-model="config.closingDays"
-                    class="form-control"
-                    required
-                    disabled
                   >
                   <small>{{ $t('Forms.calendarStartTime') }} (9:30AM = 9.5)</small>
                   <input
@@ -250,57 +240,39 @@
                     required
                     disabled
                   >
-                </form>
-              </div>
-              <div class="btn-container col-12 text-end">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  @click="handleCancel()"
-                >
-                  {{ $t('Btn.cancel') }}
-                </button>
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  @click="updateConfig()"
-                >{{ $t('Btn.updateSettings') }}</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div v-if="currentPage === 'closing'" class="col-12">
-        <div class="card shadow">
-          <div class="card-body">
-            <div class="row">
-              <h4 class="card-title text-start">Business Closing Days</h4>
-              <div class="col-sm-6">
-                <form
-                  v-on:submit.prevent="createUserStatus()"
-                  class="col-12 needs-validation mb-3"
-                  novalidate
-                >
-                <div class="datepicker-container">
-                  <VueCal
-                    class="vuecal--date-picker"
-                    hide-view-selector
-                    :time="false"
-                    active-view="month"
-                    :disable-views="['week']"
-                  />
                 </div>
-                </form>
+                <div class="col-sm-6">
+                  <small>定休日</small>
+                  <small class="release-notice">Release soon! </small>
+                  <input
+                    autocomplete="off"
+                    type="text"
+                    v-model="config.closingDays"
+                    class="form-control"
+                    required
+                    disabled
+                  >
+                </div>
               </div>
-              <div class="col-sm-6">
-                <ul>
-                  <li v-for="day in selectedClosingDays" :key="day">{{ day }}</li>
-                </ul>
-              </div>
+            </form>
+            <div class="btn-container col-12 text-end">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                @click="handleCancel()"
+              >
+                {{ $t('Btn.cancel') }}
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                @click="updateConfig()"
+              >{{ $t('Btn.updateSettings') }}</button>
             </div>
           </div>
         </div>
       </div>
+
       <div v-if="currentPage === 'userStatus'" class="col-12">
         <div class="card shadow">
           <div class="card-body">
@@ -436,9 +408,9 @@ import { useSystemStore } from '@/store/systemStore'
 import { useUserStore } from '@/store/userStore'
 import axios from 'axios'
 import UserForm from '@/components/UserForm.vue'
-import VueCal from 'vue-cal'
-import 'vue-cal/dist/i18n/ja.js'
-import 'vue-cal/dist/vuecal.css'
+// import VueCal from 'vue-cal'
+// import 'vue-cal/dist/i18n/ja.js'
+// import 'vue-cal/dist/vuecal.css'
 // import * as moment from 'moment-timezone';
 
 export default {
@@ -452,18 +424,19 @@ export default {
   },
   components: {
     UserForm,
-    VueCal,
+    // VueCal,
   },
   data() {
     return {
       error: null,
-      currentPage: 'profile',
+      currentPage: 'config',
       languages: {
         English: 'en',
         Japanese: 'ja'
       },
       newUserStatus: {},
       newCategory: {},
+      recurrence: true,
     }
   },
   mounted() {

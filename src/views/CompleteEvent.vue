@@ -58,12 +58,6 @@ import { useSystemStore } from '@/store/systemStore';
 import mapboxgl from 'mapbox-gl';
 
 export default {
-  setup() {
-    const systemStore = useSystemStore();
-    return {
-      systemStore,
-    }
-  },
   data() {
     return {
     }
@@ -82,7 +76,7 @@ export default {
       mapboxgl.accessToken = process.env.VUE_APP_MAPBOX;
       const map = new mapboxgl.Map({
         container: 'map', // container ID
-        style: this.systemStore.mapboxURL, // style URL
+        style: 'mapbox://styles/kaznyc/cl3z0c148000i14qp3onp4x8e', // style URL
         center: [139.60863023397835, 35.64135382906784], // starting position [lng, lat]
         zoom: 15.5 // starting zoom
       });
