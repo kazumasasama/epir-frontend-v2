@@ -142,6 +142,7 @@
 
 <script>
 import axios from "axios"
+import { mapWritableState } from 'pinia'
 import { useSystemStore } from "@/store/systemStore";
 
 export default {
@@ -168,28 +169,11 @@ export default {
         gender: "",
         birthday: "",
       },
-      genders: [
-        "男性",
-        "女性",
-        "ノンバイナリー",
-        "回答しない",
-        "該当なし"
-      ],
-      states: [
-        "AL", "AK", "AZ", "AR", "CA",
-        "CO", "CT", "DE", "FL", "GA",
-        "HI", "ID", "IL", "IN", "IA",
-        "KS", "KY", "LA", "ME", "MD",
-        "MA", "MI", "MN", "MS", "MO",
-        "MT", "NE", "NV", "NH", "NJ",
-        "NM", "NY", "NC", "ND", "OH",
-        "OK", "OR", "PA", "RI", "SC",
-        "SD", "TN", "TX", "UT", "VT",
-        "VA", "WA", "WV", "WI", "WY", "東京都"
-      ],
     }
   },
   computed: {
+    ...mapWritableState(useSystemStore, ['genders']),
+    ...mapWritableState(useSystemStore, ['states']),
     passwordMatch() {
       if (this.passwordConfirm === null) {
         return false

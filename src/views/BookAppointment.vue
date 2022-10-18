@@ -357,6 +357,36 @@
                       <p>
                         <small>{{ $t('Messages.couponNotice') }}</small>
                       </p>
+                      <label class="form-check-label" for="flexCheckDefault">
+                        <input
+                          class="form-check-input booking-checkbox"
+                          type="checkbox"
+                          v-model="confirmCheckbox"
+                          id="flexCheckDefault"
+                        >
+                        <small class="terms-and-conditions">
+                          <span @click="this.$router.push('/termsandconditions')">
+                            <a
+                              class="link-primary"
+                              href="#"
+                              rel="noopener noreferrer"
+                            >
+                              利用規約
+                            </a>
+                          </span>
+                          と
+                          <span @click="this.$router.push('/privacyandpolicy')">
+                            <a 
+                              class="link-primary"
+                              href="#"
+                              rel="noopener noreferrer"
+                            >
+                              プライバシーポリシー
+                            </a>
+                          </span>
+                          に同意する
+                        </small>
+                      </label>
                     </div>
                   </div>
                 </section>
@@ -450,25 +480,6 @@ export default {
       ],
       selectedMenus: [],
       selectedTime: null,
-      genders: [
-        this.$t('Gender.male'),
-        this.$t('Gender.female'),
-        this.$t('Gender.nonBinary'),
-        this.$t('Gender.ratherNot'),
-        this.$t('Gender.NA')
-      ],
-      states: [
-        'AL', 'AK', 'AZ', 'AR', 'CA',
-        'CO', 'CT', 'DE', 'FL', 'GA',
-        'HI', 'ID', 'IL', 'IN', 'IA',
-        'KS', 'KY', 'LA', 'ME', 'MD',
-        'MA', 'MI', 'MN', 'MS', 'MO',
-        'MT', 'NE', 'NV', 'NH', 'NJ',
-        'NM', 'NY', 'NC', 'ND', 'OH',
-        'OK', 'OR', 'PA', 'RI', 'SC',
-        'SD', 'TN', 'TX', 'UT', 'VT',
-        'VA', 'WA', 'WV', 'WI', 'WY'
-      ],
       confirmCheckbox: false,
       checkBoxError: null,
       picked: ref(new Date),
@@ -505,6 +516,8 @@ export default {
     ...mapWritableState(useSystemStore, ['businessTimes']),
     ...mapWritableState(useSystemStore, ['activeMenus']),
     ...mapWritableState(useSystemStore, ['groupedMenus']),
+    ...mapWritableState(useSystemStore, ['states']),
+    ...mapWritableState(useSystemStore, ['genders']),
     ...mapWritableState(useUserStore, ['user']),
     fullName() {
       return `${this.user.first_name} ${this.user.last_name}`;
@@ -659,7 +672,7 @@ export default {
       }
     },
     createAppointment() {
-      this.systemStore.modifyLoadingMessage(this.$t('Spinner.createAppointment'))
+      this.systemStore.modifyLoadingMessage('ご予約の登録中')
       this.systemStore.startLoading();
       const bookingInfo = {
         "date": this.bookingDate,

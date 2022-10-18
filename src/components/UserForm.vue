@@ -94,17 +94,19 @@
         <input type="text" v-model="user.phone" class="form-control">
         <small>生年月日</small>
         <input class="form-control" type="text" v-model="user.birthday">
-        <small>ステータス</small>
-        <Multiselect
-          v-model="user.status_ids"
-          :placeholder="multipleselectPlaceholder"
-          :options="multiselectOptions"
-          mode="tags"
-          class="multiselect-tag-color"
-          :close-on-select="false"
-          :hideSelected="false"
-          :create-option="true"
-        />
+        <div v-if="$route.path !== '/mypage'">
+          <small>ステータス</small>
+          <Multiselect
+            v-model="user.status_ids"
+            :placeholder="multipleselectPlaceholder"
+            :options="multiselectOptions"
+            mode="tags"
+            class="multiselect-tag-color"
+            :close-on-select="false"
+            :hideSelected="false"
+            :create-option="true"
+          />
+        </div>
       </form>
     </div>
   
@@ -139,6 +141,7 @@
 <script>
 import Multiselect from '@vueform/multiselect'
 import { mapWritableState } from 'pinia'
+import { useSystemStore } from '@/store/systemStore'
 import { useUserStore } from '@/store/userStore'
 import axios from 'axios'
 import * as bootstrap from 'bootstrap'
@@ -150,25 +153,6 @@ export default {
   data() {
     return {
       error: null,
-      genders: [
-        "Male",
-        "Female",
-        "Non Binary",
-        "Rather not to descrive",
-        "N/A"
-      ],
-      states: [
-        "AL", "AK", "AZ", "AR", "CA",
-        "CO", "CT", "DE", "FL", "GA",
-        "HI", "ID", "IL", "IN", "IA",
-        "KS", "KY", "LA", "ME", "MD",
-        "MA", "MI", "MN", "MS", "MO",
-        "MT", "NE", "NV", "NH", "NJ",
-        "NM", "NY", "NC", "ND", "OH",
-        "OK", "OR", "PA", "RI", "SC",
-        "SD", "TN", "TX", "UT", "VT",
-        "VA", "WA", "WV", "WI", "WY"
-      ],
       showHistory: false,
       message: null,
       passwordModal: null,
@@ -176,7 +160,7 @@ export default {
         currentPassword: '',
         newPassword: '',
         passwordConfirmation: '',
-      }
+      },
     }
   },
   created() {
@@ -185,6 +169,8 @@ export default {
     this.passwordModal = new bootstrap.Modal(document.getElementById('password-modal'));
   },
   computed: {
+    ...mapWritableState(useSystemStore, ['states']),
+    ...mapWritableState(useSystemStore, ['genders']),
     ...mapWritableState(useUserStore, ['statuses']),
     ...mapWritableState(useUserStore, ['user']),
     multiselectOptions() {
@@ -198,7 +184,7 @@ export default {
     },
     multipleselectPlaceholder() {
       if (this.user.status_ids.length === 0) {
-        return 'Select Status'
+        return '未選択'
       }
       const statusIds = this.user.status_ids;
       let selectedStatuses = [];

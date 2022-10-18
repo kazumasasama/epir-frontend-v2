@@ -21,36 +21,6 @@
               <li>{{ $t('Forms.zip') }}: 11111</li>
             </ul>
           </div>
-          <label class="form-check-label" for="flexCheckDefault">
-            <input
-              class="form-check-input booking-checkbox"
-              type="checkbox"
-              v-model="confirmCheckbox"
-              id="flexCheckDefault"
-            >
-            <small class="terms-and-conditions">
-              Agree to our 
-              <span @click="this.$router.push('/termsandconditions')">
-                <a
-                  class="link-primary"
-                  href="#"
-                  rel="noopener noreferrer"
-                >
-                  Terms and Condition
-                </a>
-              </span>
-              and
-              <span @click="this.$router.push('/privacyandpolicy')">
-                <a 
-                  class="link-primary"
-                  href="#"
-                  rel="noopener noreferrer"
-                >
-                  Privacy Policy
-                </a>
-              </span>
-            </small>
-          </label>
         </div>
         <div class="btn-container">
           <button
