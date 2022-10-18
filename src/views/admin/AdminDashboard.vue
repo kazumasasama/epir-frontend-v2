@@ -114,13 +114,13 @@
                   <div class="card text-bg-light mb-3">
                     <div class="card-header">{{ currentYear }}</div>
                     <div class="card-body">
-                      <p class="card-text">${{ currentSalesTotal }}</p>
+                      <p class="card-text">¥{{ currentSalesTotal }}</p>
                     </div>
                   </div>
                   <div class="card text-bg-light mb-3">
                     <div class="card-header">{{ currentYear - 1 }}</div>
                     <div class="card-body">
-                      <p class="card-text">${{ prevSalesTotal }}</p>
+                      <p class="card-text">¥{{ prevSalesTotal }}</p>
                     </div>
                   </div>
                 </div>
