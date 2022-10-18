@@ -105,7 +105,7 @@ export default {
       linkNotice: "下記のリンクでご予約の確認ができます。(管理者のみ)",
       bookedNotice: "予約が完了しました。",
       rescheduleNotice: "ご予約の変更、キャンセルがありましたら下記連絡先にお知らせください。",
-      cancelationNotice: "ご予約開始時間の24時間前以降はキャンセル料がかかる場合がございます。",
+      cancelationNotice: "ご予約当日のキャンセルはキャンセル料がかかる場合がございます。",
       anyCountry: 'どの国でも',
     },
     Calendar: {

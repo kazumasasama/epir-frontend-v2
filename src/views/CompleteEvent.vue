@@ -79,11 +79,12 @@ export default {
         container: 'map', // container ID
         style: this.systemStore.mapboxURL, // style URL
         center: [139.60863023397835, 35.64135382906784], // starting position [lng, lat]
-        zoom: 15 // starting zoom
+        zoom: 15.5 // starting zoom
       });
       new mapboxgl.Marker()
       .setLngLat([139.607748966944, 35.639853527118035])
       .addTo(map);
+      map.addControl(new mapboxgl.NavigationControl());
     },
   }
 }
