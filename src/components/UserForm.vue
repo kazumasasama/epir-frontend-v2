@@ -72,12 +72,19 @@
     <!-- <div class="col-12 text-end">
       <button disabled @click="showPasswordModal()" class="btn btn-sm btn-outline-danger">Change Password</button>
     </div> -->
+    <p><strong>必須項目*</strong></p>
     <div class="col-sm-6">
       <form>
-        <small>姓</small>
+        <small>姓*</small>
         <input type="text" v-model="user.last_name" class="form-control">
-        <small>名</small>
+        <small>名*</small>
         <input type="text" v-model="user.first_name" class="form-control">
+        <small>メールアドレス*</small>
+        <input type="text" v-model="user.email" class="form-control">
+        <small>電話番号</small>
+        <input type="text" v-model="user.phone" class="form-control">
+        <small>生年月日</small>
+        <input class="form-control" type="text" v-model="user.birthday">
         <small>性別</small>
         <select v-model="user.gender" class="form-select">
           <option
@@ -88,12 +95,6 @@
             {{ gender }}
           </option>
         </select>
-        <small>メールアドレス</small>
-        <input type="text" v-model="user.email" class="form-control">
-        <small>電話番号</small>
-        <input type="text" v-model="user.phone" class="form-control">
-        <small>生年月日</small>
-        <input class="form-control" type="text" v-model="user.birthday">
         <div v-if="$route.path !== '/mypage'">
           <small>ステータス</small>
           <Multiselect

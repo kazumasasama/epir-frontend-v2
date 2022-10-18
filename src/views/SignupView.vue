@@ -9,9 +9,9 @@
             novalidate
           >
             <div class="row">
+              <p><strong>必須項目*</strong></p>
               <div class="col-sm-6">
-                <p><strong>必須項目</strong></p>
-                <small>姓</small>
+                <small>姓*</small>
                 <input
                   id="input-validation-lastname"
                   autocomplete="family-name"
@@ -20,7 +20,7 @@
                   class="form-control"
                   required
                 >
-                <small>名</small>
+                <small>名*</small>
                 <input
                   id="input-validation-firstname"
                   autocomplete="given-name"
@@ -29,7 +29,7 @@
                   class="form-control"
                   required
                 >
-                <small>メールアドレス</small>
+                <small>メールアドレス*</small>
                 <input
                   id="input-validation-email"
                   autocomplete="email"
@@ -46,7 +46,7 @@
                   v-model="user.phone"
                   class="form-control"
                 >
-                <small>パスワード</small>
+                <small>パスワード*</small>
                 <input
                   id="input-validation-password"
                   autocomplete="new-password"
@@ -55,7 +55,7 @@
                   class="form-control"
                   required
                 >
-                <small>パスワード確認</small>
+                <small>パスワード確認*</small>
                 <input
                   id="input-validation-passwordconfirm"
                   autocomplete="new-password"
@@ -69,7 +69,6 @@
                 </small>
               </div>
               <div class="col-sm-6">
-                <p><strong>任意項目</strong></p>
                 <small>郵便番号</small>
                 <input
                   autocomplete="postal-code"
@@ -311,7 +310,7 @@ export default {
     },
     cancelSignup() {
       this.user = {};
-      this.$router.push('/');
+      this.$router.go(-1);
     },
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-light user-index-nav">
     <div class="col-12 users-btn-container">
-      <button class="btn btn-outline-success btn-sm" @click.prevent="openNewUserDialog()">{{ $t('Btn.addCustomer') }}</button>
+      <button class="btn btn-outline-success btn-sm" @click.prevent="$router.push('/signup')">{{ $t('Btn.addCustomer') }}</button>
       <div class="control-navbar-items">
         <div class="control-navbar-item">
           <input v-model="keyword" type="text" class="form-control" placeholder="Search Users">
@@ -17,76 +17,6 @@
   </nav>
 
   <div class="container">
-
-    <div class="modal fade" id="new-user-dialog">
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">New Customer</h5>
-          </div>
-          <div class="modal-body event-detail-modal-body">
-            <form v-on:submit.prevent="createUser()">
-              <div class="row">
-                <div class="col-sm-6">
-                  <p><strong>Required</strong></p>
-                  <small>First Name</small>
-                  <input type="text" v-model="newUser.first_name" class="form-control" autocomplete="given-name">
-                  <small>Last Name</small>
-                  <input type="text" v-model="newUser.last_name" class="form-control" autocomplete="family-name">
-                  <small>Email</small>
-                  <input type="text" v-model="newUser.email" class="form-control" autocomplete="email">
-                  <small>Phone</small>
-                  <input type="text" v-model="newUser.phone" class="form-control" autocomplete="tel-national">
-                  <small>Gender</small>
-                  <select v-model="newUser.gender" class="form-select" autocomplete="sex">
-                    <option
-                      v-for="gender in genders"
-                      :key="gender"
-                      :value="gender"
-                    >
-                      {{ gender }}
-                    </option>
-                  </select>
-                </div>
-                <div class="col-sm-6">
-                  <p><strong>Optional</strong></p>
-                  <small>State</small>
-                  <select v-model="newUser.state" class="form-select" autocomplete="address-level1">
-                    <option
-                      v-for="state in states"
-                      :key="state"
-                      :value="state"
-                    >
-                      {{ state }}
-                    </option>
-                  </select>
-                  <small>City</small>
-                  <input type="text" v-model="newUser.city" class="form-control" autocomplete="address-level2">
-                  <small>Address</small>
-                  <input autocomplete="street-address" type="text" v-model="newUser.address" class="form-control">
-                  <small>Zip</small>
-                  <input type="text" v-model="newUser.zip" class="form-control" autocomplete="postal-code">
-                  <small>Requirements/Note</small><br>
-                  <small class="smaller-text">(Customer can see this field)</small>
-                  <textarea v-model="newUser.note" col-sm-6s="30" rows="3" class="user-note form-control"></textarea>
-                  <small>Birthday</small>
-                  <input type="date" v-model="newUser.birthday" class="form-control" autocomplete="bday">
-                  <small>Status</small>
-                  <input type="text" v-model="newUser.status" class="form-control">
-                </div>
-                <div class="modal-footer btn-container col-sm-12">
-                  <!-- <button class="btn btn-primary">Update</button> -->
-                  <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button class="btn btn-primary" type="submit">Add</button>
-                  <!-- <small>パスワードが自動生成されメルアドレスにお知らせが送付されます</small> -->
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div class="row">
       <small>{{ $t('Customers.clickToSee') }}</small>
       <div class="col-lg-4 col-sm-6" v-for="user in filteredUsers" :key="user.id">
@@ -105,14 +35,12 @@
           </a>
         </div>
       </div>
-
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import * as bootstrap from 'bootstrap'
 export default {
   data() {
     return {
@@ -122,27 +50,6 @@ export default {
       displayUsers: [],
       keyword: "",
       sort: 'id',
-      newUser: {},
-      genders: [
-        'Male',
-        'Female',
-        'Non Binary',
-        'Rather not to descrive',
-        'N/A'
-      ],
-      states: [
-        'AL', 'AK', 'AZ', 'AR', 'CA',
-        'CO', 'CT', 'DE', 'FL', 'GA',
-        'HI', 'ID', 'IL', 'IN', 'IA',
-        'KS', 'KY', 'LA', 'ME', 'MD',
-        'MA', 'MI', 'MN', 'MS', 'MO',
-        'MT', 'NE', 'NV', 'NH', 'NJ',
-        'NM', 'NY', 'NC', 'ND', 'OH',
-        'OK', 'OR', 'PA', 'RI', 'SC',
-        'SD', 'TN', 'TX', 'UT', 'VT',
-        'VA', 'WA', 'WV', 'WI', 'WY'
-      ],
-      newUserDialog: null,
     }
   },
   created() {
@@ -150,7 +57,6 @@ export default {
   },
   mounted() {
     this.sortById();
-    this.newUserDialog = new bootstrap.Modal(document.getElementById('new-user-dialog'))
   },
   computed: {
     filteredUsers() {
@@ -231,36 +137,36 @@ export default {
       });
       this.displayUsers = sorted;
     },
-    createUser() {
-      let password_base = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-      function genPassword(length = 10)
-      {
-        let password = '';
-        for (let i = 0; i < length; i++) {
-          password += password_base.charAt(Math.floor(Math.random() * password_base.length));
-        }
-        return password
-      }
-      let pw = genPassword()
-      this.newUser.password = pw
-      axios
-      .post('/users', this.newUser)
-      .then((res)=> {
-        this.users.push(res.data);
-      })
-      .then(()=> {
-        this.closeNewUserDialog()
-      })
-      .catch((error)=> {
-        this.error = error;
-      })
-    },
-    openNewUserDialog() {
-      this.newUserDialog.show();
-    },
-    closeNewUserDialog() {
-      this.newUserDialog.hide();
-    }
+    // createUser() {
+    //   let password_base = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    //   function genPassword(length = 10)
+    //   {
+    //     let password = '';
+    //     for (let i = 0; i < length; i++) {
+    //       password += password_base.charAt(Math.floor(Math.random() * password_base.length));
+    //     }
+    //     return password
+    //   }
+    //   let pw = genPassword()
+    //   this.newUser.password = pw
+    //   axios
+    //   .post('/users', this.newUser)
+    //   .then((res)=> {
+    //     this.users.push(res.data);
+    //   })
+    //   .then(()=> {
+    //     this.closeNewUserDialog()
+    //   })
+    //   .catch((error)=> {
+    //     this.error = error;
+    //   })
+    // },
+    // openNewUserDialog() {
+    //   this.newUserDialog.show();
+    // },
+    // closeNewUserDialog() {
+    //   this.newUserDialog.hide();
+    // }
   },
 }
 </script>

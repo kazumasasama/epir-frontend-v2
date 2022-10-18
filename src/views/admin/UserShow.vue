@@ -24,7 +24,6 @@
   <div class="container">
     <div class="row">
       <div class="col-12">
-        <h5>{{ $t('Customers.customerDetail') }}</h5>
         <span class="notification">{{ message }}</span>
       </div>
 
@@ -32,11 +31,11 @@
         <form>
           <div class="row">
             <div class="col-sm-6">
-              <small>First Name</small>
-              <input type="text" v-model="user.first_name" class="form-control">
-              <small>Last Name</small>
+              <small>姓</small>
               <input type="text" v-model="user.last_name" class="form-control">
-              <small>Gender</small>
+              <small>名</small>
+              <input type="text" v-model="user.first_name" class="form-control">
+              <small>性別</small>
               <select v-model="user.gender" class="form-select">
                 <option
                   v-for="gender in genders"
@@ -46,13 +45,13 @@
                   {{ gender }}
                 </option>
               </select>
-              <small>Email</small>
+              <small>メールアドレス</small>
               <input type="text" v-model="user.email" class="form-control">
-              <small>Phone</small>
+              <small>電話番号</small>
               <input type="text" v-model="user.phone" class="form-control">
-              <small>Birthday</small>
+              <small>生年月日</small>
               <input class="form-control" type="text" v-model="user.birthday">
-              <small>Status</small>
+              <small>ステータス</small>
               <Multiselect
                 v-model="user.status_ids"
                 :placeholder="multipleselectPlaceholder"
@@ -66,9 +65,9 @@
             </div>
     
             <div class="col-sm-6">
-              <small>Zip</small>
+              <small>郵便番号</small>
               <input class="form-control" type="text" v-model="user.zip">
-              <small>State</small>
+              <small>都道府県</small>
               <select v-model="user.state" class="form-select" autocomplete="address-level1">
                 <option
                   v-for="state in states"
@@ -78,11 +77,11 @@
                   {{ state }}
                 </option>
               </select>
-              <small>City</small>
+              <small>市区町村</small>
               <input class="form-control" type="text" v-model="user.city">
-              <small>Address</small>
+              <small>以降の住所</small>
               <input class="form-control" type="text" v-model="user.address">
-              <small>Requirements/Note</small>
+              <small>ご要望などこちらへご記入ください</small>
               <textarea rows="3" class="form-control" v-model="user.note"></textarea>
             </div>
           </div>
@@ -100,7 +99,7 @@
       <div class="col-12">
         <p class="userFullName">{{ `${user.first_name} ${user.last_name}` }}</p>
         <small>{{ $t('Customers.statics.totalAppointments') }}: {{ events.length }} | </small>
-        <small>{{ $t('Customers.statics.totalSpent') }}: ${{ totalSpent }} | </small>
+        <small>{{ $t('Customers.statics.totalSpent') }}: ¥{{ totalSpent }} | </small>
         <small>{{ $t('Customers.statics.lastVisit') }}: {{ lastVisit }}</small>
       </div>
       <hr class="hr-user-statics">
@@ -120,7 +119,7 @@
               {{ menu.title }}
             </li>
             <hr class="history-hairline">
-            <li>Total: ${{ event.total_spent }}</li>
+            <li>Total: ¥{{ event.total_spent }}</li>
           </ul>
         </div>
       </div>
@@ -131,6 +130,7 @@
 <script>
 import Multiselect from '@vueform/multiselect'
 import { mapWritableState } from 'pinia'
+import { useSystemStore } from '@/store/systemStore'
 import { useUserStore } from '@/store/userStore'
 import axios from 'axios'
   export default {
@@ -144,25 +144,6 @@ import axios from 'axios'
           events: [],
           status_ids: [],
         },
-        genders: [
-          "Male",
-          "Female",
-          "Non Binary",
-          "Rather not to descrive",
-          "N/A"
-        ],
-        states: [
-          "AL", "AK", "AZ", "AR", "CA",
-          "CO", "CT", "DE", "FL", "GA",
-          "HI", "ID", "IL", "IN", "IA",
-          "KS", "KY", "LA", "ME", "MD",
-          "MA", "MI", "MN", "MS", "MO",
-          "MT", "NE", "NV", "NH", "NJ",
-          "NM", "NY", "NC", "ND", "OH",
-          "OK", "OR", "PA", "RI", "SC",
-          "SD", "TN", "TX", "UT", "VT",
-          "VA", "WA", "WV", "WI", "WY"
-        ],
         showHistory: false,
         message: null,
       }
@@ -171,6 +152,8 @@ import axios from 'axios'
       this.showUser();
     },
     computed: {
+      ...mapWritableState(useSystemStore, ['genders']),
+      ...mapWritableState(useSystemStore, ['states']),
       ...mapWritableState(useUserStore, ['statuses']),
       multiselectOptions() {
         const statusIds = this.statuses.map(status => status.id)

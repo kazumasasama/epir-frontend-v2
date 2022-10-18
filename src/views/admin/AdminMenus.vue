@@ -13,18 +13,16 @@
         <div class="modal-content">
           <div class="modal-body text-start">
             <form>
-              <div v-if="modalMode === 'create'">
-                <small>Active</small>
-                <div class="form-check form-switch">
-                  <input
-                    v-model="updatingMenu.active"
-                    class="form-check-input"
-                    type="checkbox"
-                    role="switch"
-                    id="activation-switch"
-                    checked
-                  >
-                </div>
+              <small>使用中</small>
+              <div class="form-check form-switch">
+                <input
+                  v-model="updatingMenu.active"
+                  class="form-check-input"
+                  type="checkbox"
+                  role="switch"
+                  id="activation-switch"
+                  checked
+                >
               </div>
               <small>{{ $t('Forms.title') }}*</small>
               <input type="text" v-model="updatingMenu.title" class="form-control">
@@ -34,7 +32,7 @@
               <input type="number" v-model="updatingMenu.duration" class="form-control">
               <small>{{ $t('Forms.description') }}</small>
               <textarea type="text" v-model="updatingMenu.description" class="form-control"></textarea>
-              <small>Category*</small>
+              <small>カテゴリー*</small>
               <select
                 v-model="updatingMenu.category_id"
                 class="form-select"
@@ -75,24 +73,10 @@
                 {{ $t('Btn.clearForm') }}
               </button>
               <button
-                class="btn-sm btn-outline-danger btn"
-                v-if="modalMode === 'update' && menuContent === 'active'"
-                @click.prevent="updateMenu(false)"
-              >
-                {{ $t('Btn.deactivate') }}
-              </button>
-              <button
-                class="btn-sm btn-outline-danger btn"
-                v-if="modalMode === 'update' && menuContent === 'inactive'"
-                @click.prevent="updateMenu(true)"
-              >
-                {{ $t('Btn.activate') }}
-              </button>
-              <button
                 class="btn-sm btn-outline-secondary btn"
                 data-bs-dismiss="modal"
               >
-                Close
+                閉じる
               </button>
             </div>
           </div>
@@ -102,7 +86,9 @@
 
     <div class="card shadow">
       <div class="card-header text-end">
-        <a href="#" @click="showModal(menu, 'create')">New Menu</a>
+        <button class="btn btn-sm btn-outline-danger" @click="showModal(menu, 'create')">新規メニュー</button>
+        {{ ' ' }}
+        <button class="btn btn-sm btn-outline-danger" @click="$router.push('/admin/config')">新規カテゴリー</button>
       </div>
       <div class="card-body">
         <div class="row">
@@ -408,6 +394,7 @@
           if (func === 'create') {
             this.menu = {};
             this.updatingMenu = {};
+            this.updatingMenu.active = true;
           } else {
             this.menu = Object.assign({}, menu);
             this.updatingMenu = Object.assign({}, menu);
