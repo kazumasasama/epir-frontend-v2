@@ -144,7 +144,7 @@ export default {
       localStorage.removeItem("jwt");
       localStorage.removeItem("user_id");
       localStorage.removeItem("last_login");
-      const message = "Successfully logged out. Redirecting to the top page.";
+      const message = "ログアウトしました。初期画面へ戻ります。";
       this.$emit('getMessage', message)
       await this.resetData()
       .then(()=> {

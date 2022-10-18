@@ -6,40 +6,32 @@
         class="btn btn-outline-success btn-sm"
         id="profile-btn"
       >
-        Business Profile
-      </button>
-      <button
-        @click.prevent="this.currentPage = 'closing'"
-        class="btn btn-outline-success btn-sm"
-        id="profile-btn"
-        disabled
-      >
-        Closing Days
+        店舗情報
       </button>
       <button
         @click.prevent="this.currentPage = 'account'"
         class="btn btn-outline-success btn-sm"
         id="profile-btn"
       >
-        Admin Account
+        管理人
       </button>
       <button
         @click.prevent="this.currentPage = 'config'"
         class="btn btn-outline-success btn-sm"
       >
-        Site Settings
+        サイト設定
       </button>
       <button
         @click.prevent="this.currentPage = 'userStatus'"
         class="btn btn-outline-success btn-sm"
       >
-        User Status
+        顧客ステータス
       </button>
       <button
         @click.prevent="this.currentPage = 'menuCategory'"
         class="btn btn-outline-success btn-sm"
       >
-        Menu Category
+        メニューカテゴリー
       </button>
     </div>
   </nav>
@@ -57,7 +49,7 @@
         <div class="card shadow">
           <div class="card-body">
             <div class="row">
-                <h1 class="card-title text-start">{{ $t('BusinessProfile') }}</h1>
+                <h4 class="card-title text-start">店舗情報</h4>
                 <div class="col-sm-6">
                   <form
                       class="needs-validation text-start"
@@ -164,7 +156,7 @@
                   <button
                     type="button"
                     class="btn btn-secondary"
-                    @click="cancelSignup()"
+                    @click="handleCancel()"
                   >
                   {{ $t('Btn.cancel') }}
                   </button>
@@ -174,11 +166,25 @@
           </div>
         </div>
       </div>
+
+      <div v-if="currentPage === 'account'" class="col-12">
+        <div class="card shadow">
+          <div class="card-body">
+            <div class="row">
+              <h4 class="card-title text-start">管理人情報</h4>
+              <div class="col-12">
+                <UserForm/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div v-if="currentPage === 'config'" class="col-12">
         <div class="card shadow">
           <div class="card-body">
             <div class="row">
-              <h1 class="card-title text-start">{{ $t('Settings') }}</h1>
+              <h4 class="card-title text-start">{{ $t('Settings') }}</h4>
               <div class="col-sm-6">
                 <form
                   v-on:submit.prevent="updateConfig()"
@@ -226,7 +232,7 @@
                     class="form-control"
                     required
                   >
-                  <small>{{ $t('Forms.calendarEndTime') }} (08:30PM = 20.5)</small>
+                  <small>{{ $t('Forms.calendarEndTime') }} (08:00PM = 20.0)</small>
                   <input
                     autocomplete="off"
                     type="text"
@@ -235,12 +241,14 @@
                     required
                   >
                   <small>{{ $t('Forms.intervalTime') }}</small>
+                  <small class="release-notice">変更する場合は開発者に連絡</small>
                   <input
                     autocomplete="off"
                     type="number"
                     v-model="config.interval"
                     class="form-control"
                     required
+                    disabled
                   >
                 </form>
               </div>
@@ -248,7 +256,7 @@
                 <button
                   type="button"
                   class="btn btn-secondary"
-                  @click="cancelSignup()"
+                  @click="handleCancel()"
                 >
                   {{ $t('Btn.cancel') }}
                 </button>
@@ -266,7 +274,7 @@
         <div class="card shadow">
           <div class="card-body">
             <div class="row">
-              <h1 class="card-title text-start">Business Closing Days</h1>
+              <h4 class="card-title text-start">Business Closing Days</h4>
               <div class="col-sm-6">
                 <form
                   v-on:submit.prevent="createUserStatus()"
@@ -297,7 +305,7 @@
         <div class="card shadow">
           <div class="card-body">
             <div class="row">
-              <h1 class="card-title text-start">User Status</h1>
+              <h4 class="card-title text-start">顧客ステータス</h4>
               <div class="col-12">
                 <form
                   v-on:submit.prevent="createUserStatus()"
@@ -310,13 +318,13 @@
                       type="text"
                       class="form-control"
                       v-model="newUserStatus.title"
-                      placeholder="Create new status"
+                      placeholder="新規ステータス"
                     >
                     <button
                       class="btn btn-primary"
                       type="submit"
                     >
-                      Create
+                      作成
                     </button>
                   </div>
                 </form>
@@ -338,14 +346,14 @@
                       class="btn btn-primary update-btn"
                       type="submit"
                     >
-                      Update
+                      更新
                     </button>
                     <button
                       class="btn btn-danger"
                       type="button"
                       @click.prevent="destroyStatus(status)"
                     >
-                      Delete
+                      削除
                     </button>
                   </div>
                   </form>
@@ -359,7 +367,7 @@
         <div class="card shadow">
           <div class="card-body">
             <div class="row">
-              <h1 class="card-title text-start">Menu Category</h1>
+              <h4 class="card-title text-start">メニューカテゴリー</h4>
               <div class="col-12">
                 <form
                   v-on:submit.prevent="createCategory()"
@@ -372,13 +380,13 @@
                       type="text"
                       class="form-control"
                       v-model="newCategory.title"
-                      placeholder="Create new status"
+                      placeholder="新規ステータス"
                     >
                     <button
                       class="btn btn-primary"
                       type="submit"
                     >
-                      Create
+                      作成
                     </button>
                   </div>
                 </form>
@@ -400,30 +408,18 @@
                       class="btn btn-primary update-btn"
                       type="submit"
                     >
-                      Update
+                      更新
                     </button>
                     <button
                       class="btn btn-danger"
                       type="button"
                       @click.prevent="destroyCategory(category)"
                     >
-                      Delete
+                      削除
                     </button>
                   </div>
                   </form>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div v-if="currentPage === 'account'" class="col-12">
-        <div class="card shadow">
-          <div class="card-body">
-            <div class="row">
-              <h1 class="card-title text-start">Account</h1>
-              <div class="col-12">
-                <UserForm/>
               </div>
             </div>
           </div>
@@ -462,18 +458,6 @@ export default {
     return {
       error: null,
       currentPage: 'profile',
-      states: [
-        'AL', 'AK', 'AZ', 'AR', 'CA',
-        'CO', 'CT', 'DE', 'FL', 'GA',
-        'HI', 'ID', 'IL', 'IN', 'IA',
-        'KS', 'KY', 'LA', 'ME', 'MD',
-        'MA', 'MI', 'MN', 'MS', 'MO',
-        'MT', 'NE', 'NV', 'NH', 'NJ',
-        'NM', 'NY', 'NC', 'ND', 'OH',
-        'OK', 'OR', 'PA', 'RI', 'SC',
-        'SD', 'TN', 'TX', 'UT', 'VT',
-        'VA', 'WA', 'WV', 'WI', 'WY'
-      ],
       languages: {
         English: 'en',
         Japanese: 'ja'
@@ -491,6 +475,7 @@ export default {
     ...mapWritableState(useSystemStore, ['config']),
     ...mapWritableState(useSystemStore, ['categories']),
     ...mapWritableState(useSystemStore, ['business']),
+    ...mapWritableState(useSystemStore, ['states']),
     switchBtn() {
       if (this.currentPage === 'profile') {
         return this.$t('Btn.settings')
@@ -589,6 +574,9 @@ export default {
         this.error = error;
       })
     },
+    handleCancel() {
+      this.$router.push('/admin/dashboard')
+    }
   },
 }
 </script>

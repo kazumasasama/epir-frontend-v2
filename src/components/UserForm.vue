@@ -134,6 +134,12 @@
       </form>
     </div>
     <div class="btn-container text-end">
+      <button
+        class="btn btn-secondary"
+        @click="handleCancel()"
+      >
+      {{ $t('Btn.cancel') }}
+      </button>
       <button class="btn btn-primary" @click.prevent="updateUser()">{{ $t('Btn.update') }}</button>
     </div>
   </div>
@@ -245,6 +251,9 @@ export default {
     },
     showPasswordModal() {
       this.passwordModal.show();
+    },
+    handleCancel() {
+      this.$router.push('/admin/dashboard')
     }
   },
 }
