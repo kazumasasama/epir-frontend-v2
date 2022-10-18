@@ -35,6 +35,11 @@
                     </a>
                   </li>
                 </ul>
+                <img
+                  src="@/assets/lineQR.jpg"
+                  alt="LINE ID QR code"
+                  id="business-line-qrcode"
+                >
               </div>
               <div class="col-lg-8 col-md-8 col-sm-12">
                 <div id="map" style='width: 100%; height: 400px;'></div>
@@ -101,5 +106,8 @@ export default {
   }
   .thanks-message {
     margin-bottom: 30px;
+  }
+  #business-line-qrcode {
+    width: 50%;
   }
 </style>

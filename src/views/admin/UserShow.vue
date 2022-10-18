@@ -49,6 +49,8 @@
               <input type="text" v-model="user.email" class="form-control">
               <small>電話番号</small>
               <input type="text" v-model="user.phone" class="form-control">
+              <small>LINE</small>
+              <input type="text" v-model="user.line_id" class="form-control">
               <small>生年月日</small>
               <input class="form-control" type="text" v-model="user.birthday">
               <small>ステータス</small>
@@ -244,6 +246,7 @@ import axios from 'axios'
           gender: this.user.gender,
           email: this.user.email,
           phone: this.user.phone,
+          line_id: this.user.line_id,
           birthday: this.user.birthday,
           address: this.user.address,
           state: this.user.state,

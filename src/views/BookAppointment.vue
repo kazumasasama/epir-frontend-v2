@@ -255,6 +255,8 @@
                 <input type="email" v-model="user.email" class="form-control">
                 <small>{{ $t('Forms.phone') }}</small>
                 <input type="tel" v-model="user.phone" class="form-control">
+                <small>LINE</small>
+                <input type="tel" v-model="user.line_id" class="form-control">
                 <small>{{ $t('Forms.gender') }}</small>
                 <select v-model="user.gender" class="form-select">
                   <option

@@ -46,6 +46,14 @@
                   v-model="user.phone"
                   class="form-control"
                 >
+                <small>LINE</small>
+                <input
+                  id="input-validation-phone"
+                  autocomplete="tel-national"
+                  type="text"
+                  v-model="user.line_id"
+                  class="form-control"
+                >
                 <small>パスワード*</small>
                 <input
                   id="input-validation-password"
@@ -156,17 +164,8 @@ export default {
       error: null,
       passwordConfirm: null,
       user: {
-        first_name: "",
-        last_name: "",
-        email: "",
-        password: "",
-        phone: "",
-        zip: "",
         state: "東京都",
         city: "世田谷区",
-        address: "",
-        gender: "",
-        birthday: "",
       },
     }
   },
