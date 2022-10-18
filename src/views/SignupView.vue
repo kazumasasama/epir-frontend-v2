@@ -265,10 +265,10 @@ export default {
     createUser() {
       const valid = this.validateEmptyRequiredForm()
       if (valid === false) {
-        this.error = `Please fill all the required fields: ${valid}`
+        this.error = `必須項目をご記入ください: ${valid}`
         return
       } else if (this.user.password !== this.passwordConfirm) {
-        this.error = "Password and Confirm password are not matching."
+        this.error = "パスワードと確認用パスワードが一致していません。"
         return
       }
       if (this.user.password === this.passwordConfirm) {
@@ -297,13 +297,13 @@ export default {
           })
           .catch((error)=> {
             const response = error.response;
-            this.error = `Something went wrong. Please try again.(Error code: ${response.status}/ ${response.statusText})`
+            this.error = `エラーが発生しました(Error code: ${response.status}/ ${response.statusText})`
             return
           })
         })
         .catch((error)=> {
           const response = error.response;
-          this.error = `Something went wrong. Please try again.(Error code: ${response.status}/ ${response.statusText})`
+          this.error = `エラーが発生しました(Error code: ${response.status}/ ${response.statusText})`
           return
         })
       }

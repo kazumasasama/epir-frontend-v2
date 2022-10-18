@@ -473,7 +473,7 @@ export default {
         this.systemStore.endLoading();
       })
       .catch((error)=> {
-        this.error = `${error.response.statusText}: Please reload this page`;
+        this.error = `${error.response.statusText}: ページの再読み込みをしてください。`;
       })
     },
     getAllTimeUsersStatics() {

@@ -128,13 +128,13 @@ export default {
         }
       } else {
         if (!user.email && !user.password) {
-          this.error = "Please enter email and password.";
+          this.error = "メールアドレスとパスワードを入力してください。";
         } else if (!user.email) {
-          this.error = "Please enter the email.";
+          this.error = "メールアドレスを入力してください。";
         } else if (!user.password) {
-          this.error = "Please enter the password.";
+          this.error = "パスワードを入力してください。";
         } else {
-          this.error = "Something went wrong. Tray again."
+          this.error = "エラーが発生しました。入力項目をご確認の上再度ログインしてください。"
         }
         return false;
       }
@@ -173,12 +173,12 @@ export default {
           })
           .catch((error)=> {
             this.systemStore.endLoading();
-            this.error = `${error.response}: Invalid email or password`;
+            this.error = `${error.response}: メールアドレスに誤りがあります。`;
           })
         })
         .catch((error)=> {
           this.systemStore.endLoading();
-          this.error = `${error.response}: Invalid email or password`;
+          this.error = `${error.response}: パスワードに誤りがあります。`;
         })
       }
     },
