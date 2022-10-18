@@ -1,13 +1,20 @@
 <template :key="reloadKey">
 
   <nav class="navbar navbar-light text-start navbar-white">
-    <div class="col-12 btn-container">
-      <button
-        class="btn btn-outline-success btn-sm"
+    <div class="col-12 d-flex justify-content-end">
+      <!-- <button
+        class="btn btn-success btn-sm"
         id="profile-btn"
         disabled
       >
         New Appointment
+      </button> -->
+      <button
+        @click="reloadData()"
+        class="btn btn-info btn-sm"
+      >
+        {{ $t('Btn.reloadData') }}
+        <font-awesome-icon icon="fa-solid fa-arrow-rotate-right" />
       </button>
     </div>
   </nav>
@@ -139,15 +146,6 @@
 
   <div class="container">
     <div class="row">
-      <div class="col-12 text-end">
-        <button
-          @click="reloadData()"
-          class="btn btn-info reload-btn"
-        >
-          {{ $t('Btn.reloadData') }}
-          <font-awesome-icon icon="fa-solid fa-arrow-rotate-right" />
-        </button>
-      </div>
       <div class="col-12">
         <div class="calendar-container card">
           <vue-cal
@@ -416,9 +414,6 @@ export default {
 </script>
 
 <style>
-  .reload-btn {
-    margin-bottom: 8px;
-  }
   .modal-user-statuses {
     color: rgb(255, 99, 132);
     padding-left: 0px;
