@@ -7,7 +7,7 @@
       <div class="col-12 text-end">
         <button
           @click="reloadData()"
-          class="btn btn-info"
+          class="btn btn-info mb-3"
         >
           {{ $t('Btn.reloadData') }}
           <font-awesome-icon icon="fa-solid fa-arrow-rotate-right" />
@@ -24,7 +24,7 @@
           <div class="card text-bg-light mb-3">
             <div class="card-header">{{ $t('Dashboard.Charts.avarageSpent') }}</div>
             <div class="card-body">
-              <p class="card-text">{{ usersTotal }}</p>
+              <p class="card-text">¥{{ salesAve }}</p>
             </div>
           </div>
         </div>
@@ -44,7 +44,7 @@
             <div class="col-md-6">
               <form action="">
                 <div class="input-group input-group-sm mb-3">
-                  <span class="input-group-text">Year</span>
+                  <span class="input-group-text">年</span>
                   <input
                     type="text"
                     v-model="currentYear"
@@ -166,6 +166,7 @@ export default {
       prevAppointmentTotal: 0,
       currentSalesTotal: 0,
       prevSalesTotal: 0,
+      salesAve: 0,
 
       // charts
       barChartHeight: 200,
@@ -414,6 +415,7 @@ export default {
   methods: {
     reloadData() {
       this.getYearlyStatics();
+      this.getAllTimeUsersStatics();
     },
     increaseYear() {
       this.currentYear++;
@@ -478,9 +480,10 @@ export default {
       axios.post('/users-statics.json')
       .then((res)=> {
         let usersStatics = res.data;
-        this.usersTotal = usersStatics[0];
-        this.genderDoughnutChartData.labels = Object.keys(usersStatics[1])
-        this.genderDoughnutChartData.datasets[0].data = Object.values(usersStatics[1]);
+        this.usersTotal = usersStatics.userTotal;
+        this.salesAve = usersStatics.salesAve;
+        this.genderDoughnutChartData.labels = Object.keys(usersStatics.genderTotal)
+        this.genderDoughnutChartData.datasets[0].data = Object.values(usersStatics.genderTotal);
       })
       .catch((error)=> {
         this.error = error.response.statusText;
