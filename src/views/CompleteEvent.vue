@@ -78,11 +78,11 @@ export default {
       const map = new mapboxgl.Map({
         container: 'map', // container ID
         style: this.systemStore.mapboxURL, // style URL
-        center: [-73.99873361830024, 40.735854328717224], // starting position [lng, lat]
-        zoom: 14 // starting zoom
+        center: [139.60863023397835, 35.64135382906784], // starting position [lng, lat]
+        zoom: 15 // starting zoom
       });
       new mapboxgl.Marker()
-      .setLngLat([-73.99873361830024, 40.735854328717224])
+      .setLngLat([139.607748966944, 35.639853527118035])
       .addTo(map);
     },
   }

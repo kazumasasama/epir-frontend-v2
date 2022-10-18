@@ -22,7 +22,7 @@ export const useSystemStore = defineStore("systemStore", {
       inactiveMenus: null,
       isLoading: false,
       LoadingMessage: '',
-      mapboxURL: 'mapbox://styles/mapbox/streets-v11',
+      mapboxURL: 'mapbox://styles/kaznyc/cl3z0c148000i14qp3onp4x8e',
       states: [
         '北海道','青森県','岩手県','宮城県','秋田県',
         '山形県','福島県','茨城県','栃木県','群馬県',
