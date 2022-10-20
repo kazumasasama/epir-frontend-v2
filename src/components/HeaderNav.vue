@@ -18,7 +18,7 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         </ul>
         <ul class="navbar-nav mb-2 mb-lg-0">
-          <li v-if="isAdmin" class="nav-item dropdown dropstart header-nav-menu">
+          <li v-if="isLoggedin" class="nav-item dropdown dropstart header-nav-menu">
             <a
               class="nav-link"
               id="navbar-link-admin"

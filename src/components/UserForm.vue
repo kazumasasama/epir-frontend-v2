@@ -2,23 +2,40 @@
   <div class="modal" id="password-modal" tabindex="-1">
     <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
-        <div class="modal-body text-start">
+        <div class="modal-body text-start password-modal">
           <form>
-            <small>Current Password*</small>
-            <input
+            <div
+              class="alert alert-danger"
+              role="alert"
+              v-if="modalError"
+            >
+              {{ modalError }}
+            </div>
+            <small>現在のパスワード*</small>
+            <div class="input-group mb-3">
+              <input
               type="password"
-              v-model="password.currentPassword"
+              v-model="password.current_password"
               class="form-control"
               autocomplete="current-password"
             >
-            <small>New Password*</small>
-            <input
-              type="password"
-              v-model="password.newPassword"
-              class="form-control"
-              autocomplete="new-password"
-            >
-            <small>Confirm New Password*</small>
+              <button class="btn btn-outline-secondary">
+                <font-awesome-icon icon="fa-regular fa-eye" />
+              </button>
+            </div>
+            <small>新しいパスワード*</small>
+            <div class="input-group mb-3">
+              <input
+                type="password"
+                v-model="password.password"
+                class="form-control"
+                autocomplete="new-password"
+              >
+              <button class="btn btn-outline-secondary">
+                <font-awesome-icon icon="fa-regular fa-eye" />
+              </button>
+            </div>
+            <small>パスワード確認*</small>
             <div class="input-group mb-3">
               <input
                 type="password"
@@ -36,16 +53,16 @@
           <div>
             <button
               class="btn-sm btn-outline-success btn"
-              data-bs-dismiss="modal"
               @click.prevent="updatePassword()"
             >
-              Submit
+              更新
             </button>
+            {{ ' ' }}
             <button
               class="btn-sm btn-outline-secondary btn"
               data-bs-dismiss="modal"
             >
-              Close
+              閉じる
             </button>
           </div>
         </div>
@@ -69,9 +86,9 @@
   </div>
 
   <div class="row">
-    <!-- <div class="col-12 text-end">
-      <button disabled @click="showPasswordModal()" class="btn btn-sm btn-outline-danger">Change Password</button>
-    </div> -->
+    <div class="col-12 text-end">
+      <button @click="showPasswordModal()" class="btn btn-sm btn-outline-danger">Change Password</button>
+    </div>
     <p><strong>必須項目*</strong></p>
     <div class="col-sm-6">
       <form>
@@ -162,13 +179,14 @@ export default {
   data() {
     return {
       error: null,
+      modalError: null,
       showHistory: false,
       message: null,
       passwordModal: null,
       password: {
-        currentPassword: '',
-        newPassword: '',
-        passwordConfirmation: '',
+        password: null,
+        password_confirmation: null,
+        current_password: null,
       },
     }
   },
@@ -192,23 +210,24 @@ export default {
       return options
     },
     multipleselectPlaceholder() {
-      if (this.user.status_ids.length === 0) {
+      if (!this.user.status_ids.length) {
         return '未選択'
-      }
-      const statusIds = this.user.status_ids;
-      let selectedStatuses = [];
-      for (let j in this.multiselectOptions) {
-        for (let i in statusIds) {
-          if (this.multiselectOptions[j].value === statusIds[i]) {
-            selectedStatuses.push(Number(j));
+      } else {
+        const statusIds = this.user.status_ids;
+        let selectedStatuses = [];
+        for (let j in this.multiselectOptions) {
+          for (let i in statusIds) {
+            if (this.multiselectOptions[j].value === statusIds[i]) {
+              selectedStatuses.push(Number(j));
+            }
           }
         }
+        let result = [];
+        for (let k in selectedStatuses) {
+          result.push(this.multiselectOptions[selectedStatuses[k]]);
+        }
+        return result;
       }
-      let result = [];
-      for (let k in selectedStatuses) {
-        result.push(this.multiselectOptions[selectedStatuses[k]]);
-      }
-      return result;
     },
   },
   methods: {
@@ -242,15 +261,39 @@ export default {
       setTimeout(()=> {this.message = null}, 3000);
     },
     updatePassword() {
-      const id = this.user.id;
-      const updateData = this.password;
-      axios.patch(`/users/${id}.json`, updateData)
-      .then((res)=> {
-        this.user = res.data;
-      })
-      .catch((error)=> {
-        this.error = error;
-      })
+      if (!this.password.current_password) {
+        this.modalError = "現在のパスワードを入力してください"
+        return
+      }
+      if (!this.password.password) {
+        this.modalError = "新しいパスワードを入力してください。"
+        return
+      }
+      if (!this.password.password_confirmation) {
+        this.modalError = "パスワード確認を入力してください。"
+        return
+      }
+      if (this.password.password === this.password.password_confirmation) {
+        axios.patch(`/users/${this.user.id}.json`, this.password)
+        .then((res)=> {
+          if (res.data.errors) {
+            this.modalError = res.data.errors;
+          } else {
+            this.user = res.data;
+            this.password = {
+              password: null,
+              password_confirmation: null,
+              current_password: null,
+            };
+            this.passwordModal.hide();
+          }
+        })
+        .catch((error)=> {
+          this.error = error;
+        })
+      } else {
+        this.modalError = "パスワード確認が新しいパスワードと一致していません"
+      }
     },
     showPasswordModal() {
       this.passwordModal.show();
@@ -299,5 +342,8 @@ export default {
   }
   .multiselect-tag-color {
     --ms-tag-bg: rgb(75, 192, 192);
+  }
+  .password-modal {
+    padding: 30px;
   }
 </style>
