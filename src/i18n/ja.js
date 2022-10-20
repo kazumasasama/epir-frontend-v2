@@ -119,8 +119,8 @@ export default {
         sales: '売上',
         thisYear: '指定',
         prevYear: '次年',
-        users: '顧客数',
-        avarageSpent: '顧客売上平均',
+        users: '総顧客数',
+        avarageSpent: '顧客売上平均(All time)',
       }
     },
     Spinner: {

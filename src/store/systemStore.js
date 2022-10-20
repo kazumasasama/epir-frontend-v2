@@ -9,6 +9,7 @@ export const useSystemStore = defineStore("systemStore", {
       businessTimes: null,
       calendarLocale: 'en',
       categories: null,
+      closingDays: [],
       config: null,
       error: null,
       genders: [
@@ -52,7 +53,16 @@ export const useSystemStore = defineStore("systemStore", {
         this.businessTimes = res.data;
       })
       .catch((error)=> {
-        this.error = error.response
+        this.error = error.response;
+      })
+    },
+    initClosingDays() {
+      axios.get('/closing_days.json')
+      .then((res)=> {
+        this.closingDays = res.data;
+      })
+      .catch((error)=> {
+        this.error = error.response;
       })
     },
     initConfig() {

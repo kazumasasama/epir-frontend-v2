@@ -33,7 +33,7 @@
             <ul
               class="dropdown-menu"
             >
-              <li @click.prevent="routeNavigation('/mypage')">
+              <li v-if="!isAdmin" @click.prevent="routeNavigation('/mypage')">
                 <a class="dropdown-item admin-dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-user" /> マイページ</a>
               </li>
               <li @click.prevent="routeNavigation('/appointments')">

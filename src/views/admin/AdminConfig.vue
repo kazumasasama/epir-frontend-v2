@@ -42,6 +42,13 @@
   >
     {{ error }}
   </div>
+  <div
+    v-if="closingMessage"
+    class="alert alert-danger"
+    role="alert"
+  >
+    {{ closingMessage }}
+  </div>
 
   <div class="container">
     <div class="row">
@@ -244,14 +251,58 @@
                 <div class="col-sm-6">
                   <small>定休日</small>
                   <small class="release-notice">Release soon! </small>
-                  <input
-                    autocomplete="off"
-                    type="text"
-                    v-model="config.closingDays"
-                    class="form-control"
-                    required
-                    disabled
+                  <form
+                    v-on:submit.prevent="createClosingDay()"
+                    class="col-12 needs-validation text-start mb-3"
+                    novalidate
                   >
+                    <div class="form-items input-group">
+                      <input
+                        autocomplete="off"
+                        type="date"
+                        class="form-control"
+                        v-model="newClosingDay"
+                        placeholder="例: 01-31"
+                      >
+                      <button
+                        class="btn btn-primary"
+                        type="submit"
+                      >
+                        作成
+                      </button>
+                    </div>
+                  </form>
+                  <form
+                    class="col-12 needs-validation text-start mb-3"
+                    novalidate
+                  >
+                    <div
+                      v-for="closingDay in closingDaysValues"
+                      :key="closingDay"
+                      class="form-items input-group"
+                    >
+                        <input
+                          autocomplete="off"
+                          type="text"
+                          class="form-control mb-3"
+                          v-model="closingDay.date"
+                          required
+                        >
+                        <button
+                          class="btn btn-primary update-btn mb-3"
+                          @click.prevent="updateClosingDay(closingDay)"
+                        >
+                          更新
+                        </button>
+                        <button
+                          class="btn btn-danger mb-3"
+                          type="button"
+                          @click.prevent="destroyClosingDay(closingDay)"
+                        >
+                          削除
+                        </button>
+                    </div>
+                  </form>
                 </div>
               </div>
             </form>
@@ -411,7 +462,7 @@ import UserForm from '@/components/UserForm.vue'
 // import VueCal from 'vue-cal'
 // import 'vue-cal/dist/i18n/ja.js'
 // import 'vue-cal/dist/vuecal.css'
-// import * as moment from 'moment-timezone';
+import * as moment from 'moment-timezone';
 
 export default {
   setup() {
@@ -432,16 +483,17 @@ export default {
       currentPage: 'config',
       languages: {
         English: 'en',
-        Japanese: 'ja'
+        日本語: 'ja'
       },
       newUserStatus: {},
       newCategory: {},
-      recurrence: true,
+      newClosingDay: null,
+      closingDaysValues: [],
+      closingMessage: null,
     }
   },
   mounted() {
-    // const btn = document.getElementById('profile-btn')
-    // btn.classList.add('active', 'aria-pressed="true"')
+    this.closingDaysValues = this.closingDays;
   },
   computed: {
     ...mapWritableState(useSystemStore, ['statuses']),
@@ -449,6 +501,7 @@ export default {
     ...mapWritableState(useSystemStore, ['categories']),
     ...mapWritableState(useSystemStore, ['business']),
     ...mapWritableState(useSystemStore, ['states']),
+    ...mapWritableState(useSystemStore, ['closingDays']),
     switchBtn() {
       if (this.currentPage === 'profile') {
         return this.$t('Btn.settings')
@@ -545,6 +598,49 @@ export default {
       })
       .catch((error)=> {
         this.error = error;
+      })
+    },
+    createClosingDay() {
+      const date = {date: moment(this.newClosingDay).format('YYYY-MM-DD')}
+      axios.post('/closing_days.json', date)
+      .then((res)=> {
+        this.newClosingDay = null;
+        this.closingDays.push(res.data);
+      })
+      .catch((error)=> {
+        this.error = error;
+      })
+    },
+    updateClosingDay(closingDay) {
+      let i = this.closingDays.indexOf(closingDay)
+      const date = {date: closingDay.date}
+      axios.patch(`/closing_days/${closingDay.id}.json`, date)
+      .then((res)=> {
+        if (res.data.error) {
+          this.error = res.data.error;
+          setTimeout(()=> {
+            this.error = null;
+            closingDay.date = closingDay.start.slice(0, -6);
+          }, 3000)
+        } else {
+          this.closingDays.splice(i, 1, res.data);
+          this.systemStore.initBusinessTimes();
+          this.closingMessage = "更新しました"
+          setTimeout(()=> {
+            this.closingMessage = null;
+          }, 3000)
+        }
+      })
+      .catch((error)=> {
+        console.log(error);
+        this.error = error;
+      })
+    },
+    destroyClosingDay(closingDay) {
+      axios.delete(`/closing_days/${closingDay.id}.json`, closingDay)
+      .then(()=> {
+        const i = this.closingDays.indexOf(closingDay)
+        this.closingDays.splice(i, 1)
       })
     },
     handleCancel() {

@@ -14,22 +14,6 @@
         </button>
       </div>
       <div class="col-12">
-        <div class="card-group">
-          <div class="card text-bg-light mb-3 card-base">
-            <div class="card-header">{{ $t('Dashboard.Charts.users') }}</div>
-            <div class="card-body">
-              <p class="card-text">{{ usersTotal }}</p>
-            </div>
-          </div>
-          <div class="card text-bg-light mb-3 card-base">
-            <div class="card-header">{{ $t('Dashboard.Charts.avarageSpent') }}</div>
-            <div class="card-body">
-              <p class="card-text">¥{{ salesAve }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-12">
         <div class="card">
           <div class="card-body">
             <!-- <div class="row">
@@ -41,6 +25,23 @@
               </div>
             </div>
             <hr class="hr-space-devider"> -->
+            <div class="col-md-6">
+              <div class="card-group">
+                <div class="card text-bg-light mb-3 card-base">
+                  <div class="card-header">{{ $t('Dashboard.Charts.users') }}</div>
+                  <div class="card-body">
+                    <p class="card-text">{{ usersTotal }}</p>
+                  </div>
+                </div>
+                <div class="card text-bg-light mb-3 card-base">
+                  <div class="card-header">{{ $t('Dashboard.Charts.avarageSpent') }}</div>
+                  <div class="card-body">
+                    <p class="card-text">¥{{ salesAve }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
             <div class="col-md-6">
               <form action="">
                 <div class="input-group input-group-sm mb-3">

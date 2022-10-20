@@ -34,6 +34,7 @@
 import { mapWritableState } from 'pinia'
 import { useSystemStore } from '@/store/systemStore'
 import { useUserStore } from '@/store/userStore'
+import { useEventStore } from '@/store/eventStore'
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import HeaderNav from '@/components/HeaderNav.vue'
@@ -44,9 +45,11 @@ export default {
   setup() {
     const systemStore = useSystemStore();
     const userStore = useUserStore();
+    const eventStore = useEventStore();
     return {
       systemStore,
       userStore,
+      eventStore,
     }
   },
   components: {
@@ -59,8 +62,10 @@ export default {
     this.systemStore.initBusinessTimes();
     this.systemStore.initCategories();
     this.systemStore.initConfig();
+    this.systemStore.initClosingDays();
     this.systemStore.initMenus();
     this.userStore.initStatuses();
+    this.eventStore.initEvents();
   },
   computed: {
     ...mapWritableState(useSystemStore, ['isLoading']),

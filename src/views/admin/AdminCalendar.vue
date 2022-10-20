@@ -181,6 +181,7 @@ import * as bootstrap from 'bootstrap'
 import { mapWritableState } from 'pinia'
 import { useSystemStore } from '@/store/systemStore';
 import { useUserStore } from '@/store/userStore';
+import { useEventStore } from '@/store/eventStore';
 import Datepicker from 'vue3-datepicker';
 import { ref } from 'vue'
 
@@ -188,9 +189,11 @@ export default {
   setup() {
     const systemStore = useSystemStore();
     const userStore = useUserStore();
+    const eventStore = useEventStore();
     return {
       systemStore,
       userStore,
+      eventStore,
     }
   },
   components: { 
@@ -200,7 +203,6 @@ export default {
   data() {
     return {
       error: null,
-      events: [],
       selectedEvent: {
         user: {},
       },
@@ -219,7 +221,7 @@ export default {
     this.systemStore.modifyLoadingMessage(this.$t('Spinner.loading'))
     this.systemStore.startLoading();
     this.userStore.initUsers();
-    this.indexEvents();
+    this.eventStore.initEvents();
   },
   mounted() {
     this.eventDetailsModal = new bootstrap.Modal(document.getElementById('event-details'));
@@ -229,7 +231,10 @@ export default {
   },
   computed: {
     ...mapWritableState(useSystemStore, ['calendarLocale']),
+    ...mapWritableState(useSystemStore, ['business']),
     ...mapWritableState(useSystemStore, ['config']),
+    ...mapWritableState(useSystemStore, ['closingDays']),
+    ...mapWritableState(useEventStore, ['events']),
     ...mapWritableState(useUserStore, ['users']),
     bookingDate() {
       return moment(this.picked).format('YYYY-MM-DD');
@@ -272,18 +277,9 @@ export default {
   },
   methods: {
     reloadData() {
-      this.indexEvents();
+      this.eventStore.initEvents();
       this.systemStore.initBusinessTimes();
       this.reloadKey++;
-    },
-    indexEvents() {
-      axios.get('/events.json')
-      .then((res)=> {
-        this.events = res.data.filter((event)=> event.status === "booked")
-      })
-      .catch((error)=> {
-        this.error = error;
-      })
     },
     onEventClick (event, e) {
       if (event.user.id !== 2) { // User ID for interval
@@ -476,5 +472,18 @@ export default {
   .vuecal__event.gray {
     background-color: rgba(201, 203, 207, 0.2);
     border: 2px solid rgba(201, 203, 207, 0.8);
+  }
+  .vuecal__event.closing {
+    border: 2px solid rgba(255, 159, 64);
+    background:
+      rgba(255, 247, 240)
+      repeating-linear-gradient(
+        -45deg,
+        rgba(255, 162, 87, 0.25),
+        rgba(255, 162, 87, 0.25) 5px,
+        rgba(255, 255, 255, 0) 5px,
+        rgba(255, 255, 255, 0) 15px
+      );
+    color: rgba(255, 159, 64)
   }
 </style>
