@@ -28,27 +28,27 @@
   </div>
 
   <div class="modal fade calendar-modal" id="event-details">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <form action="">
-          <div class="modal-header">
+        <form>
+          <div class="modal-header d-flex justify-content-between">
             <h6 class="modal-title">{{ eventStartEndDateTime }}</h6>
+            <ul
+              v-if="selectedEvent.user.statuses"
+              class="modal-user-statuses"
+            >
+              <li
+                v-for="status in selectedEvent.user.statuses"
+                :key="status.id"
+              >
+                {{ status.title }}
+              </li>
+            </ul>
           </div>
           <div class="modal-body event-detail-modal-body">
             <div class="row">
               <div class="col-sm-9">
-                <ul
-                  v-if="selectedEvent.user.statuses"
-                  class="modal-user-statuses"
-                >
-                  <li
-                    v-for="status in selectedEvent.user.statuses"
-                    :key="status.id"
-                  >
-                    {{ status.title }}
-                  </li>
-                </ul>
-                <small class="event-details-tag">Name</small>
+                <small class="event-details-tag">お名前</small>
                 <p data-bs-toggle="modal" class="event-detail-item">
                   <a
                     class="link-primary"
@@ -60,53 +60,57 @@
                   {{ selectedEvent.user.full_name }}
                 </a>
                 </p>
-                <small class="event-details-tag">Note</small>
+                <small class="event-details-tag">注意事項</small>
                 <p class="event-detail-item">{{ selectedEvent.user.note }}</p>
-                <small class="event-details-tag">Menus</small>
+                <small class="event-details-tag">メニュー</small>
                 <div>
                   <ul class="event-detail-item">
                     <li v-for="menu in selectedEvent.menus" :key="menu.id">{{ menu.title }}</li>
                   </ul>
                 </div>
               </div>
-              <div class="col-sm-3 text-end">
+              <div class="col-sm-3 d-flex justify-content-end">
                 <div class="btn-container">
                   <button
                     v-if="!rescheduleBtn"
                     class="btn btn-success"
+                    data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
                     @click.prevent="rescheduleBtn = true"
                   >
-                    Reschedule
+                    予約時間変更
                   </button>
                   <button
                     v-if="rescheduleBtn"
                     class="btn btn-outline-success"
+                    data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
                     @click.prevent="rescheduleBtn = false"
                   >
-                    Hide Scheduler
+                    隠す
                   </button>
                   <button
                     class="btn btn-primary"
                     @click.prevent="updateEvent()"
                   >
-                    Update
+                    更新する
                   </button>
                   <button
                     class="btn btn-danger"
                     @click.prevent="destroyEvent()"
                   >
-                    Delete
+                    予約キャンセル
                   </button>
                   <button
                     class="btn btn-secondary"
                     @click.prevent="this.eventDetailsModal.hide()"
                   >
-                    Close
+                    閉じる
                   </button>
                 </div>
               </div>
             </div>
-            <div v-if="rescheduleBtn" class="row">
+          </div>
+          <div class="collapse modal-footer" id="collapseExample">
+            <div class="row">
               <div class="col-12">
                 <Datepicker
                   v-model="picked"
@@ -115,29 +119,27 @@
                   autoApply
                   utc="true"
                 />
-                <div v-if="availableTimeSlots.length" class="row">
-                  <div
-                    class="time-slot-col col-sm-3"
-                    v-for="timeSlot in availableTimeSlots"
-                    :key="timeSlot.id"
-                  >
-                    <div class="form-check">
-                      <label class="form-check-label">
-                        <ul>
-                          <input
-                            class="form-check-input me-1 booking-checkbox"
-                            type="radio"
-                            :value="timeSlot.time"
-                            v-model="selectedTime"
-                          >
-                          <li>{{ timeSlot.time.slice(11, -8) }}</li>
-                        </ul>
-                      </label>
-                    </div>
+            </div>
+                <div
+                  class="col-sm-3"
+                  v-for="timeSlot in availableTimeSlots"
+                  :key="timeSlot.id"
+                >
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <ul class="d-flex justify-content-between">
+                        <input
+                          class="form-check-input me-1 booking-checkbox"
+                          type="radio"
+                          :value="timeSlot.time"
+                          v-model="selectedTime"
+                        >
+                        <li>{{ timeSlot.time.slice(11, -8) }}</li>
+                      </ul>
+                    </label>
                   </div>
                 </div>
               </div>
-            </div>
           </div>
         </form>
       </div>
@@ -235,6 +237,7 @@ export default {
     ...mapWritableState(useSystemStore, ['config']),
     ...mapWritableState(useSystemStore, ['closingDays']),
     ...mapWritableState(useEventStore, ['events']),
+    ...mapWritableState(useEventStore, ['canceledEvents']),
     ...mapWritableState(useUserStore, ['users']),
     bookingDate() {
       return moment(this.picked).format('YYYY-MM-DD');
@@ -246,7 +249,7 @@ export default {
       return moment(this.selectedDate).format('YYYY-MM-DD')
     },
     eventStartEndDateTime() {
-      let start = moment(this.selectedEvent.start).format('MM-DD-YYYY / HH:mm')
+      let start = moment(this.selectedEvent.start).format('YYYY-MM-DD / HH:mm')
       let end = moment(this.selectedEvent.end).format('HH:mm')
       return `${start} - ${end}`
     },
@@ -376,6 +379,7 @@ export default {
         let event = this.events.find(event => event.id === res.data.id);
         let i = this.events.indexOf(event);
         this.events.splice(i, 1);
+        this.canceledEvents.push(event);
         // delete interval from events
         let interval = this.events.find(event => event.id === res.data.id + 1);
         let intervalIndex = this.events.indexOf(interval);
@@ -414,6 +418,24 @@ export default {
     color: rgb(255, 99, 132);
     padding-left: 0px;
   }
+  .modal-header {
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+  }
+  .modal-footer {
+    padding: 30px !important;
+  }
+  .form-check {
+    padding-left: 0px !important;
+  }
+  .form-check-label {
+    padding-left: 0px !important;
+  }
+
+  .datepicker-item {
+    margin-bottom: 30px;
+  }
+
   .calendar-container {
     height: 100%;
   }
@@ -422,6 +444,7 @@ export default {
   }
   .event-detail-modal-body {
     text-align: left;
+    padding: 30px !important;
   }
   .event-details-tag {
     font-weight: bold;

@@ -4,7 +4,7 @@
       <button class="btn btn-outline-success btn-sm" @click.prevent="$router.push('/signup')">{{ $t('Btn.addCustomer') }}</button>
       <div class="control-navbar-items">
         <div class="control-navbar-item">
-          <input v-model="keyword" type="text" class="form-control" placeholder="Search Users">
+          <input v-model="keyword" type="text" class="form-control" placeholder="顧客検索">
         </div>
         <div class="control-navbar-item btn-container">
           <small>{{ $t('Customers.sortBy') }}</small>

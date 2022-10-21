@@ -168,7 +168,7 @@ import axios from 'axios'
       },
       multipleselectPlaceholder() {
         if (this.user.status_ids.length === 0) {
-          return 'Select Status'
+          return '未選択'
         }
         const statusIds = this.user.status_ids;
         let selectedStatuses = [];
