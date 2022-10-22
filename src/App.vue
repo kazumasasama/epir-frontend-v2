@@ -19,6 +19,9 @@
       @getMessage="getMessage"
     />
 
+    <div class="alert alert-danger" role="alert" v-if="error">
+      {{ error }}
+    </div>
     <div class="alert alert-info" role="alert" v-if="message">
       {{ message }}
     </div>
@@ -69,12 +72,12 @@ export default {
   },
   computed: {
     ...mapWritableState(useSystemStore, ['isLoading']),
+    ...mapWritableState(useSystemStore, ['error']),
     ...mapWritableState(useUserStore, ['isLoggedin']),
     ...mapWritableState(useUserStore, ['isAdmin']),
   },
   data() {
     return {
-      error: null,
       message: null,
     }
   },
@@ -186,4 +189,8 @@ hr {
 /* .dropdown-menu-dark .admin-dropdown-item {
   color: rgb(44, 62, 80);
 } */
+
+.white-background {
+  background-color: white;
+}
 </style>

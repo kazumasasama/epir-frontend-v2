@@ -28,7 +28,8 @@ import {
   faBookOpen,
   faScrewdriverWrench,
   faCircleCheck,
-  faBan
+  faBan,
+  faCircleXmark
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -39,7 +40,7 @@ import {
 
 import { faEye } from '@fortawesome/free-regular-svg-icons'
 /* add icons to the library */
-library.add(faLanguage, faArrowRotateRight, faBars, faLock, faRightFromBracket, faRepeat, faPhone, faTwitter, faFacebook, faInstagram, faEye, faUser, faUsers, faGauge, faCalendarDays, faBookOpen, faScrewdriverWrench, faCircleCheck, faBan)
+library.add(faLanguage, faArrowRotateRight, faBars, faLock, faRightFromBracket, faRepeat, faPhone, faTwitter, faFacebook, faInstagram, faEye, faUser, faUsers, faGauge, faCalendarDays, faBookOpen, faScrewdriverWrench, faCircleCheck, faBan, faCircleXmark)
 
 const i18n = createI18n({
   locale: 'ja',

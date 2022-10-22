@@ -89,9 +89,15 @@ export const useSystemStore = defineStore("systemStore", {
         this.activeMenus = res.data.active;
         this.inactiveMenus = res.data.inactive;
       })
+      .catch((error)=> {
+        this.error = error;
+      })
       axios.get('/grouped-menus.json')
       .then((res)=> {
         this.groupedMenus = res.data;
+      })
+      .catch((error)=> {
+        this.error = error;
       })
     },
     startLoading() {
