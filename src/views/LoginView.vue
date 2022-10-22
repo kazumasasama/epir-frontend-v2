@@ -32,6 +32,9 @@
                 autocomplete="current-password"
                 required
               >
+              <small>
+                パスワードをお忘れですか? <a href="#" @click.prevent="$router.push('/password-reset')">パスワード再設定</a>
+              </small>
               <div class="btn-container">
                 <button
                   type="button"

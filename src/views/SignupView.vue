@@ -151,12 +151,15 @@
 import axios from "axios"
 import { mapWritableState } from 'pinia'
 import { useSystemStore } from "@/store/systemStore";
+import { useUserStore } from "@/store/userStore";
 
 export default {
   setup() {
     const systemStore = useSystemStore();
+    const userStore = useUserStore();
     return {
       systemStore,
+      userStore,
     }
   },
   data() {
@@ -288,9 +291,11 @@ export default {
             localStorage.setItem("jwt", res.data.jwt);
             localStorage.setItem("user_id", res.data.user_id);
             localStorage.setItem("admin", res.data.admin);
-          })
-          .then(()=> {
-            this.user = {};
+            this.userStore.user = res.data;
+            this.user = {
+              state: "東京都",
+              city: "世田谷区"
+            };
             this.systemStore.endLoading();
             this.$router.push('/appointments');
           })

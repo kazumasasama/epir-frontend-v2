@@ -6,6 +6,7 @@ import BookAppointment from '@/views/BookAppointment.vue'
 import CompleteEvent from '@/views/CompleteEvent.vue'
 import SignupView from '@/views/SignupView.vue'
 import LoginView from '@/views/LoginView.vue'
+import PasswordReset from '@/views/PasswordReset.vue'
 import MyPage from '@/views/MyPage.vue'
 
 import AdminDashboard from '@/views/admin/AdminDashboard.vue'
@@ -113,6 +114,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginView
+  },
+  {
+    path: '/password-reset',
+    name: 'passwordReset',
+    component: PasswordReset
   },
   {
     path: '/mypage',

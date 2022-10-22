@@ -132,8 +132,8 @@ export default {
     },
     Forms: {
       name: '姓名',
-      firstName: '姓',
-      lastName: '名',
+      firstName: '名',
+      lastName: '姓',
       email: 'メールアドレス',
       phone: '電話番号',
       gender: '性別',

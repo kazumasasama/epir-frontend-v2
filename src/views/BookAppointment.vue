@@ -247,10 +247,10 @@
           <form>
             <div class="row">
               <div class="col-sm-4">
-                <small>{{ $t('Forms.firstName') }}</small>
-                <input type="text" v-model="user.first_name" class="booking-checkbox form-control">
                 <small>{{ $t('Forms.lastName') }}</small>
                 <input type="text" v-model="user.last_name" class="form-control">
+                <small>{{ $t('Forms.firstName') }}</small>
+                <input type="text" v-model="user.first_name" class="booking-checkbox form-control">
                 <small>{{ $t('Forms.email') }}</small>
                 <input type="email" v-model="user.email" class="form-control">
                 <small>{{ $t('Forms.phone') }}</small>

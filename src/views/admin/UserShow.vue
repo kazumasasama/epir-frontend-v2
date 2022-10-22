@@ -99,7 +99,7 @@
 
     <div class="row" v-if="showHistory">
       <div class="col-12">
-        <p class="userFullName">{{ `${user.first_name} ${user.last_name}` }}</p>
+        <p class="userFullName">{{ user.full_name }}</p>
         <small>{{ $t('Customers.statics.totalAppointments') }}: {{ events.length }} | </small>
         <small>{{ $t('Customers.statics.totalSpent') }}: ¥{{ totalSpent }} | </small>
         <small>{{ $t('Customers.statics.lastVisit') }}: {{ lastVisit }}</small>
