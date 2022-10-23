@@ -130,6 +130,7 @@
                   class="form-control"
                 >
               </div>
+              
               <div class="btn-container col-12 text-end">
                 <button
                   type="button"
@@ -164,7 +165,6 @@ export default {
   },
   data() {
     return {
-      error: null,
       passwordConfirm: null,
       user: {
         state: "東京都",
@@ -173,6 +173,8 @@ export default {
     }
   },
   computed: {
+    ...mapWritableState(useSystemStore, ['error']),
+    ...mapWritableState(useSystemStore, ['message']),
     ...mapWritableState(useSystemStore, ['genders']),
     ...mapWritableState(useSystemStore, ['states']),
     passwordMatch() {
@@ -277,33 +279,10 @@ export default {
         this.systemStore.modifyLoadingMessage(this.$t('Spinner.createAndLogin'));
         this.systemStore.startLoading();
         axios.post('/users', this.user)
-        .then((res)=> {
-          const user = {
-            email: res.data.email,
-            password: this.user.password
-          }
-          return user
-        })
-        .then((user)=> {
-          axios.post('/sessions', user)
-          .then((res)=> {
-            axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.jwt;
-            localStorage.setItem("jwt", res.data.jwt);
-            localStorage.setItem("user_id", res.data.user_id);
-            localStorage.setItem("admin", res.data.admin);
-            this.userStore.user = res.data;
-            this.user = {
-              state: "東京都",
-              city: "世田谷区"
-            };
-            this.systemStore.endLoading();
-            this.$router.push('/appointments');
-          })
-          .catch((error)=> {
-            const response = error.response;
-            this.error = `エラーが発生しました(Error code: ${response.status}/ ${response.statusText})`
-            return
-          })
+        .then(()=> {
+          this.systemStore.endLoading();
+          this.$router.push('/activate-account');
+          return
         })
         .catch((error)=> {
           const response = error.response;
