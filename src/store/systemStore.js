@@ -12,6 +12,7 @@ export const useSystemStore = defineStore("systemStore", {
       closingDays: [],
       config: null,
       error: null,
+      message: null,
       genders: [
         "男性",
         "女性",

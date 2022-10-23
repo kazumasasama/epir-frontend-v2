@@ -43,7 +43,7 @@
                 >
                   {{ $t('Btn.backHome') }}
                 </button>
-                <button type="submit" class="btn btn-info" @click="login()">{{ $t('Btn.login') }}</button>
+                <button type="submit" class="btn btn-info" @click.prevent="login()">{{ $t('Btn.login') }}</button>
               </div>
             </form>
           </div>

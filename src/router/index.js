@@ -5,6 +5,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import BookAppointment from '@/views/BookAppointment.vue'
 import CompleteEvent from '@/views/CompleteEvent.vue'
 import SignupView from '@/views/SignupView.vue'
+import ActivateAccount from '@/views/ActivateAccount.vue'
+import ActivationProcess from '@/views/ActivationProcess.vue'
 import LoginView from '@/views/LoginView.vue'
 import PasswordReset from '@/views/PasswordReset.vue'
 import MyPage from '@/views/MyPage.vue'
@@ -109,6 +111,15 @@ const routes = [
     path: '/signup',
     name: 'Signup',
     component: SignupView
+  },
+  {
+    path: '/activate/:activation_token/:email',
+    component: ActivationProcess
+  },
+  {
+    path: '/activate-account',
+    name: 'ActivateAccount',
+    component: ActivateAccount
   },
   {
     path: '/login',

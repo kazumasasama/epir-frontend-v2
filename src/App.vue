@@ -73,6 +73,7 @@ export default {
   computed: {
     ...mapWritableState(useSystemStore, ['isLoading']),
     ...mapWritableState(useSystemStore, ['error']),
+    ...mapWritableState(useSystemStore, ['message']),
     ...mapWritableState(useUserStore, ['isLoggedin']),
     ...mapWritableState(useUserStore, ['isAdmin']),
   },
