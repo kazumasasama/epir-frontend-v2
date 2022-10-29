@@ -16,7 +16,6 @@
     </loading>
 
     <HeaderNav
-      @getMessage="getMessage"
     />
 
     <div class="alert alert-danger" role="alert" v-if="error">
@@ -79,7 +78,6 @@ export default {
   },
   data() {
     return {
-      message: null,
     }
   },
   methods: {
@@ -106,9 +104,6 @@ export default {
           this.error = error.response;
         })
       }
-    },
-    getMessage(message) {
-      this.message = message
     },
   },
 }
@@ -159,7 +154,9 @@ hr {
   margin-top: 25px;
   margin-bottom: 25px;
 }
-
+.btn-container {
+  margin-top: 20px;
+}
 .btn-container * {
   margin: 5px 8px;
 }

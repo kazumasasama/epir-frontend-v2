@@ -127,13 +127,13 @@ export default {
     }
   },
   computed: {
+    ...mapWritableState(useSystemStore, ['message']),
     ...mapWritableState(useUserStore, ['isLoggedin']),
     ...mapWritableState(useUserStore, ['isAdmin']),
     ...mapWritableState(useUserStore, ['user']),
   },
   data() {
     return {
-      message: null,
       popover: null,
     }
   },
@@ -144,8 +144,7 @@ export default {
       localStorage.removeItem("jwt");
       localStorage.removeItem("user_id");
       localStorage.removeItem("last_login");
-      const message = "ログアウトしました。初期画面へ戻ります。";
-      this.$emit('getMessage', message)
+      this.message = "ログアウトしました。初期画面へ戻ります。";
       await this.resetData()
       .then(()=> {
         location.reload()

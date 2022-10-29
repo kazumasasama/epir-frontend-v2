@@ -10,7 +10,7 @@
           >
             <div class="row">
               <p><strong>必須項目*</strong></p>
-              <div class="col-sm-6">
+              <div class="col-sm-6 mb-5">
                 <small>姓*</small>
                 <input
                   id="input-validation-lastname"
@@ -68,15 +68,12 @@
                   id="input-validation-passwordconfirm"
                   autocomplete="new-password"
                   type="password"
-                  v-model="passwordConfirm"
+                  v-model="user.password_confirmation"
                   class="form-control"
                   required
                 >
-                <small v-if="passwordMatch" class="password-match">
-                  パスワードが一致していません。
-                </small>
               </div>
-              <div class="col-sm-6">
+              <div class="col-sm-6 mb-5">
                 <small>郵便番号</small>
                 <input
                   autocomplete="postal-code"
@@ -130,16 +127,20 @@
                   class="form-control"
                 >
               </div>
-              
-              <div class="btn-container col-12 text-end">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  @click="cancelSignup()"
-                >
-                  キャンセル
-                </button>
-                <button type="submit" class="btn btn-primary">登録する</button>
+              <div class="alert alert-danger" role="alert" v-if="error">
+                {{ error }}
+              </div>
+              <div class="col-12 text-end">
+                <div class="btn-container">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    @click="cancelSignup()"
+                  >
+                    キャンセル
+                  </button>
+                  <button type="submit" class="btn btn-primary">登録する</button>
+                </div>
               </div>
             </div>
           </form>
@@ -165,11 +166,20 @@ export default {
   },
   data() {
     return {
-      passwordConfirm: null,
       user: {
+        last_name: "",
+        first_name: "",
+        email: "",
+        phone: "",
+        line_id: "",
+        password: "",
+        password_confirmation: "",
+        zip: "",
         state: "東京都",
         city: "世田谷区",
+        address: "",
       },
+      passwordInputError: null,
     }
   },
   computed: {
@@ -178,9 +188,9 @@ export default {
     ...mapWritableState(useSystemStore, ['genders']),
     ...mapWritableState(useSystemStore, ['states']),
     passwordMatch() {
-      if (this.passwordConfirm === null) {
+      if (this.user.password_confirmation === null) {
         return false
-      } else if (this.user.password !== this.passwordConfirm) {
+      } else if (this.user.password !== this.user.password_confirmation) {
         return true
       }
       return false
@@ -219,16 +229,16 @@ export default {
         this.AddValidCssClass(inputValidationPassword)
       }
     },
-    passwordConfirm() {
+    'user.password_confirmation'() {
       const inputValidationPassword = document.getElementById('input-validation-password');
       const inputValidationPasswordconfirm = document.getElementById('input-validation-passwordconfirm');
-      if (this.passwordConfirm === "" || !this.passwordConfirm) {
+      if (this.user.password_confirmation === "" || this.user.password_confirmation === "") {
         this.AddInvalidCssClass(inputValidationPasswordconfirm);
-      } else if (this.passwordConfirm) {
-        if (this.user.password === this.passwordConfirm) {
+      } else if (this.user.password_confirmation) {
+        if (this.user.password === this.user.password_confirmation) {
           this.AddValidCssClass(inputValidationPassword);
           this.AddValidCssClass(inputValidationPasswordconfirm);
-        } else if (this.user.password !== this.passwordConfirm) {
+        } else if (this.user.password !== this.user.password_confirmation) {
           this.AddInvalidCssClass(inputValidationPasswordconfirm);
         } 
       }
@@ -243,39 +253,74 @@ export default {
       element.classList.remove('is-valid');
       element.classList.add('is-invalid');
     },
+    validatePasswordForm() {
+      let password = this.user.password.slice();
+      let passwordConfirmation = this.user.password_confirmation.slice();
+      console.log(password.split(''));
+      if (password.split('').length < 8 || password.split('').length > 20) {
+        this.passwordInputError = "パスワードは8桁以上20桁以下の英数字と記号で設定してください。"
+        return false;
+      } else if (password !== passwordConfirmation) {
+        this.passwordInputError = "パスワードとパスワード確認が一致していません。"
+        return false;
+      } else if (password === passwordConfirmation) {
+        return true;
+      }
+    },
     validateEmptyRequiredForm() {
       let invalidKeys = [];
       const keys = (Object.keys(this.user));
       for (let i in keys) {
         if (this.user[keys[i]] === "") {
-          if (keys[i] === "first_name" || keys[i] === "last_name" || keys[i] === "email" || keys[i] === "password")
-          invalidKeys.push(keys[i])
+          if (keys[i] === "last_name") {
+            invalidKeys.push("姓")
+          }
+          if (keys[i] === "first_name") {
+            invalidKeys.push("名")
+          }
+          if (keys[i] === "email") {
+            invalidKeys.push("メールアドレス")
+          }
+          if (keys[i] === "password") {
+            invalidKeys.push("パスワード")
+          }
+          if (keys[i] === "password_confirmation") {
+            invalidKeys.push("パスワード確認")
+          }
         }
       }
       if (!invalidKeys.length) {
-        return true;
+        return "valid";
       } else {
-        for (let i in invalidKeys) {
-          invalidKeys[i] = (invalidKeys[i].charAt(0).toUpperCase() + invalidKeys[i].slice(1)).replace('_', ' ')
-        }
-        if (!this.passwordConfirm) {
-          invalidKeys.push('and Confirm password')
-        } else {
-          invalidKeys[invalidKeys.length - 1] = 'and ' + invalidKeys[invalidKeys.length - 1]
-        }
         return invalidKeys.join(', ');
       }
     },
     createUser() {
+      this.error = null;
       const valid = this.validateEmptyRequiredForm()
-      if (valid === false) {
+      if (valid !== "valid") {
         this.error = `必須項目をご記入ください: ${valid}`
         return
-      } else if (this.user.password !== this.passwordConfirm) {
+      } else if (this.user.password !== this.user.password_confirmation) {
         this.error = "パスワードと確認用パスワードが一致していません。"
         return
-      }
-      if (this.user.password === this.passwordConfirm) {
+      } else if (this.user.password.split('').length < 8 || this.user.password.split('').length > 20) {
+        this.error = "パスワードは8桁以上20桁以下の英数字と記号で設定してください。"
+      } else if (this.user.password === this.user.password_confirmation) {
+        const inputValidationEmail = document.getElementById('input-validation-email');
+        const splittedEmail = this.user.email.concat().split('')
+        console.log(splittedEmail.indexOf('@'))
+        console.log(splittedEmail.length)
+        if (!splittedEmail.includes('@')) {
+          this.AddInvalidCssClass(inputValidationEmail)
+          this.error = "メールアドレスに@を含めてください";
+          return
+        } else if (splittedEmail.indexOf('@') === (splittedEmail.length - 1)) {
+          this.error = "メールアドレスが不正です";
+          return
+        } else {
+          this.AddValidCssClass(inputValidationEmail)
+        }
         this.systemStore.modifyLoadingMessage(this.$t('Spinner.createAndLogin'));
         this.systemStore.startLoading();
         axios.post('/users', this.user)
@@ -305,8 +350,5 @@ export default {
   }
   .password-match {
     color: rgb(255, 99, 132);
-  }
-  .btn-container {
-    margin-top: 20px;
   }
 </style>

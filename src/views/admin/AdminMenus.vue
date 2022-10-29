@@ -1,13 +1,5 @@
 <template>
   <div class="container">
-    <div
-      v-if="error"
-      class="alert alert-danger"
-      role="alert"
-    >
-      {{ error }}
-    </div>
-
     <div class="modal" id="menu-modal" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -24,7 +16,7 @@
                   checked
                 >
               </div>
-              <small>{{ $t('Forms.title') }}*</small>
+              <small>メニュー名*</small>
               <input type="text" v-model="updatingMenu.title" class="form-control">
               <small>{{ $t('Forms.price') }}*</small>
               <input type="number" v-model="updatingMenu.price" class="form-control">
@@ -50,6 +42,13 @@
             </form>
           </div>
           <div class="modal-footer">
+            <div
+              v-if="error"
+              class="alert alert-danger"
+              role="alert"
+            >
+              {{ error }}
+            </div>
             <div class="btn-container">
               <button
               v-if="modalMode === 'create'"
@@ -278,7 +277,7 @@
             this.activeMenus = [
               {
                 id: -1,
-                title: 'No menu in this category...',
+                title: 'まだメニューがありません',
                 price: '--',
                 duration: '--',
               }
@@ -289,7 +288,7 @@
             this.inactiveMenus = [
               {
                 id: -1,
-                title: 'No menu in this category...',
+                title: 'まだメニューがありません',
                 price: '--',
                 duration: '--',
               }
@@ -300,7 +299,7 @@
           this.inactiveMenus = [
             {
               id: -1,
-              title: 'No menu in this category...',
+              title: 'まだメニューがありません',
               price: '--',
               duration: '--',
             }
@@ -308,7 +307,7 @@
           this.activeMenus = [
             {
               id: -1,
-              title: 'No menu in this category...',
+              title: 'まだメニューがありません',
               price: '--',
               duration: '--',
             }
@@ -317,7 +316,23 @@
           window.onload = function(){document.getElementsByClassName('no-active-menu-checkbox').addAttribute('disabled')}
         }
       },
+      validateMenuForm() {
+        const menu = this.updatingMenu;
+        if (!menu.title.split('').length) {
+          this.error = "メニュー名は必須です。";
+        } else if (!menu.price.split('').length) {
+          this.error = "金額は必須です。";
+        } else if (!menu.duration.split('').length) {
+          this.error = "金額は必須です。";
+        }
+        return false;
+      },
       createMenu() {
+        this.validateMenuForm();
+        if (!this.validateMenuForm()) {
+          return
+        }
+        this.error = null;
         let menu = this.updatingMenu;
         axios.post('/menus', menu)
         .then((res)=> {
@@ -332,29 +347,35 @@
         })
       },
       updateMenu(active) {
-        const newMenu = this.updatingMenu;
-        newMenu.active = active;
+        this.validateMenuForm();
+        if (!this.validateMenuForm()) {
+          return
+        }
+        this.error = null;
+        const updatingMenu = this.updatingMenu;
+        updatingMenu.active = active;
         const id = this.updatingMenu.id
-        axios.patch(`/menus/${id}`, newMenu)
+        axios.patch(`/menus/${id}`, updatingMenu)
         .then((res)=> {
           let prevMenu = this.menu;
           let i = this.groupedMenus[prevMenu.category_id].indexOf(prevMenu);
           this.groupedMenus[prevMenu.category_id].splice(i, 1);
-          if (prevMenu.category_id !== newMenu.category_id) {
+          if (prevMenu.category_id !== updatingMenu.category_id) {
             const prevCategoryEl = document.getElementById(`category-title-${prevMenu.category_id - 1}`)
             prevCategoryEl.classList.remove('active')
-            const currentCategoryEl = document.getElementById(`category-title-${newMenu.category_id - 1}`)
+            const currentCategoryEl = document.getElementById(`category-title-${updatingMenu.category_id - 1}`)
             currentCategoryEl.classList.add('active')
           }
           
-          this.groupedMenus[newMenu.category_id].push(newMenu);
+          this.groupedMenus[updatingMenu.category_id].push(updatingMenu);
           this.selectedMenu = {};
           this.menuModal.hide();
           const menuTitle = res.data.title;
           this.message = `${menuTitle} was successfully updated`;
-          this.switchCategory(newMenu.category_id);
+          this.switchCategory(updatingMenu.category_id);
         })
         .catch((error)=> {
+          console.log(error)
           this.error = error;
         })
       },
@@ -388,6 +409,7 @@
         this.menuContent = 'inactive';
       },
       showModal(menu, func) {
+        this.error = null;
         if (this.menuContent ==='inactive' && this.inactiveMenus[0].id === -1) {
           return
         } else {
@@ -395,7 +417,7 @@
             this.menu = {};
             this.updatingMenu = {};
             this.updatingMenu.active = true;
-          } else {
+          } else if (func === 'update') {
             this.menu = Object.assign({}, menu);
             this.updatingMenu = Object.assign({}, menu);
           }
@@ -409,10 +431,6 @@
 </script>
 
 <style scoped>
-  .btn-container {
-    margin-top: 10px;
-    margin-left: -8px;
-  }
   .menu-checkbox:checked {
     background-color: rgb(54, 162, 235);
   }

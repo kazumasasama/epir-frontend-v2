@@ -312,34 +312,6 @@ export default {
   .row {
     text-align: left;
   }
-  .btn-container {
-    margin-top: 15px;
-  }
-  .user-btn-container {
-    text-align: left;
-    overflow: hidden;
-  }
-  .history-event-container {
-    text-align: left;
-  }
-  .notification {
-    color: red;
-  }
-  .history-hairline {
-    color:#FFFFFF;
-    margin-top: 8px;
-    margin-bottom: 8px;
-    border: none;
-    border-top: 2px dashed gray;
-    height: 1px;
-  }
-  .hr-user-statics {
-    border-top: 1px;
-  }
-  .userFullName {
-    margin-top: 8px;
-    font-size: larger;
-  }
   .multiselect-tag-color {
     --ms-tag-bg: rgb(75, 192, 192);
   }

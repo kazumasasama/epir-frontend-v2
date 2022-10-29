@@ -1,7 +1,4 @@
 <template>
-  <div v-if="error" class="alert alert-warning" role="alert">
-    {{ error }}
-  </div>
   <div class="container">
     <div class="row d-flex justify-content-center">
       <div class="col-lg-5 col-md-6 col-sm-8">
@@ -14,20 +11,23 @@
                 <input
                   v-model="user.email"
                   id="login-input-email"
-                  class="form-control"
+                  class="form-control mb-3"
                   type="text"
                   autocomplete="email"
                   required
                 >
-                <div v-if="emailInputError" class="invalid-feedback">
-                  {{ emailInputError }}
+                <div class="text-danger" v-if="error">
+                  {{ error }}
+                </div>
+                <div class="alert alert-info" role="alert" v-if="message">
+                  {{ message }}
                 </div>
               </div>
               <div class="btn-container">
                 <button
                   type="button"
                   class="btn btn-secondary"
-                  @click.prevent="this.$router.push('/')"
+                  @click.prevent="redirectToHome()"
                 >
                   {{ $t('Btn.backHome') }}
                 </button>
@@ -42,37 +42,24 @@
 </template>
 
 <script>
+import { mapWritableState } from 'pinia';
+import { useSystemStore } from '@/store/systemStore';
+import axios from 'axios';
+
 export default {
   data() {
     return {
       user: {
-        email: null,
-      }
+        email: "",
+      },
+      mailSent: false,
     }
   },
   created() {
   },
-  watch: {
-    'user.email'() {
-      const inputValidationEmail = document.getElementById('login-input-email');
-      const email = this.user.email
-      if (email === "") {
-        this.AddInvalidCssClass(inputValidationEmail)
-        this.emailInputError = "入力してください"
-      } else if (email !== "") {
-        if (email.split('').includes('@') === false) {
-          this.AddInvalidCssClass(inputValidationEmail)
-          this.emailInputError = "不正なメールアドレス"
-        } else if (email.split('').includes('@')) {
-          this.AddValidCssClass(inputValidationEmail)
-          this.emailInputError = null;
-        } else {
-          this.AddValidCssClass(inputValidationEmail)
-        }
-      }
-    },
-  },
   computed: {
+    ...mapWritableState(useSystemStore, ['message']),
+    ...mapWritableState(useSystemStore, ['error']),
   },
   methods: {
     AddValidCssClass(element) {
@@ -84,32 +71,38 @@ export default {
       element.classList.add('is-invalid');
     },
     validateEmptyRequiredForm() {
-      let invalidKeys = [];
-      let user = this.user
-      const keys = (Object.keys(user));
-      for (let i in keys) {
-        if (user[keys[i]] === "") {
-          invalidKeys.push(keys[i])
-        }
-      }
-      if (!invalidKeys.length) {
+      let user = this.user;
+      if (user.email.length <= 0) {
+        this.error = "メールアドレスを入力してください。";
+      } else if (user.email !== "") {
+        const inputValidationEmail = document.getElementById('login-input-email');
         if (user.email.split('').includes('@') === false) {
-          return false
-        } else {
-          this.emailInputError = null
-          return true;
+          this.AddInvalidCssClass(inputValidationEmail)
+          this.error = "不正なメールアドレス"
+        } else if (user.email.split('').includes('@')) {
+          this.AddValidCssClass(inputValidationEmail);
+          this.error = null;
+          return true
         }
-      } else {
-        if (!user.email) {
-          this.error = "メールアドレスを入力してください。";
-        } else {
-          this.error = "エラーが発生しました。入力項目をご確認の上再度ログインしてください。"
-        }
-        return false;
       }
+      return false;
     },
     sendPasswordResetMail() {
-      
+      this.user.email = this.user.email.toLowerCase();
+      if (this.validateEmptyRequiredForm()) {
+        axios.post('/password_resets.json', this.user)
+        .then((res)=> {
+          this.error = null;
+          this.message = res.data.message;
+        })
+        .catch((error)=> {
+          this.error = error.response.data.error;
+        })
+      }
+    },
+    redirectToHome() {
+      this.error = null;
+      this.$router.push('/');
     },
   },
 }

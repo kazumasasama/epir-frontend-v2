@@ -26,6 +26,13 @@
             </ul>
           </div>
           <div class="modal-body event-detail-modal-body">
+            <div
+              v-if="error"
+              class="alert alert-danger"
+              role="alert"
+            >
+              {{ error }}
+            </div>
             <div class="row">
               <div class="col-sm-9">
                 <small class="event-details-tag">お名前</small>
@@ -138,6 +145,13 @@
             <h6 class="modal-title">予約作成</h6>
           </div>
           <div class="modal-body event-detail-modal-body">
+            <div
+              v-if="error"
+              class="alert alert-danger"
+              role="alert"
+            >
+              {{ error }}
+            </div>
             <div class="row">
               <div class="col-sm-9">
                 <div v-if="finalBookingUser">
@@ -559,6 +573,7 @@ export default {
       this.$router.push(`/admin/users/${id}`);
     },
     updateEvent() {
+      this.error = null;
       // prepare update data
       let currentEvent = this.events.filter((event)=> event.id === this.selectedEvent.id)[0];
       const date = this.bookingDate;
@@ -635,6 +650,7 @@ export default {
       })
     },
     destroyEvent() {
+      this.error = null;
       const id = this.selectedEvent.id
       axios.delete(`/events/${id}.json`)
       .then((res)=> {
@@ -694,6 +710,7 @@ export default {
       }
     },
     createEvent() {
+      this.error = null;
       const date = this.newEventSelectedTime.date;
       let initial = 0;
       const totalDuration = this.bookingData.menus.map(menu => menu.duration).reduce((pre, current)=> pre + current, initial);

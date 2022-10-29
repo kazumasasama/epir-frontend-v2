@@ -1,14 +1,5 @@
 <template>
   <div class="container">
-    <div
-      v-if="error"
-      class="alert alert-warning"
-      role="alert"
-    >
-      {{ error }}
-    </div>
-
-    
     <div class="card shadow card-base">
       <div class="card-header">
         <nav aria-label="breadcrumb" class="pg-bar">
@@ -64,13 +55,13 @@
       <div class="card-body card-base-body">
         <div class="pick-menus" v-if="currentStep === 1">
           <div class="row">
-            <div class="text-start">
+            <div class="text-start card-title">
               <h5>{{ $t('Appointments.title.pickMenu') }}</h5>
             </div>
           </div>
           <div class="row">
             <div class="col-12">
-              <div class="card">
+              <div class="">
                 <div class="card-body">
                   <div class="row">
                     <div class="col-lg-3 col-md-4 col-sm-12">
@@ -149,26 +140,33 @@
                         </div>
                       </div>
                     </div>
+                    <div
+                      v-if="error"
+                      class="alert alert-danger"
+                      role="alert"
+                    >
+                      {{ error }}
+                    </div>
+                    <div class="col-12">
+                      <div class="btn-container">
+                        <button
+                          type="submit"
+                          class="btn btn-primary"
+                          @click.prevent="nextStep()"
+                        >
+                          {{ $t('Btn.dateTime') }}
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="col-12">
-              <div class="btn-container">
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  @click.prevent="nextStep()"
-                >
-                  {{ $t('Btn.dateTime') }}
-                </button>
               </div>
             </div>
           </div>
         </div>
     
         <div class="pick-date" v-if="currentStep === 2">
-          <div class="text-start">
+          <div class="text-start card-title">
             <h5>{{ $t('Appointments.title.pickTime') }}</h5>
           </div>
           <form>
@@ -218,6 +216,13 @@
                   </div>
                 </div>
               </div>
+              <div
+                v-if="error"
+                class="alert alert-danger"
+                role="alert"
+              >
+                {{ error }}
+              </div>
               <div class="col-12">
                 <div class="btn-container">
                   <button
@@ -241,63 +246,47 @@
         </div>
     
         <div class="user-info" v-if="currentStep === 3">
-          <div class="text-start">
+          <div class="text-start card-title d-flex justify-content-between">
             <h5>{{ $t('Appointments.title.customerInfo') }}</h5>
+            <button
+              class="btn btn-outline-danger"
+              @click.prevent="this.$router.push('/mypage')"
+            >
+              お客様情報変更
+            </button>
           </div>
           <form>
             <div class="row">
               <div class="col-sm-4">
-                <small>{{ $t('Forms.lastName') }}</small>
-                <input type="text" v-model="user.last_name" class="form-control">
-                <small>{{ $t('Forms.firstName') }}</small>
-                <input type="text" v-model="user.first_name" class="booking-checkbox form-control">
+                <small>お名前</small>
+                <p>{{ user.full_name }}</p>
                 <small>{{ $t('Forms.email') }}</small>
-                <input type="email" v-model="user.email" class="form-control">
+                <p>{{ user.email }}</p>
                 <small>{{ $t('Forms.phone') }}</small>
-                <input type="tel" v-model="user.phone" class="form-control">
+                <p>{{ user.phone }}</p>
                 <small>LINE</small>
-                <input type="tel" v-model="user.line_id" class="form-control">
+                <p>{{ user.line_id }}</p>
                 <small>{{ $t('Forms.gender') }}</small>
-                <select v-model="user.gender" class="form-select">
-                  <option
-                    v-for="gender in genders"
-                    :key="gender"
-                    :value="gender"
-                  >
-                    {{ gender }}
-                  </option>
-                </select>
+                <p>{{ user.gender }}</p>
               </div>
               <div class="col-sm-4">
                 <small>{{ $t('Forms.zip') }}</small>
-                <input type="text" v-model="user.zip" class="form-control">
+                <p>{{ user.zip }}</p>
                 <small>{{ $t('Forms.state') }}</small>
-                <select
-                  v-model="user.state"
-                  class="form-select"
-                  autocomplete="address-level1"
-                >
-                  <option
-                    v-for="state in states"
-                    :key="state"
-                    :value="state"
-                  >
-                    {{ state }}
-                  </option>
-                </select>
+                <p>{{ user.state }}</p>
                 <small>{{ $t('Forms.city') }}</small>
-                <input type="text" v-model="user.city" class="form-control">
+                <p>{{ user.city }}</p>
                 <small>{{ $t('Forms.address') }}</small>
-                <input type="text" v-model="user.address" class="form-control">
+                <p>{{ user.address }}</p>
               </div>
               <div class="col-sm-4">
                 <small>{{ $t('Forms.requestsAndNote') }}</small>
-                <textarea v-model="user.note" col-sm-6s="30" rows="3" class="user-note form-control"></textarea>
+                <p>{{ user.note }}</p>
               </div>
               <div class="col-12">
                 <div class="btn-container">
                   <button
-                    type="button"
+                  type="button"
                     class="btn btn-secondary"
                     @click.prevent="prevStep()"
                   >
@@ -318,80 +307,78 @@
     
         <div class="confirmation" v-if="currentStep === 4">
           <form v-on:submit.prevent="createAppointment()">
-            <div class="row">
-              <div class="text-start">
-                <h5>{{ $t('Appointments.title.confirmation') }}</h5>
+            <div class="row d-flex justify-content-center">
+              <div class="text-start card-title">
+                <h5>予約内容の確認</h5>
               </div>
-              <div class="col-md-6">
-                <section>
-                  <div class="card confirmation-detail-card">
-                    <div class="card-body text-start">
-                      <ul class="payment-item">
-                        <h6 class="card-title" style="font-weight: bold">{{ $t('Appointments.steps.dateTime') }}</h6>
-                        <p>{{ formatBookingDate }}</p>
-                        <p>{{ formattedBookingTime }} - {{ endTime }}</p>
-                        <h6 class="confirm-item-tag" style="font-weight: bold">{{ $t('Menus.menu') }}</h6>
-                        <div v-for="menu in selectedMenus" :key="menu.id" class="d-flex justify-content-between">
-                          <li>
-                            {{ menu.title }}
-                          </li>
-                          <span>{{ $t('Currency') }}{{ menu.price }}</span>
-                        </div>
-                      </ul>
-                      <hr>
-                      <div class="payment-item d-flex justify-content-between">
-                        <h6 class="text-end">{{ $t('Forms.subtotal') }}</h6>
-                        <span>{{ $t('Currency') }}{{ subTotal }}</span>
+              <div class="col-lg-6">
+                <div class="card confirmation-detail-card">
+                  <div class="card-body text-start">
+                    <ul class="payment-item">
+                      <h6 class="card-title" style="font-weight: bold">{{ $t('Appointments.steps.dateTime') }}</h6>
+                      <p>{{ formatBookingDate }}</p>
+                      <p>{{ formattedBookingTime }} - {{ endTime }}</p>
+                      <h6 class="confirm-item-tag" style="font-weight: bold">{{ $t('Menus.menu') }}</h6>
+                      <div v-for="menu in selectedMenus" :key="menu.id" class="d-flex justify-content-between">
+                        <li>
+                          {{ menu.title }}
+                        </li>
+                        <span>{{ $t('Currency') }}{{ Math.floor(menu.price) }}</span>
                       </div>
-                      <div class="payment-item d-flex justify-content-between">
-                        <span class="text-end">{{ $t('Forms.tax') }} {{ $t('Locale.tax') }}</span>
-                        <span>{{ $t('Currency') }}{{ serviceTax }}</span>
-                      </div>
-                        <hr>
-                      <div class="payment-item d-flex justify-content-between">
-                        <h6 class="text-end"  style="font-weight: bold">{{ $t('Forms.total') }}</h6>
-                        <span  style="font-weight: bold">{{ $t('Currency') }}{{ subTotal + serviceTax }}</span>
-                      </div>
-                      <hr>
-                      <p>
-                        <small>表示金額は<span style="font-weight: bold">都度払いの金額</span>となっております。回数券をお持ちのお客様はお支払いの必要はありません。</small>
-                      </p>
-                      <p>
-                        <small>{{ $t('Messages.couponNotice') }}</small>
-                      </p>
-                      <label class="form-check-label" for="flexCheckDefault">
-                        <input
-                          class="form-check-input booking-checkbox"
-                          type="checkbox"
-                          v-model="confirmCheckbox"
-                          id="flexCheckDefault"
-                        >
-                        <small class="terms-and-conditions">
-                          <span @click="this.$router.push('/termsandconditions')">
-                            <a
-                              class="link-primary"
-                              href="#"
-                              rel="noopener noreferrer"
-                            >
-                              利用規約
-                            </a>
-                          </span>
-                          と
-                          <span @click="this.$router.push('/privacyandpolicy')">
-                            <a 
-                              class="link-primary"
-                              href="#"
-                              rel="noopener noreferrer"
-                            >
-                              プライバシーポリシー
-                            </a>
-                          </span>
-                          に同意する
-                        </small>
-                      </label>
+                    </ul>
+                    <hr>
+                    <div class="payment-item d-flex justify-content-between">
+                      <h6 class="text-end">{{ $t('Forms.subtotal') }}</h6>
+                      <span>{{ $t('Currency') }}{{ subTotal }}</span>
                     </div>
+                    <div class="payment-item d-flex justify-content-between">
+                      <span class="text-end">{{ $t('Forms.tax') }} {{ $t('Locale.tax') }}</span>
+                      <span>{{ $t('Currency') }}{{ serviceTax }}</span>
+                    </div>
+                      <hr>
+                    <div class="payment-item d-flex justify-content-between">
+                      <h6 class="text-end"  style="font-weight: bold">{{ $t('Forms.total') }}</h6>
+                      <span  style="font-weight: bold">{{ $t('Currency') }}{{ subTotal + serviceTax }}</span>
+                    </div>
+                    <hr>
+                    <p>
+                      <small>表示金額は<span style="font-weight: bold">都度払いの金額</span>となっております。回数券をお持ちのお客様はお支払いの必要はありません。</small>
+                    </p>
+                    <p>
+                      <small>{{ $t('Messages.couponNotice') }}</small>
+                    </p>
+                    <label class="form-check-label" for="flexCheckDefault">
+                      <input
+                        class="form-check-input booking-checkbox"
+                        type="checkbox"
+                        v-model="confirmCheckbox"
+                        id="flexCheckDefault"
+                      >
+                      <small class="terms-and-conditions">
+                        <span @click="this.$router.push('/termsandconditions')">
+                          <a
+                            class="link-primary"
+                            href="#"
+                            rel="noopener noreferrer"
+                          >
+                            利用規約
+                          </a>
+                        </span>
+                        と
+                        <span @click="this.$router.push('/privacyandpolicy')">
+                          <a 
+                            class="link-primary"
+                            href="#"
+                            rel="noopener noreferrer"
+                          >
+                            プライバシーポリシー
+                          </a>
+                        </span>
+                        に同意する
+                      </small>
+                    </label>
                   </div>
-                </section>
+                </div>
               </div>
               <!-- <div v-if="subTotal > 0" class="col-md-6">
                 <CheckoutView
@@ -801,9 +788,6 @@ export default {
     --dp-success-color-disabled: #a3d9b1;
     --dp-icon-color: #959595;
     --dp-danger-color: #ff6f60;
-  }
-  .btn-container {
-    margin-top: 20px;
   }
   .payment-item {
     padding-left: 8px;
