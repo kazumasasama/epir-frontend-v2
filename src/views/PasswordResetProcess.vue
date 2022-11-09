@@ -92,7 +92,6 @@ import axios from 'axios';
     data() {
       return {
         activated: true,
-        count: 5,
         user: {
           password: null,
           password_confirmation: null,
@@ -109,7 +108,6 @@ import axios from 'axios';
       validatePasswordForm() {
         let password = this.user.password.slice();
         let passwordConfirmation = this.user.password_confirmation.slice();
-        console.log(password.split(''));
         if (password.split('').length < 8 || password.split('').length > 20) {
           this.error = "パスワードは8桁以上20桁以下の英数字と記号で設定してください。"
           return false;
@@ -121,11 +119,6 @@ import axios from 'axios';
         }
       },
       resetPassword() {
-        let counter = new Promise(()=> {
-          setTimeout(()=> {
-            this.count--;
-          }, 1000)
-        })
         this.message = null;
         this.error = null;
         let validated = this.validatePasswordForm();
@@ -133,19 +126,25 @@ import axios from 'axios';
           const url = `/password_resets/${this.$route.params['activation_token']}.json/?email=${this.$route.params['email']}`
           axios.patch(url, this.user)
           .then((res)=> {
-            while (this.count > 0) {
-              this.message = `${res.data.message}${this.count}秒後にログイン画面へリダイレクトします。`;
-              counter
-              .then(()=> {
-                if (this.count === 0) {
-                  this.error = null;
-                  this.message = null;
+            this.error = null;
+            const countdown = (sec)=> {
+              return new Promise(resolve => {
+                this.message = `${res.data.message}${sec}秒後にログイン画面へリダイレクトします。`;
+                sec--;
+                const timeId = setTimeout(()=> {
+                  countdown(sec);
+                }, 1000)
+                if(sec < 0) {
+                  clearTimeout(timeId);
                   this.user.password = null;
                   this.user.password_confirmation = null;
                   this.$router.push('/login')
+                  this.message = null;
+                  resolve();
                 }
               })
             }
+            countdown(5)
           })
           .catch((error)=> {
             this.error = error;

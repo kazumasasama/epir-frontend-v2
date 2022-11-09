@@ -1,25 +1,4 @@
 <template>
-
-  <nav class="navbar navbar-light navbar-white">
-    <div class="col-12 user-btn-container btn-container">
-      <button
-        class="btn btn-sm btn-outline-success"
-        v-if="showHistory"
-        @click="showHistory = false"
-      >
-        {{ $t('Customers.customerDetail') }}
-      </button>
-      <button
-        class="btn btn-sm btn-outline-success"
-        v-if="!showHistory"
-        @click="showHistory = true"
-      >
-        {{ $t('Btn.history') }}
-      </button>
-    </div>
-    
-  </nav>
-
   <div class="container">
     <div class="row">
       <div class="col-12">
@@ -186,12 +165,15 @@ components: {
       axios.patch(`/users/${id}.json`, user)
       .then((res)=> {
         this.user = res.data;
+        this.message = "更新しました";
+        return
+      })
+      .then(()=> {
+        setTimeout(()=> {this.message = null}, 3000);
       })
       .catch((error)=> {
         this.error = error;
       })
-      this.message = "User updated";
-      setTimeout(()=> {this.message = null}, 3000);
     },
   },
 }
@@ -203,10 +185,6 @@ components: {
   
   .row {
     text-align: left;
-  }
-  .user-btn-container {
-    text-align: left;
-    overflow: hidden;
   }
   .history-event-container {
     text-align: left;

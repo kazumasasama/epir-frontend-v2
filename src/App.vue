@@ -60,24 +60,24 @@ export default {
   },
   created() {
     this.autoLogin();
-    this.systemStore.initBusiness();
-    this.systemStore.initBusinessTimes();
     this.systemStore.initCategories();
+    this.systemStore.initMenus();
+    this.systemStore.initBusiness();
     this.systemStore.initConfig();
     this.systemStore.initClosingDays();
-    this.systemStore.initMenus();
+    this.systemStore.initBusinessTimes();
     this.userStore.initStatuses();
     this.eventStore.initEvents();
   },
   computed: {
     ...mapWritableState(useSystemStore, ['isLoading']),
-    ...mapWritableState(useSystemStore, ['error']),
     ...mapWritableState(useSystemStore, ['message']),
     ...mapWritableState(useUserStore, ['isLoggedin']),
     ...mapWritableState(useUserStore, ['isAdmin']),
   },
   data() {
     return {
+      error: null,
     }
   },
   methods: {
@@ -154,9 +154,6 @@ hr {
   margin-top: 25px;
   margin-bottom: 25px;
 }
-.btn-container {
-  margin-top: 20px;
-}
 .btn-container * {
   margin: 5px 8px;
 }
@@ -190,5 +187,65 @@ hr {
 
 .white-background {
   background-color: white;
+}
+
+/* Vue Cal */
+.vuecal__title-bar {
+  background-color: rgba(140,146,232, 0.2) !important;
+}
+.vuecal__cell-date {
+  margin-top: 9px;
+  margin-bottom: 18px;
+  padding-bottom: 18px;
+}
+.vuecal__event-title {
+  font-size: small;
+  font-weight: bold;
+}
+.vuecal__event-time {
+  font-size: 10px;
+  color: rgb(50, 126, 161);
+}
+.vuecal__cell-events-count {
+  background-color: rgba(255, 205, 86) !important;
+  min-width: 20px !important;
+  height: 20px !important;
+  line-height: 20px !important;
+  font-size: 16px !important;
+  border-radius: 20px !important;
+  padding: 5px, 8px !important;
+}
+.vuecal__event.danger {
+  background-color: rgba(255, 99, 132, 0.2);
+  border: 2px solid rgba(255, 99, 132, 0.8);
+}
+.vuecal__event.primary {
+  background-color: rgba(140,146,232, 0.2);
+  border: 2px solid rgba(140,146,232, 0.8);
+}
+.vuecal__event.warning {
+  background-color: rgba(255, 159, 64, 0.2);
+  border: 2px solid rgba(255, 159, 64, 0.8);
+}
+.vuecal__event.gray {
+  background-color: rgba(201, 203, 207, 0.2);
+  border: 2px solid rgba(201, 203, 207, 0.8);
+}
+.vuecal__event.closing {
+  border: 2px solid rgba(255, 159, 64);
+  background:
+    rgba(255, 247, 240)
+    repeating-linear-gradient(
+      -45deg,
+      rgba(255, 162, 87, 0.25),
+      rgba(255, 162, 87, 0.25) 5px,
+      rgba(255, 255, 255, 0) 5px,
+      rgba(255, 255, 255, 0) 15px
+    );
+  color: rgba(255, 159, 64)
+}
+
+.margin-top-16 {
+  margin-top: 16px;
 }
 </style>

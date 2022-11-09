@@ -297,6 +297,7 @@ export default {
     },
     createUser() {
       this.error = null;
+      this.message = null;
       const valid = this.validateEmptyRequiredForm()
       if (valid !== "valid") {
         this.error = `必須項目をご記入ください: ${valid}`
@@ -337,6 +338,8 @@ export default {
       }
     },
     cancelSignup() {
+      this.error = null;
+      this.message = null;
       this.user = {};
       this.$router.go(-1);
     },

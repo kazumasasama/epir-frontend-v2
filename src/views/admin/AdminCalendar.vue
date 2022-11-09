@@ -56,7 +56,7 @@
                   </ul>
                 </div>
               </div>
-              <div class="col-sm-3 d-flex justify-content-end">
+              <div class="col-12 d-flex justify-content-end">
                 <div class="btn-container">
                   <button
                     v-if="!rescheduleBtn"
@@ -79,12 +79,6 @@
                     隠す
                   </button>
                   <button
-                    class="btn btn-primary"
-                    @click.prevent="updateEvent()"
-                  >
-                    更新する
-                  </button>
-                  <button
                     class="btn btn-danger"
                     @click.prevent="destroyEvent()"
                   >
@@ -101,8 +95,8 @@
             </div>
           </div>
           <div class="collapse modal-footer" id="collapseEventShow">
-            <div class="row">
-              <div class="col-12">
+            <div class="row time-slots-row">
+              <div class="col-12 mb-5">
                 <Datepicker
                   v-model="picked"
                   class="datepicker-item"
@@ -110,27 +104,37 @@
                   autoApply
                   utc="true"
                 />
-            </div>
-                <div
-                  class="col-sm-3"
-                  v-for="timeSlot in availableTimeSlots"
-                  :key="timeSlot.id"
-                >
-                  <div class="form-check time-slots-check">
-                    <label class="form-check-label">
-                      <ul class="d-flex justify-content-between">
+              </div>
+              <div
+                class="col-sm-3 col-6"
+                v-for="timeSlot in availableTimeSlots"
+                :key="timeSlot.id"
+              >
+                <div class="card card-body mb-3">
+                  <label class="form-check-label">
+                    <ul>
+                      <div class="form-check">
                         <input
-                          class="form-check-input me-1 booking-checkbox"
+                          class="form-check-input booking-checkbox"
                           type="radio"
-                          :value="timeSlot.time"
+                          :value="timeSlot"
                           v-model="selectedTime"
                         >
                         <li>{{ timeSlot.time.slice(11, -8) }}</li>
-                      </ul>
-                    </label>
-                  </div>
+                      </div>
+                    </ul>
+                  </label>
                 </div>
               </div>
+              <div class="btn-container d-flex justify-content-end">
+                <button
+                  class="btn btn-primary"
+                  @click.prevent="updateEvent()"
+                >
+                  更新する
+                </button>
+              </div>
+            </div>
           </div>
         </form>
       </div>
@@ -146,24 +150,105 @@
           </div>
           <div class="modal-body event-detail-modal-body">
             <div
-              v-if="error"
+              v-if="newEventError"
               class="alert alert-danger"
               role="alert"
             >
-              {{ error }}
+              {{ newEventError }}
             </div>
             <div class="row">
               <div class="col-sm-9">
-                <div v-if="finalBookingUser">
+                <div v-if="finalBookingUser" class="mb-3">
                   <h6>
                     {{ finalBookingUser.full_name }}
                     <a
                       style="color: rgb(255, 99, 132)"
-                      @click.prevent="finalBookingUser = null"
+                      @click.prevent="removeUser()"
                     >
                       <font-awesome-icon icon="fa-solid fa-circle-xmark" />
                     </a>
                   </h6>
+                </div>
+                <div class="control-navbar-item" v-if="!finalBookingUser">
+                  <input
+                    v-model="userSearch"
+                    type="text"
+                    class="form-control mb-3"
+                    placeholder="顧客検索"
+                  >
+                </div>
+                <div class="col-12 d-flex justify-content-start">
+                  <div
+                    class="list-group"
+                    id="list-tab"
+                    role="tablist"
+                  >
+                    <a
+                      class="list-group-item list-group-item-action"
+                      id="list-home-list"
+                      data-bs-toggle="list"
+                      role="tab"
+                      aria-controls="list-home"
+                      v-for="user in filteredUsers"
+                      :key="user.id"
+                      @click.prevent="bookingUser = user;"
+                    >
+                      <small>{{ user.full_name }}</small>
+                    </a>
+                  </div>
+                  <div class="card card-body" v-if="bookingUser">
+                    <ul class="card-base">
+                      <li
+                        v-for="status in bookingUser.statuses"
+                        :key="status.id"
+                      >
+                        <small style="color: red">{{ status.title }}</small>
+                      </li>
+                      <li><small>{{ bookingUser.email }}</small></li>
+                      <li><small>{{ bookingUser.phone }}</small></li>
+                      <li><small>{{ bookingUser.line_id }}</small></li>
+                      <li><small>{{ bookingUser.gender }}</small></li>
+                      <li><small>{{ bookingUser.state }} {{ bookingUser.city }}</small></li>
+                      <li><small>{{ bookingUser.address }}</small></li>
+                      <li><small>{{ bookingUser.birthday }}</small></li>
+                    </ul>
+                    <button
+                      class="btn btn-sm btn-info"
+                      @click.prevent="setBookingUser()"
+                    >
+                      決定
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <input
+                    v-model="menuSearch"
+                    type="text"
+                    class="form-control mb-3"
+                    placeholder="メニュー検索"
+                  >
+                </div>
+                <div class="row" v-if="filteredMenus">
+                  <div class="col-12 d-flex justify-content-start">
+                    <div
+                      class="list-group"
+                      id="list-tab"
+                      role="tablist"
+                    >
+                      <a
+                        class="list-group-item list-group-item-action"
+                        id="list-home-list"
+                        data-bs-toggle="list"
+                        role="tab"
+                        aria-controls="list-home"
+                        v-for="menu in filteredMenus"
+                        :key="menu.id"
+                        @click.prevent="setBookingMenus(menu);"
+                      >
+                        <small>{{ menu.title }}</small>
+                      </a>
+                    </div>
+                  </div>
                 </div>
                 <div v-if="bookingMenus">
                   <ol>
@@ -178,98 +263,53 @@
                     </li>
                   </ol>
                 </div>
-                <div class="control-navbar-item" v-if="!finalBookingUser">
-                  <input
-                    v-model="userSearch"
-                    type="text"
-                    class="form-control"
-                    placeholder="顧客検索"
-                  >
-                </div>
-                <div class="row">
-                  <div class="col-12 d-flex justify-content-start">
-                    <div
-                      class="list-group"
-                      id="list-tab"
-                      role="tablist"
-                    >
-                      <a
-                        class="list-group-item list-group-item-action"
-                        id="list-home-list"
-                        data-bs-toggle="list"
-                        role="tab"
-                        aria-controls="list-home"
-                        v-for="user in filteredUsers"
-                        :key="user.id"
-                        @click.prevent="bookingUser = user;"
-                      >
-                        <small>{{ user.full_name }}</small>
-                      </a>
-                    </div>
-                    <div class="card card-body" v-if="bookingUser">
-                      <ul class="card-base">
-                        <li
-                          v-for="status in bookingUser.statuses"
-                          :key="status.id"
-                        >
-                          <small style="color: red">{{ status.title }}</small>
-                        </li>
-                        <li><small>{{ bookingUser.email }}</small></li>
-                        <li><small>{{ bookingUser.phone }}</small></li>
-                        <li><small>{{ bookingUser.line_id }}</small></li>
-                        <li><small>{{ bookingUser.gender }}</small></li>
-                        <li><small>{{ bookingUser.state }} {{ bookingUser.city }}</small></li>
-                        <li><small>{{ bookingUser.address }}</small></li>
-                        <li><small>{{ bookingUser.birthday }}</small></li>
-                      </ul>
-                      <button
-                        class="btn btn-sm btn-info"
-                        @click.prevent="setBookingUser()"
-                      >
-                        決定
-                      </button>
-                    </div>
-                  </div>
-                  <div class="control-navbar-item">
-                    <input
-                      v-model="menuSearch"
-                      type="text"
-                      class="form-control"
-                      placeholder="メニュー検索"
-                    >
-                  </div>
-                  <div class="row" v-if="filteredMenus">
-                    <div class="col-12 d-flex justify-content-start">
-                      <div
-                        class="list-group"
-                        id="list-tab"
-                        role="tablist"
-                      >
-                        <a
-                          class="list-group-item list-group-item-action"
-                          id="list-home-list"
-                          data-bs-toggle="list"
-                          role="tab"
-                          aria-controls="list-home"
-                          v-for="menu in filteredMenus"
-                          :key="menu.id"
-                          @click.prevent="setBookingMenus(menu);"
-                        >
-                          <small>{{ menu.title }}</small>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
+                <div>
+                  <p class="mb-0"><small>施術時間: {{ newBookingMenuDurationTotal }}</small></p>
+                  <p class="mb-0"><small>料金: {{ newBookingMenuPriceTotal }}</small></p>
                 </div>
               </div>
-              <div class="col-sm-3 d-flex justify-content-end">
+            </div>
+          </div>
+          <div class="modal-footer d-flex justify-content-start">
+            <div class="row time-slots-row">
+              <div class="col-12 mb-5">
+                <Datepicker
+                  v-model="newEventDate"
+                  class="datepicker-item"
+                  inline
+                  autoApply
+                  utc="true"
+                />
+              </div>
+              <div
+                class="col-sm-3 col-6"
+                v-for="timeSlot in availableTimeSlotsForNewEventModal"
+                :key="timeSlot.id"
+              >
+                <div class="card card-body mb-3">
+                  <label class="form-check-label">
+                    <ul>
+                      <div class="form-check">
+                        <input
+                          class="form-check-input booking-checkbox"
+                          type="radio"
+                          :value="timeSlot"
+                          v-model="newEventSelectedTime"
+                        >
+                        <li>{{ timeSlot.time.slice(11, -8) }}</li>
+                      </div>
+                    </ul>
+                  </label>
+                </div>
+              </div>
+              <div class="col-12 d-flex justify-content-end">
                 <div class="btn-container">
-                  <a
-                    class="btn btn-danger"
+                  <button
+                    class="btn btn-primary"
                     @click.prevent="createEvent()"
                   >
                     予約する
-                  </a>
+                  </button>
                   <button
                     class="btn btn-secondary"
                     @click.prevent="this.newEventModal.hide()"
@@ -279,38 +319,6 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <div class="row">
-              <div class="col-12">
-                <Datepicker
-                  v-model="newEventDate"
-                  class="datepicker-item"
-                  inline
-                  autoApply
-                  utc="true"
-                />
-            </div>
-                <div
-                  class="col-sm-3"
-                  v-for="timeSlot in availableTimeSlotsForNewEventModal"
-                  :key="timeSlot.id"
-                >
-                  <div class="form-check time-slots-check">
-                    <label class="form-check-label">
-                      <ul class="d-flex justify-content-between">
-                        <input
-                          class="form-check-input me-1 booking-checkbox"
-                          type="radio"
-                          :value="timeSlot"
-                          v-model="newEventSelectedTime"
-                        >
-                        <li>{{ timeSlot.time.slice(11, -8) }}</li>
-                      </ul>
-                    </label>
-                  </div>
-                </div>
-              </div>
           </div>
         </form>
       </div>
@@ -397,6 +405,7 @@ export default {
   data() {
     return {
       error: null,
+      newEventError: null,
       selectedEvent: {
         user: {},
       },
@@ -522,12 +531,23 @@ export default {
       let users = [];
       for (let i in this.users) {
         let user = this.users[i];
-        if (user.last_name) {
-          if (user.first_name.toLowerCase().indexOf(keyword) !== -1 || user.last_name.toLowerCase().indexOf(keyword) !== -1 || user.email.indexOf(keyword) !== -1) {
+        if (user.phone) {
+          if (
+            user.first_name.toLowerCase().indexOf(keyword) !== -1
+            || user.last_name.toLowerCase().indexOf(keyword) !== -1
+            || user.email.indexOf(keyword) !== -1
+            || user.phone.indexOf(keyword) !== -1
+          )
+          {
             users.push(user)
           }
         } else {
-          if (user.first_name.toLowerCase().indexOf(keyword) !== -1 || user.email.indexOf(keyword) !== -1) {
+          if (
+            user.first_name.toLowerCase().indexOf(keyword) !== -1
+            || user.last_name.toLowerCase().indexOf(keyword) !== -1
+            || user.email.indexOf(keyword) !== -1
+          )
+          {
             users.push(user)
           }
         }
@@ -554,6 +574,15 @@ export default {
       }
       return menus;
     },
+    newBookingMenuDurationTotal() {
+      const totalInMinutes = this.bookingMenus.map(menu => menu.duration).reduce((sum, element) => sum + element, 0);
+      const hour = Math.floor(totalInMinutes / 60);
+      const minute = totalInMinutes % 60;
+      return `${hour}時間${minute}分`;
+    },
+    newBookingMenuPriceTotal() {
+      return `¥${this.bookingMenus.map(menu => parseFloat(menu.price)).reduce((sum, element) => sum + element, 0).toLocaleString()}`
+    },
   },
   methods: {
     reloadData() {
@@ -577,7 +606,7 @@ export default {
       // prepare update data
       let currentEvent = this.events.filter((event)=> event.id === this.selectedEvent.id)[0];
       const date = this.bookingDate;
-      let start = moment.utc(this.selectedTime).format();
+      let start = moment.utc(this.selectedTime.time).format();
       const totalDuration = this.selectedEvent.endTimeMinutes - this.selectedEvent.startTimeMinutes;
       const end = moment.utc(start).clone().add(totalDuration, 'minutes').format();
       const userId = currentEvent.user.id;
@@ -595,7 +624,7 @@ export default {
         "tax": tax,
       }
       // modify time slots for current event and interval
-      const currentBusinessTime = this.systemStore.businessTimes.filter((timeSlot)=> timeSlot.date === this.bookingDate && timeSlot.time === this.selectedTime)[0];
+      const currentBusinessTime = this.systemStore.businessTimes.filter((timeSlot)=> timeSlot.date === this.bookingDate && timeSlot.time === this.selectedTime.time)[0];
       const timeSlots = (totalDuration + this.systemStore.config.interval) / 30;
       let i = 0;
       let current;
@@ -702,6 +731,10 @@ export default {
       this.bookingData.menus = this.bookingMenus.concat();
       this.menuSearch = null;
     },
+    removeUser() {
+      this.finalBookingUser = null;
+      this.bookingData.user_id = null;
+    },
     removeMenu(menu) {
       const i = this.bookingMenus.indexOf(menu)
       this.bookingMenus.splice(i, 1)
@@ -710,7 +743,16 @@ export default {
       }
     },
     createEvent() {
+      if (!this.bookingData.user_id) {
+        this.newEventError = "顧客を選択してください";
+        return
+      }
+      if (!this.bookingMenus.length) {
+        this.newEventError = "メニューを選択してください";
+        return
+      }
       this.error = null;
+      this.newEventError = null;
       const date = this.newEventSelectedTime.date;
       let initial = 0;
       const totalDuration = this.bookingData.menus.map(menu => menu.duration).reduce((pre, current)=> pre + current, initial);
@@ -769,14 +811,17 @@ export default {
         this.newEventModal.hide();
       })
       .catch((error)=> {
-        this.error = error;
+        this.newEventError = error;
       })
+    },
+    closeNewEventModal() {
+      this.newEventModal.hide();
     },
   },
 }
 </script>
 
-<style>
+<style scoped>
   .modal-user-statuses {
     color: rgb(255, 99, 132);
     padding-left: 0px;
@@ -788,13 +833,24 @@ export default {
   .modal-footer {
     padding: 30px !important;
   }
-  .time-slots-check {
-    padding-left: 0px !important;
+  .booking-checkbox {
+    position: relative;
+    left: 0px;
   }
-  .time-slots-check .form-check-label {
-    padding-left: 0px !important;
+  .time-slots-row .card-body {
+    padding: 0px;
+    padding-top: 16px;
+    min-width: 112px;
   }
-
+  .time-slots-row .card-body:hover {
+    background-color: rgba(54, 162, 235, 0.2);
+  }
+  .form-check-label {
+    padding: 0px !important;
+  }
+  .form-check li {
+    padding-right: 8px;
+  }
   .datepicker-item {
     margin-bottom: 30px;
   }
@@ -814,61 +870,6 @@ export default {
   .event-detail-item {
     padding-left: 8px;
   }
-  .vuecal__cell-date {
-    margin-top: 9px;
-    margin-bottom: 18px;
-    padding-bottom: 18px;
-  }
-  .vuecal__menu {
-    background-color: rgba(75, 192, 192, 0.7);
-  }
-  .vuecal__title-bar{
-    background-color: rgba(75, 192, 192, 0.3);
-  }
-  .vuecal__event-title {
-    font-size: small;
-    font-weight: bold;
-  }
-  .vuecal__event-time {
-    font-size: 10px;
-    color: rgb(50, 126, 161);
-  }
-  .vuecal__cell-events-count {
-    background-color: rgba(255, 205, 86);
-    min-width: 20px;
-    height: 20px;
-    line-height: 20px;
-    font-size: 16px;
-    border-radius: 20px;
-    padding: 5px, 8px;
-  }
-  .vuecal__event.danger {
-    background-color: rgba(255, 99, 132, 0.2);
-    border: 2px solid rgba(255, 99, 132, 0.8);
-  }
-  .vuecal__event.primary {
-    background-color: rgba(140,146,232, 0.2);
-    border: 2px solid rgba(140,146,232, 0.8);
-  }
-  .vuecal__event.warning {
-    background-color: rgba(255, 159, 64, 0.2);
-    border: 2px solid rgba(255, 159, 64, 0.8);
-  }
-  .vuecal__event.gray {
-    background-color: rgba(201, 203, 207, 0.2);
-    border: 2px solid rgba(201, 203, 207, 0.8);
-  }
-  .vuecal__event.closing {
-    border: 2px solid rgba(255, 159, 64);
-    background:
-      rgba(255, 247, 240)
-      repeating-linear-gradient(
-        -45deg,
-        rgba(255, 162, 87, 0.25),
-        rgba(255, 162, 87, 0.25) 5px,
-        rgba(255, 255, 255, 0) 5px,
-        rgba(255, 255, 255, 0) 15px
-      );
-    color: rgba(255, 159, 64)
-  }
+
+  
 </style>

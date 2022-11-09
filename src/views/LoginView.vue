@@ -35,7 +35,7 @@
                     パスワードをお忘れですか?{{ ' ' }}
                     <a
                       href="#"
-                      @click.prevent="$router.push('/password-reset')"
+                      @click.prevent="redirectToPasswordReset()"
                     >
                       パスワード再設定
                     </a>
@@ -142,7 +142,8 @@ export default {
         if (user.email.split('').includes('@') === false) {
           return false
         } else {
-          this.emailInputError = null
+          this.error = null;
+          this.emailInputError = null;
           return true;
         }
       } else {
@@ -201,16 +202,11 @@ export default {
         })
       }
     },
-    toHome() {
-      this.user = {};
-      this.$router.push('/');
+    redirectToPasswordReset() {
+      this.error = null;
+      this.$router.push('/password-reset')
     },
-    activate() {
-      this.systemStore.startLoading();
-    },
-    deactivate() {
-      this.systemStore.endLoading();
-    }
+    
   }
 }
 </script>

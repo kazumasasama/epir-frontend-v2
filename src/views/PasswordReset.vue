@@ -42,8 +42,6 @@
 </template>
 
 <script>
-import { mapWritableState } from 'pinia';
-import { useSystemStore } from '@/store/systemStore';
 import axios from 'axios';
 
 export default {
@@ -53,13 +51,13 @@ export default {
         email: "",
       },
       mailSent: false,
+      error: null,
+      message: null,
     }
   },
   created() {
   },
   computed: {
-    ...mapWritableState(useSystemStore, ['message']),
-    ...mapWritableState(useSystemStore, ['error']),
   },
   methods: {
     AddValidCssClass(element) {
@@ -88,11 +86,12 @@ export default {
       return false;
     },
     sendPasswordResetMail() {
+      this.error = null;
+      this.message = null;
       this.user.email = this.user.email.toLowerCase();
       if (this.validateEmptyRequiredForm()) {
         axios.post('/password_resets.json', this.user)
         .then((res)=> {
-          this.error = null;
           this.message = res.data.message;
         })
         .catch((error)=> {
