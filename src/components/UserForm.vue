@@ -86,24 +86,69 @@
   </div>
 
   <div class="row">
-    <div class="col-12 text-end">
-      <button @click="showPasswordModal()" class="btn btn-sm btn-outline-danger">Change Password</button>
+    <div class="col-12 d-flex justify-content-between">
+      <p><strong>必須項目*</strong></p>
+      <div class="btn-container">
+        <button
+          class="btn btn-sm btn-outline-success"
+          v-if="showHistory"
+          @click="showHistory = false"
+        >
+          {{ $t('Customers.customerDetail') }}
+        </button>
+        <button
+          class="btn btn-sm btn-outline-success"
+          v-if="!showHistory"
+          @click="showHistory = true"
+        >
+          {{ $t('Btn.history') }}
+        </button>
+        <button
+          @click="showPasswordModal()"
+          class="btn btn-sm btn-outline-danger"
+        >
+          パスワード変更
+        </button>
+      </div>
     </div>
-    <p><strong>必須項目*</strong></p>
     <div class="col-sm-6">
       <form>
         <small>姓*</small>
-        <input type="text" v-model="user.last_name" class="form-control">
+        <input
+          type="text"
+          v-model="user.last_name"
+          class="form-control"
+        >
         <small>名*</small>
-        <input type="text" v-model="user.first_name" class="form-control">
+        <input
+          type="text"
+          v-model="user.first_name"
+          class="form-control"
+        >
         <small>メールアドレス*</small>
-        <input type="text" v-model="user.email" class="form-control">
+        <input
+          type="text"
+          v-model="user.email"
+          class="form-control"
+        >
         <small>電話番号</small>
-        <input type="text" v-model="user.phone" class="form-control">
+        <input
+          type="text"
+          v-model="user.phone"
+          class="form-control"
+        >
         <small>LINE</small>
-        <input type="text" v-model="user.line_id" class="form-control">
+        <input
+          type="text"
+          v-model="user.line_id"
+          class="form-control"
+        >
         <small>生年月日</small>
-        <input class="form-control" type="text" v-model="user.birthday">
+        <input
+          class="form-control"
+          type="date"
+          v-model="user.birthday"
+        >
         <small>性別</small>
         <select v-model="user.gender" class="form-select">
           <option
@@ -253,12 +298,15 @@ export default {
       axios.patch(`/users/${id}.json`, user)
       .then((res)=> {
         this.user = res.data;
+        this.message = "更新しました";
+        return
+      })
+      .then(()=> {
+        setTimeout(()=> {this.message = null}, 3000);
       })
       .catch((error)=> {
         this.error = error;
       })
-      this.message = "User updated";
-      setTimeout(()=> {this.message = null}, 3000);
     },
     updatePassword() {
       if (!this.password.current_password) {
@@ -311,34 +359,6 @@ export default {
   
   .row {
     text-align: left;
-  }
-  .btn-container {
-    margin-top: 15px;
-  }
-  .user-btn-container {
-    text-align: left;
-    overflow: hidden;
-  }
-  .history-event-container {
-    text-align: left;
-  }
-  .notification {
-    color: red;
-  }
-  .history-hairline {
-    color:#FFFFFF;
-    margin-top: 8px;
-    margin-bottom: 8px;
-    border: none;
-    border-top: 2px dashed gray;
-    height: 1px;
-  }
-  .hr-user-statics {
-    border-top: 1px;
-  }
-  .userFullName {
-    margin-top: 8px;
-    font-size: larger;
   }
   .multiselect-tag-color {
     --ms-tag-bg: rgb(75, 192, 192);

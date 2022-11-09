@@ -190,6 +190,7 @@ export default {
 }
 .control-navbar-item {
   float: right;
+  margin-top: 0px;
 }
 .smaller-text {
   font-size: x-small;

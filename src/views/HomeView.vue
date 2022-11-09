@@ -84,9 +84,6 @@ export default {
   margin-bottom: 20px;
   vertical-align: middle;
 }
-.btn-container {
-  margin-top: 20px;
-}
 .illust-credit {
   font-size: 7pt;
 }

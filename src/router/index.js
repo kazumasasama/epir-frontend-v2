@@ -7,6 +7,7 @@ import CompleteEvent from '@/views/CompleteEvent.vue'
 import SignupView from '@/views/SignupView.vue'
 import ActivateAccount from '@/views/ActivateAccount.vue'
 import ActivationProcess from '@/views/ActivationProcess.vue'
+import PasswordResetProcess from '@/views/PasswordResetProcess.vue'
 import LoginView from '@/views/LoginView.vue'
 import PasswordReset from '@/views/PasswordReset.vue'
 import MyPage from '@/views/MyPage.vue'
@@ -120,6 +121,10 @@ const routes = [
     path: '/activate-account',
     name: 'ActivateAccount',
     component: ActivateAccount
+  },
+  {
+    path: '/password-reset/:activation_token/:email',
+    component: PasswordResetProcess
   },
   {
     path: '/login',

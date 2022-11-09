@@ -1,51 +1,67 @@
 <template>
-  <div v-if="error" class="alert alert-warning" role="alert">
-    {{ error }}
-  </div>
   <div class="container">
     <div class="row d-flex justify-content-center">
       <div class="col-lg-5 col-md-6 col-sm-8">
         <div class="card shadow card-base">
-          <div class="card-header text-center">
-            <h4 class="">{{ $t('Login.pageTitle') }}</h4>
-          </div>
           <div class="card-body login-form-container card-base-body">
-            <form v-on:submit.prevent="login()" class="needs-validation" novalidate>
-              <small>{{ $t('Login.form.email') }}</small>
-              <input
-                v-model="user.email"
-                id="login-input-email"
-                class="form-control"
-                type="text"
-                autocomplete="email"
-                required
-              >
-              <div v-if="emailInputError" class="invalid-feedback">
-                {{ emailInputError }}
-              </div>
-              <small>{{ $t('Login.form.password') }}</small>
-              <input
-                v-model="user.password"
-                id="login-input-password"
-                class="form-control"
-                type="password"
-                autocomplete="current-password"
-                required
-              >
-              <small>
-                パスワードをお忘れですか? <a href="#" @click.prevent="$router.push('/password-reset')">パスワード再設定</a>
-              </small>
-              <div class="btn-container">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  @click.prevent="this.$router.push('/')"
+            <div>
+              <form v-on:submit.prevent="login()" class="needs-validation" novalidate>
+                <div class="card-title text-center">
+                  <h4 class="mb-5">{{ $t('Login.pageTitle') }}</h4>
+                </div>
+                <small>{{ $t('Login.form.email') }}</small>
+                <input
+                  v-model="user.email"
+                  id="login-input-email"
+                  class="form-control"
+                  type="text"
+                  autocomplete="email"
+                  required
                 >
-                  {{ $t('Btn.backHome') }}
-                </button>
-                <button type="submit" class="btn btn-info" @click.prevent="login()">{{ $t('Btn.login') }}</button>
-              </div>
-            </form>
+                <div v-if="emailInputError" class="invalid-feedback">
+                  {{ emailInputError }}
+                </div>
+                <small>{{ $t('Login.form.password') }}</small>
+                <input
+                  v-model="user.password"
+                  id="login-input-password"
+                  class="form-control"
+                  type="password"
+                  autocomplete="current-password"
+                  required
+                >
+                <div class="password-reset-link">
+                  <small>
+                    パスワードをお忘れですか?{{ ' ' }}
+                    <a
+                      href="#"
+                      @click.prevent="redirectToPasswordReset()"
+                    >
+                      パスワード再設定
+                    </a>
+                  </small>
+                </div>
+                <div v-if="error" class="alert alert-danger text-center" role="alert">
+                  {{ error }}
+                </div>
+                <div class="btn-container">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    @click.prevent="this.$router.push('/')"
+                  >
+                    {{ $t('Btn.backHome') }}
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-info"
+                    @click.prevent="login()"
+                  >
+                    {{ $t('Btn.login') }}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -86,7 +102,7 @@ export default {
       } else if (email !== "") {
         if (email.split('').includes('@') === false) {
           this.AddInvalidCssClass(inputValidationEmail)
-          this.emailInputError = "Invalid email address. Email has to contain '@'"
+          this.emailInputError = "メールアドレスに@を含めてください"
         } else if (email.split('').includes('@')) {
           this.AddValidCssClass(inputValidationEmail)
           this.emailInputError = null;
@@ -126,7 +142,8 @@ export default {
         if (user.email.split('').includes('@') === false) {
           return false
         } else {
-          this.emailInputError = null
+          this.error = null;
+          this.emailInputError = null;
           return true;
         }
       } else {
@@ -161,40 +178,35 @@ export default {
           .then((res)=> {
             this.userStore.pushUser(res.data);
             this.userStore.switchLoggedin(true);
-            let isAdmin = res.data.admin
+            let isAdmin = res.data.admin;
             return isAdmin
           })
           .then((isAdmin)=> {
             this.userStore.handleAdmin(isAdmin);
-            // if (isAdmin) {
-            //   this.$router.push('/admin/dashboard');
-            // } else {
+            if (isAdmin) {
+              this.$router.push('/admin/dashboard');
+            } else {
               this.$router.push('/appointments');
-            // }
-            // this.systemStore.endLoading();
+            }
+            this.systemStore.endLoading();
             return
           })
-          .catch((error)=> {
+          .catch(()=> {
             this.systemStore.endLoading();
-            this.error = `${error.response}: メールアドレスに誤りがあります。`;
+            this.error = "入力に誤りがあります。";
           })
         })
-        .catch((error)=> {
+        .catch(()=> {
           this.systemStore.endLoading();
-          this.error = `${error.response}: パスワードに誤りがあります。`;
+          this.error = "入力に誤りがあります。";
         })
       }
     },
-    toHome() {
-      this.user = {};
-      this.$router.push('/');
+    redirectToPasswordReset() {
+      this.error = null;
+      this.$router.push('/password-reset')
     },
-    activate() {
-      this.systemStore.startLoading();
-    },
-    deactivate() {
-      this.systemStore.endLoading();
-    }
+    
   }
 }
 </script>
@@ -221,10 +233,10 @@ export default {
   .login-hint-title {
     font-weight: bold;
   }
-  .btn-container {
-    margin-top: 20px;
-  }
   .card-base-body {
     padding: 50px;
+  }
+  .password-reset-link {
+    margin-bottom: 48px;
   }
 </style>
